@@ -25,7 +25,7 @@ function Login() {
   }, [user, password]);
 
   const handleSubmit = async (e) => {
-    e.preventDeafult();
+    e.preventDefault();
 
     try {
       const userData = await login({ user, password }).unwrap();
@@ -55,34 +55,36 @@ function Login() {
     <section>
       <p ref={errRef} className={errMsg ? 'errmsg' : 'hidden'}>{errMsg}</p>
       <h1>Login</h1>
-      <form onSubmit={handleSubmit()}>
-        <label htmlFor="username">Username:</label>
-        <input
-          type={text}
-          id="username"
-          ref={userRef}
-          value={user}
-          onChange={handleUserInput}
-          autoComplete="off"
-          required
-        />
-        <label htmlFor="password">Username:</label>
-        <input
-          type={text}
-          id="password"
-          ref={userRef}
-          value={user}
-          onChange={handlePasswordInput}
-          autoComplete="off"
-          required
-        />
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="username">
+          Username:
+          <input
+            type="text"
+            id="username"
+            ref={userRef}
+            value={user}
+            onChange={handleUserInput}
+            autoComplete="off"
+            required
+          />
+        </label>
+        <label htmlFor="password">
+          Password:
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={handlePasswordInput}
+            autoComplete="off"
+            required
+          />
+        </label>
+        <button onSubmit={handleSubmit} type="submit">Sign In</button>
       </form>
     </section>
   );
 
-  return (
-    <div>Login</div>
-  );
+  return content;
 }
 
 export default Login;
