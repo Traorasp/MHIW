@@ -32,14 +32,12 @@ function Login() {
       dispatch(setCredentials(...userData, user));
       setUser('');
       setPassword('');
-      navigte('/home');
+      navigte('/profile');
     } catch (err) {
-      if (!err?.originalStatus) {
+      if (!err?.status) {
         setErrMsg('No server response');
-      } else if (!err.originalStatus === 400) {
-        setErrMsg('Missing username or password');
-      } else if (!err.originalStatus === 401) {
-        setErrMsg('unauthorized');
+      } else if (err.status === 400) {
+        setErrMsg('Incorrect username or password');
       } else {
         setErrMsg('Login Failed');
       }
@@ -52,10 +50,10 @@ function Login() {
   const handlePasswordInput = (e) => setPassword(e.target.value);
 
   const content = isLoading ? <h1>Loading...</h1> : (
-    <section>
+    <section className="bg-gray-100">
       <p ref={errRef} className={errMsg ? 'errmsg' : 'hidden'}>{errMsg}</p>
       <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col border border-gray-800 space-y-2">
         <label htmlFor="username">
           Username:
           <input

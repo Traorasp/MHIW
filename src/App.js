@@ -4,6 +4,7 @@ import Layout from './component/Layout';
 import Home from './component/Home';
 import Login from './features/auth/Login';
 import RequireAuth from './features/auth/RequireAuth';
+import Profile from './component/Profile';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route element={<RequireAuth />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
     </Routes>
   );
