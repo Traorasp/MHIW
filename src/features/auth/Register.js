@@ -1,19 +1,19 @@
-import { useRef, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+/* eslint-disable react/no-array-index-key */
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useRegisterMutation } from './authApiSlice';
 import { setCredentials } from './authSlice';
-import { useLoginMutation } from './authApiSlice';
 
-function Login() {
+const Register = () => {
   const userRef = useRef();
   const errRef = useRef();
   const [username, setUser] = useState('');
   const [password, setPassword] = useState('');
-  const [errMsg, setErrMsg] = useState('');
-  const navigte = useNavigate();
+  const [errMsg, setErrMsg] = useState([]);
+  const navigate = useNavigate();
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [register, { isLoading }] = useRegisterMutation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,18 +28,26 @@ function Login() {
     e.preventDefault();
 
     try {
-      const userData = await login({ username, password }).unwrap();
+      const userData = await register({ username, password }).unwrap();
       dispatch(setCredentials(userData));
       setUser('');
       setPassword('');
-      navigte('/profile');
+      navigate('/profile');
     } catch (err) {
       if (!err?.status) {
-        setErrMsg('No server response');
+        setErrMsg(['No server response']);
       } else if (err.status === 400) {
-        setErrMsg('Incorrect username or password');
+        const msg = [];
+        if (err.data.errors) {
+          err.data.errors.forEach((error) => msg.push(error.msg));
+        } else {
+          msg.push('Username is already taken');
+        }
+        setErrMsg(msg);
+      } else if (err.status === 404 || err.status === 500) {
+        setErrMsg(['Internal server error try again']);
       } else {
-        setErrMsg('Login Failed');
+        setErrMsg(['Registration Failed']);
       }
       errRef.current.focus();
     }
@@ -51,8 +59,8 @@ function Login() {
 
   const content = isLoading ? <h1>Loading...</h1> : (
     <section className="bg-gray-100">
-      <p ref={errRef} className={errMsg ? 'errmsg' : 'hidden'}>{errMsg}</p>
-      <h1>Login</h1>
+
+      <h1>Register</h1>
       <form onSubmit={handleSubmit} className="flex flex-col border border-gray-800 space-y-2">
         <label htmlFor="username">
           Username:
@@ -77,12 +85,15 @@ function Login() {
             required
           />
         </label>
-        <button onSubmit={handleSubmit} type="submit">Sign In</button>
+        <button onSubmit={handleSubmit} type="submit">Register</button>
       </form>
+      <ul ref={errRef} className={errMsg ? 'errmsg' : 'hidden'}>
+        {Array.from(errMsg).map((error, i) => (<li key={i}>{error}</li>))}
+      </ul>
     </section>
   );
 
   return content;
-}
+};
 
-export default Login;
+export default Register;

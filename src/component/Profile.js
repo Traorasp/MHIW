@@ -5,7 +5,7 @@ import { selectCurrentUser } from '../features/auth/authSlice';
 
 function Profile() {
   const [profile, { isLoading }] = useProfileMutation();
-  const [image, setImage] = useEffect(null);
+  const [image, setImage] = useState(null);
 
   const user = useSelector(selectCurrentUser);
 
@@ -15,21 +15,16 @@ function Profile() {
       const data = await profile(user);
       setImage(data);
     } catch (err) {
-      if (!err?.status) {
-        setErrMsg('No server response');
-      } else if (err.status === 404) {
-        setErrMsg('Image does not exist');
-      } else {
-        setErrMsg('Error getting image');
-      }
+      console.log(err);
     }
   }, []);
 
-  return (
+  const content = isLoading ? <h1>Loading...</h1> : (
     <section>
       <header>
         Hello
         {' '}
+        { console.log(user)}
         {user.username}
       </header>
       <div>
@@ -41,6 +36,8 @@ function Profile() {
       </div>
     </section>
   );
+
+  return content;
 }
 
 export default Profile;

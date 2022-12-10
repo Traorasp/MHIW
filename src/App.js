@@ -5,6 +5,7 @@ import Home from './component/Home';
 import Login from './features/auth/Login';
 import RequireAuth from './features/auth/RequireAuth';
 import Profile from './component/Profile';
+import Register from './features/auth/Register';
 
 function App() {
   return (
@@ -12,8 +13,10 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route element={<RequireAuth />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/register" element={<Register />} />
+        <Route element={<RequireAuth />}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Route>
     </Routes>
   );
