@@ -2,36 +2,45 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useProfileMutation } from '../features/user/userSlice';
 import { selectCurrentUser } from '../features/auth/authSlice';
+import profileSVG from '../images/profile.svg';
 
 function Profile() {
   const [profile, { isLoading }] = useProfileMutation();
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(profileSVG);
 
-  const user = useSelector(selectCurrentUser);
+  const { username, profilePic } = useSelector(selectCurrentUser);
 
-  useEffect(async () => {
+  const getProfile = async () => {
+    if (!profilePic) {
+      return;
+    }
     try {
-      console.log(user);
-      const data = await profile(user);
+      const data = await profile(profilePic).unwrap();
       setImage(data);
     } catch (err) {
-      console.log(err);
+      setImage(profileSVG);
     }
-  }, []);
+  };
+
+  useEffect(
+    () => {
+      getProfile();
+    },
+    [],
+  );
 
   const content = isLoading ? <h1>Loading...</h1> : (
     <section>
       <header>
         Hello
         {' '}
-        { console.log(user)}
-        {user.username}
+        {username}
       </header>
       <div>
-        <img src={image} alt="User profile" />
+        <img className="object-scale-down h-36 w-36" src={image} alt="User profile" />
         <h2>Username:</h2>
-        <p>
-          {user.username}
+        <p className="">
+          {username}
         </p>
       </div>
     </section>
