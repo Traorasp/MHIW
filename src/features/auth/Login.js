@@ -1,7 +1,8 @@
 import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { useDispatch } from 'react-redux';
+import usePersist from '../../hooks/usePersist';
+
 import { setCredentials } from './authSlice';
 import { useLoginMutation } from './authApiSlice';
 
@@ -11,6 +12,7 @@ function Login() {
   const [username, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
+  const [persist, setPersist] = usePersist();
   const navigte = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
@@ -49,6 +51,8 @@ function Login() {
 
   const handlePasswordInput = (e) => setPassword(e.target.value);
 
+  const handlePersist = () => setPersist((prev) => !prev);
+
   const content = isLoading ? <h1>Loading...</h1> : (
     <section className="bg-gray-100">
       <p ref={errRef} className={errMsg ? 'errmsg' : 'hidden'}>{errMsg}</p>
@@ -78,6 +82,15 @@ function Login() {
           />
         </label>
         <button onSubmit={handleSubmit} type="submit">Sign In</button>
+        <label htmlFor="persist">
+          <input
+            type="checkbox"
+            id="persist"
+            onChange={handlePersist}
+            checked={persist}
+          />
+          Trust this device
+        </label>
       </form>
     </section>
   );
