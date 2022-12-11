@@ -6,21 +6,27 @@ import RequireAuth from './features/auth/RequireAuth';
 import Profile from './component/Profile';
 import Register from './features/auth/Register';
 import PersistLogin from './features/auth/PersistLogin';
+import NavBar from './component/NavBar';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route element={<PersistLogin />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route element={<RequireAuth />}>
-            <Route path="/profile" element={<Profile />} />
+    <div>
+      <NavBar />
+      <main>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route element={<PersistLogin />}>
+              <Route element={<RequireAuth />}>
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+            </Route>
           </Route>
-        </Route>
-      </Route>
-    </Routes>
+        </Routes>
+      </main>
+    </div>
   );
 }
 

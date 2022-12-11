@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useProfileMutation } from '../features/user/userSlice';
+import { useProfileMutation } from '../features/image/imageApiSlice';
 import { selectCurrentUser } from '../features/auth/authSlice';
 import profileSVG from '../images/profile.svg';
 

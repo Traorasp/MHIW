@@ -1,6 +1,6 @@
 import apiSlice from '../../app/api/apiSlice';
 
-export const userApiSlice = apiSlice.injectEndpoints({
+export const imageApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     profile: builder.mutation({
       query: (imageId) => ({
@@ -11,4 +11,4 @@ export const userApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useProfileMutation } = userApiSlice;
+export const { useProfileMutation } = imageApiSlice;

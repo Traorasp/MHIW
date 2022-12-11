@@ -1,9 +1,9 @@
 import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import usePersist from '../../hooks/usePersist';
 
-import { setCredentials } from './authSlice';
+import { setCredentials, selectCurrentUser } from './authSlice';
 import { useLoginMutation } from './authApiSlice';
 
 function Login() {
@@ -16,9 +16,13 @@ function Login() {
   const navigte = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
+  const user = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (user) {
+      navigte('/profile');
+    }
     userRef.current.focus();
   }, []);
 

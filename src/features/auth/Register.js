@@ -1,9 +1,9 @@
 /* eslint-disable react/no-array-index-key */
 import { useEffect, useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from './authApiSlice';
-import { setCredentials } from './authSlice';
+import { setCredentials, selectCurrentUser } from './authSlice';
 
 const Register = () => {
   const userRef = useRef();
@@ -13,10 +13,14 @@ const Register = () => {
   const [errMsg, setErrMsg] = useState([]);
   const navigate = useNavigate();
 
+  const user = useSelector(selectCurrentUser);
   const [register, { isLoading }] = useRegisterMutation();
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (user) {
+      navigate('/profile');
+    }
     userRef.current.focus();
   }, []);
 
