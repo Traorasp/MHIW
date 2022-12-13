@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { selectCurrentUser } from '../features/auth/authSlice';
 import profileSVG from '../images/profile.svg';
-import { useProfileMutation } from '../features/image/imageApiSlice';
+import { useGetImageMutation } from '../features/image/imageApiSlice';
 
 function NavBar() {
   const user = useSelector(selectCurrentUser);
-  const [profile, { isLoading }] = useProfileMutation();
+  const [profile, { isLoading }] = useGetImageMutation();
   const [image, setImage] = useState(profileSVG);
 
   useEffect(
