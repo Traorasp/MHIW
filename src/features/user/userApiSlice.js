@@ -7,7 +7,7 @@ const userApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `/profile/${data._id}`,
         method: 'POST',
-        body: data.imageId,
+        body: data,
       }),
     }),
   }),

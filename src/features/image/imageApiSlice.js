@@ -2,12 +2,6 @@ import apiSlice from '../../app/api/apiSlice';
 
 export const imageApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getImage: builder.mutation({
-      query: (imageId) => ({
-        url: `/image/${imageId}`,
-        method: 'GET',
-      }),
-    }),
     setImage: builder.mutation({
       query: (image) => ({
         url: '/image',
@@ -19,4 +13,4 @@ export const imageApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetImageMutation, useSetImageMutation } = imageApiSlice;
+export const { useSetImageMutation } = imageApiSlice;
