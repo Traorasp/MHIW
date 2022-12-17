@@ -10,7 +10,15 @@ export const imageApiSlice = apiSlice.injectEndpoints({
         body: image,
       }),
     }),
+    updateImage: builder.mutation({
+      query: (data) => ({
+        url: `/image/${data.get('id')}`,
+        method: 'POST',
+        credentials: 'include',
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useSetImageMutation } = imageApiSlice;
+export const { useSetImageMutation, useUpdateImageMutation } = imageApiSlice;

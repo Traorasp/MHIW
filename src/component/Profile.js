@@ -66,7 +66,14 @@ function Profile() {
         {username}
       </header>
       <main>
-        {profileForm ? <ImageForm hideForm={showProfileForm} setImageId={setImageId} />
+        {profileForm
+          ? (
+            <ImageForm
+              hideForm={showProfileForm}
+              setImageId={setImageId}
+              prevImageId={profilePic}
+            />
+          )
           : null}
         <div>
           <img className="object-scale-down h-36 w-36" src={profileURL} alt="User profile" />
