@@ -13,7 +13,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [persist, setPersist] = usePersist();
-  const navigte = useNavigate();
+  const navigate = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
   const user = useSelector(selectCurrentUser);
@@ -21,7 +21,7 @@ function Login() {
 
   useEffect(() => {
     if (user) {
-      navigte('/profile');
+      navigate('/profile');
     }
     userRef.current.focus();
   }, []);
@@ -38,7 +38,7 @@ function Login() {
       dispatch(setCredentials(userData));
       setUser('');
       setPassword('');
-      navigte('/profile');
+      navigate('/profile');
     } catch (err) {
       if (!err?.status) {
         setErrMsg('No server response');

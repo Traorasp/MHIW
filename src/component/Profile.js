@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
-  selectCurrentUser, setProfile, selectCurrentToken, setProfileURL,
+  selectCurrentUser, setProfile, selectCurrentToken, setProfileURL, logout,
 } from '../features/auth/authSlice';
 import profileSVG from '../images/profile.svg';
 import ImageForm from './imageForm';
@@ -18,6 +19,7 @@ function Profile() {
   const [imageId, setImageId] = useState(profilePic);
   const [isLoading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [updateProfile] = useUpdateProfileMutation();
 
@@ -50,6 +52,15 @@ function Profile() {
     }
   };
 
+  const handleLogout = () => {
+    try {
+      dispatch(logout());
+      navigate('/');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(
     () => {
       handleProfile();
@@ -77,7 +88,15 @@ function Profile() {
           : null}
         <div>
           <img className="object-scale-down h-36 w-36" src={profileURL} alt="User profile" />
-          <button onClick={showProfileForm} type="button">Change Profile</button>
+          <button
+            className="bg-sky-700 text-white px-2 py-.5 border-2 border-black hover:bg-sky-500 hover:font-semibold"
+            onClick={showProfileForm}
+            type="button"
+          >
+            {' '}
+            Change Profile
+
+          </button>
         </div>
         <div>
           <h2>Username:</h2>
@@ -85,6 +104,14 @@ function Profile() {
             {username}
           </p>
         </div>
+        <button
+          className="bg-red-700 text-white px-2 py-.5 border-2 border-black hover:bg-red-500 hover:font-semibold"
+          type="button"
+          onClick={handleLogout}
+        >
+          Log Out
+
+        </button>
       </main>
     </section>
   );

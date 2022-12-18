@@ -22,19 +22,27 @@ function NavBar() {
   }, [user?.profilePic]);
 
   const content = (
-    <nav className="grid grid-cols-7 grid-flow-row items-center">
-      <Link className="text-center" to="/">Home</Link>
-      {user?.admin === undefined ? <Link to="/login">Login</Link>
+    <nav className="grid grid-cols-6 grid-flow-row items-center bg-indigo-800">
+      {user?.admin === undefined
+        ? (
+          <div className="col-span-6 flex flex-row text-white">
+            <Link className="text-center" to="/">Home </Link>
+            <Link className="" to="/login">Login </Link>
+          </div>
+        )
         : (
-          <div className="col-span-6 flex flex-row justify-between items-center">
-            <Link to="/">Documentation</Link>
-            <Link to="/">Characters</Link>
-            <Link to="/">Friends</Link>
-            <Link to="/">Game</Link>
-            {user?.admin ? (<Link to="/">Database</Link>) : null}
-            <Link className="flex flex-col justify-center items-center" to="/profile">
-              <img className="object-scale-down h-8- w-8" src={user.profileURL} alt="User Profile" />
-              <p>{user?.username}</p>
+          <div className="col-span-6 flex flex-row items-stretch">
+            <Link className="navbar-menu" to="/documentation"> Documentation </Link>
+            <Link className="navbar-menu" to="/characters">Characters</Link>
+            <Link className="navbar-menu" to="/friends">Friends</Link>
+            <Link className="navbar-menu" to="/game"> Game</Link>
+            {user?.admin ? (
+              <Link className="navbar-menu" to="/database">
+                Database
+              </Link>
+            ) : null}
+            <Link className="basis-1/12" to="/profile">
+              <img className="h-16 ml-auto mr-auto" src={user.profileURL} alt="User Profile" />
             </Link>
           </div>
         )}
