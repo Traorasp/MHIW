@@ -7,6 +7,7 @@ import Profile from './component/Profile';
 import Register from './features/auth/Register';
 import PersistLogin from './features/auth/PersistLogin';
 import NavBar from './component/NavBar';
+import Documentation from './component/Documentation';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route element={<PersistLogin />}>
               <Route element={<RequireAuth />}>
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/documentation" element={<Documentation />} />
               </Route>
             </Route>
           </Route>
