@@ -8,6 +8,7 @@ import Register from './features/auth/Register';
 import PersistLogin from './features/auth/PersistLogin';
 import NavBar from './component/NavBar';
 import Documentation from './component/Documentation';
+import PreFetch from './features/auth/PreFetch';
 
 function App() {
   return (
@@ -21,8 +22,10 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route element={<PersistLogin />}>
               <Route element={<RequireAuth />}>
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/documentation" element={<Documentation />} />
+                <Route element={<PreFetch />}>
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/documentation" element={<Documentation />} />
+                </Route>
               </Route>
             </Route>
           </Route>

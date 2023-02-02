@@ -1,4 +1,4 @@
-import apiSlice from '../../app/api/apiSlice';
+import apiSlice from '../../../app/api/apiSlice';
 
 const effectApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

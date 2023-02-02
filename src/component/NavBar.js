@@ -25,7 +25,7 @@ function NavBar() {
     <nav className="grid grid-cols-6 grid-flow-row items-center bg-indigo-800">
       {user?.admin === undefined
         ? (
-          <div className="col-span-6 flex flex-row text-white">
+          <div className="col-span-6 flex flex-row justify-between text-white">
             <Link className="text-center" to="/">Home </Link>
             <Link className="" to="/login">Login </Link>
           </div>
