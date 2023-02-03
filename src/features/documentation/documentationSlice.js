@@ -4,8 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const documentationSlice = createSlice({
   name: 'doc',
   initialState: {
-    aoe: null,
-    effects: null,
+    aoe: 5,
+    effects: 25,
     enchantments: null,
     items: null,
     magics: null,
@@ -18,23 +18,19 @@ const documentationSlice = createSlice({
   },
   reducers: {
     setDoc: (state, action) => {
-      const {
-        aoe, effects, enchantments, items,
-        magics, materials, races, skills, spells,
-        talents, titles,
-      } = action.payload;
-
-      state.aoe = aoe;
-      state.effects = effects;
-      state.enchantments = enchantments;
-      state.items = items;
-      state.magics = magics;
-      state.materials = materials;
-      state.races = races;
-      state.skills = skills;
-      state.spells = spells;
-      state.talents = talents;
-      state.titles = titles;
+      [
+        state.aoe,
+        state.effects,
+        state.enchantments,
+        state.items,
+        state.magics,
+        state.materials,
+        state.races,
+        state.skills,
+        state.spells,
+        state.talents,
+        state.titles,
+      ] = action.payload;
     },
   },
 });
