@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import DocNav from './DocNav';
+import AoeListPanel from '../features/documentation/aoes/AoeListPanel';
 
 function Documentation() {
   const [selection, setSelection] = useState('AOE');
@@ -18,7 +19,7 @@ function Documentation() {
     <div>
       <h1>{selection}</h1>
       <DocNav select={select} />
-      <main />
+      <AoeListPanel />
     </div>
   );
 }

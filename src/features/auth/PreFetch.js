@@ -45,7 +45,6 @@ function PreFetch() {
       getTitles().unwrap(),
     ]);
     dispatch(setDoc(doc));
-    console.log(doc);
   };
 
   useEffect(() => {
