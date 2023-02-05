@@ -7,7 +7,7 @@ import Profile from './component/Profile';
 import Register from './features/auth/Register';
 import PersistLogin from './features/auth/PersistLogin';
 import NavBar from './component/NavBar';
-import Documentation from './component/Documentation';
+import Documentation from './features/documentation/Documentation';
 import PreFetch from './features/auth/PreFetch';
 
 function App() {
