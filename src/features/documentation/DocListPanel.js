@@ -9,6 +9,18 @@ import {
 } from './documentationSlice';
 import DocInfoCard from './DocInfoCard';
 
+import { useDeleteAOEMutation } from './aoes/aoeApiSlice';
+import { useDeleteEffectMutation } from './effects/effectApiSlice';
+import { useDeleteEnchantmentMutation } from './enchntments/enchantmentApiSlice';
+import { useDeleteItemMutation } from './items/itemApiSlice';
+import { useDeleteMagicMutation } from './magics/magicApiSlice';
+import { useDeleteMaterialMutation } from './materials/materialApiSlice';
+import { useDeleteRaceMutation } from './races/raceApiSlice';
+import { useDeleteSkillMutation } from './skills/skillApiSlice';
+import { useDeleteSpellMutation } from './spells/spellApiSlice';
+import { useDeleteTalentMutation } from './talents/talentApiSlice';
+import { useDeleteTitleMutation } from './titles/titleApiSlice';
+
 function DocListPanel(prop) {
   const aoes = useSelector(selectCurrentAoes);
   const effects = useSelector(selectCurrentEffects);
@@ -22,43 +34,67 @@ function DocListPanel(prop) {
   const talents = useSelector(selectCurrentTalents);
   const titles = useSelector(selectCurrentTitles);
 
+  const [deleteAOE] = useDeleteAOEMutation();
+  const [deleteEffect] = useDeleteEffectMutation();
+  const [deleteEnchantment] = useDeleteEnchantmentMutation();
+  const [deleteItem] = useDeleteItemMutation();
+  const [deleteMagic] = useDeleteMagicMutation();
+  const [deleteMaterial] = useDeleteMaterialMutation();
+  const [deleteRace] = useDeleteRaceMutation();
+  const [deleteSkill] = useDeleteSkillMutation();
+  const [deleteSpell] = useDeleteSpellMutation();
+  const [deleteTalent] = useDeleteTalentMutation();
+  const [deleteTitle] = useDeleteTitleMutation();
+
   const { listOf } = prop;
   const [list, setList] = useState(aoes);
+  let docDelete = deleteAOE;
 
   const selectList = () => {
     switch (listOf) {
       case 'AOE':
         setList(aoes);
+        docDelete = deleteAOE;
         break;
       case 'Effects':
         setList(effects);
+        docDelete = deleteEffect;
         break;
       case 'Enchants':
         setList(enchants);
+        docDelete = deleteEnchantment;
         break;
       case 'Items':
         setList(items);
+        docDelete = deleteItem;
         break;
       case 'Magics':
         setList(magics);
+        docDelete = deleteMagic;
         break;
       case 'Materials':
         setList(materials);
+        docDelete = deleteMaterial;
         break;
       case 'Races':
         setList(races);
+        docDelete = deleteRace;
         break;
       case 'Skills':
         setList(skills);
+        docDelete = deleteSkill;
         break;
       case 'Spells':
         setList(spells);
+        docDelete = deleteSpell;
         break;
       case 'Talents':
         setList(talents);
+        docDelete = deleteTalent;
         break;
       case 'Titles':
         setList(titles);
+        docDelete = deleteTitle;
         break;
       default:
     }
@@ -70,7 +106,7 @@ function DocListPanel(prop) {
 
   return (
     <div>
-      {!list ? '' : Object.values(list)[0].map((data) => <DocInfoCard data={data} key={data._id} />)}
+      {!list ? '' : Object.values(list)[0].map((data) => <DocInfoCard data={data} docDelete={docDelete} key={data._id} id={data._id} />)}
     </div>
   );
 }

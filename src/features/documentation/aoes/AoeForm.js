@@ -1,11 +1,14 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useCreateAOEMutation } from './aoeApiSlice';
+import { addDoc } from '../documentationSlice';
 
 function AoeForm(prop) {
   const { hide } = prop;
 
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [fixed, setFixed] = useState(false);
   const [range, setRange] = useState(1);
@@ -17,10 +20,11 @@ function AoeForm(prop) {
 
   const handleSubmit = async () => {
     try {
-      createAOE({ name, fixed, range });
+      const { aoe } = await createAOE({ name, fixed, range }).unwrap();
       setName('');
       setFixed(false);
       setRange(1);
+      dispatch(addDoc({ key: 'aoes', value: aoe }));
       hide();
     } catch (err) {
       console.log(err);

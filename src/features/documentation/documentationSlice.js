@@ -32,10 +32,14 @@ const documentationSlice = createSlice({
         state.titles,
       ] = action.payload;
     },
+    addDoc: (state, action) => {
+      const { key, data } = action.payload;
+      state[key] = state.aoes.append(data);
+    },
   },
 });
 
-export const { setDoc } = documentationSlice.actions;
+export const { setDoc, addDoc } = documentationSlice.actions;
 
 export default documentationSlice.reducer;
 
