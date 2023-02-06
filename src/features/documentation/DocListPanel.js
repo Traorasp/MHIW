@@ -66,7 +66,6 @@ function DocListPanel(prop) {
 
   useEffect(() => {
     selectList();
-    console.log();
   }, [listOf]);
 
   return (
