@@ -34,7 +34,7 @@ const documentationSlice = createSlice({
     },
     addDoc: (state, action) => {
       const { key, data } = action.payload;
-      state[key] = state.aoes.append(data);
+      state[key] = { data };
     },
   },
 });

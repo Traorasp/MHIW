@@ -23,7 +23,7 @@ function DocInfoCard(prop) {
   return (
     <div className="border-2 border-black pl-2">
       {info}
-      <button className="active:bg-red-600" onClick={deleteCard} type="button">Delete</button>
+      <button className="hover:bg-red-600 hover:border-black hover:border-2" onClick={deleteCard} type="button">Delete</button>
     </div>
   );
 }

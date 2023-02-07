@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCreateAOEMutation } from './aoeApiSlice';
-import { addDoc } from '../documentationSlice';
+import { addDoc, selectCurrentAoes } from '../documentationSlice';
 
 function AoeForm(prop) {
   const { hide } = prop;
+  const aoes = useSelector(selectCurrentAoes);
 
   const dispatch = useDispatch();
   const [name, setName] = useState('');
@@ -24,7 +25,8 @@ function AoeForm(prop) {
       setName('');
       setFixed(false);
       setRange(1);
-      dispatch(addDoc({ key: 'aoes', value: aoe }));
+      const prevAoes = aoes.aoes ? aoes.aoes : aoes.data;
+      dispatch(addDoc({ key: 'aoes', data: [...prevAoes, aoe] }));
       hide();
     } catch (err) {
       console.log(err);

@@ -106,6 +106,7 @@ function DocListPanel(prop) {
 
   return (
     <div>
+      {console.log(list)}
       {!list ? '' : Object.values(list)[0].map((data) => <DocInfoCard data={data} docDelete={docDelete} key={data._id} id={data._id} />)}
     </div>
   );
