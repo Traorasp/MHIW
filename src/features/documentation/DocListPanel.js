@@ -52,7 +52,7 @@ function DocListPanel(prop) {
 
   const selectList = () => {
     switch (listOf) {
-      case 'AOE':
+      case 'AOEs':
         setList(aoes);
         docDelete = deleteAOE;
         break;
@@ -102,12 +102,13 @@ function DocListPanel(prop) {
 
   useEffect(() => {
     selectList();
-  }, [listOf]);
+  }, [listOf, aoes, effects, enchants, items,
+    magics, materials, races, skills, spells,
+    talents, titles]);
 
   return (
     <div>
-      {console.log(list)}
-      {!list ? '' : Object.values(list)[0].map((data) => <DocInfoCard data={data} docDelete={docDelete} key={data._id} id={data._id} />)}
+      {!list ? '' : Object.values(list)[0].map((data) => <DocInfoCard data={data} listOf={listOf} list={list} docDelete={docDelete} key={data._id} id={data._id} />)}
     </div>
   );
 }

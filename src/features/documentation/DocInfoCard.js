@@ -1,12 +1,24 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-nested-ternary */
+import { useDispatch } from 'react-redux';
+import { addDoc } from './documentationSlice';
+
 /* eslint-disable react/prop-types */
 function DocInfoCard(prop) {
-  const { data, docDelete, id } = prop;
+  const {
+    data, docDelete, id, list, listOf,
+  } = prop;
+
+  const dispatch = useDispatch();
 
   const deleteCard = async () => {
     try {
       docDelete(id);
+      const prevList = [...list[Object.keys(list)[0]]];
+      const index = prevList.findIndex((doc) => doc._id === id);
+      prevList.splice(index, 1);
+      console.log(prevList);
+      dispatch(addDoc({ key: listOf.toLowerCase(), data: [...prevList] }));
     } catch (err) {
       console.log(err);
     }

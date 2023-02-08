@@ -6,7 +6,7 @@ import DocListPanel from './DocListPanel';
 import AoeForm from './aoes/AoeForm';
 
 function Documentation() {
-  const [selection, setSelection] = useState('AOE');
+  const [selection, setSelection] = useState('AOEs');
   const [showForm, setShowForm] = useState(false);
 
   const select = (e) => {
@@ -20,7 +20,7 @@ function Documentation() {
 
   const selectForm = () => {
     switch (selection) {
-      case 'AOE':
+      case 'AOEs':
         return <AoeForm hide={displayForm} />;
       case 'Effects':
         return <AoeForm />;

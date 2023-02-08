@@ -3,7 +3,7 @@ function DocNav(prop) {
 
   return (
     <nav className="border-black border-2 flex flex-row justify-around">
-      <button type="button" onClick={select}>AOE</button>
+      <button type="button" onClick={select}>AOEs</button>
       <button type="button" onClick={select}>Effects</button>
       <button type="button" onClick={select}>Enchants</button>
       <button type="button" onClick={select}>Items</button>
