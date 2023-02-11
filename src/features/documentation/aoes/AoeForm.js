@@ -19,7 +19,8 @@ function AoeForm(prop) {
   const changeFixed = () => setFixed(!fixed);
   const changeRange = (e) => setRange(e.target.value);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const { aoe } = await createAOE({ name, fixed, range }).unwrap();
       setName('');
@@ -35,7 +36,7 @@ function AoeForm(prop) {
 
   return (
     <div className="fixed bg-black/60 h-full w-full">
-      <form className="bg-white text-xl p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[200%]">
+      <form onSubmit={handleSubmit} className="bg-white text-xl p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[200%]">
         <button className="px-2" type="button" onClick={hide}>X</button>
         <div>
           <label htmlFor="name">
@@ -55,7 +56,7 @@ function AoeForm(prop) {
             <input type="number" id="range" min="1" value={range} onChange={changeRange} required />
           </label>
         </div>
-        <button onClick={handleSubmit} type="button">Create</button>
+        <button type="submit">Create</button>
       </form>
     </div>
   );

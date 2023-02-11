@@ -1,16 +1,17 @@
+/* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-nested-ternary */
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { addDoc } from './documentationSlice';
 import AoeUpdateForm from './aoes/AoeUpdateForm';
+import EffectUpdateForm from './effects/EffectUpdateForm';
 
 /* eslint-disable react/prop-types */
 function DocInfoCard(prop) {
   const {
     data, docUpdate, docDelete, id, list, listOf,
   } = prop;
-
   const [showForm, displayForm] = useState(false);
   const dispatch = useDispatch();
   const newDoc = {};
@@ -39,7 +40,7 @@ function DocInfoCard(prop) {
       case 'AOEs':
         return <AoeUpdateForm aoe={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Effects':
-        return <AoeUpdateForm />;
+        return <EffectUpdateForm oldEffect={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Enchants':
         return <AoeUpdateForm />;
       case 'Items':
@@ -73,7 +74,7 @@ function DocInfoCard(prop) {
     }
   };
 
-  const info = Object.entries(data).map(([key, value]) => ((key.substring(0, 1) === '_' || value === '') ? ''
+  const info = Object.entries(data).map(([key, value]) => ((key.substring(0, 1) === '_' || value === '' || value === 0) ? ''
     : (
       <div key={key}>
         { key !== 'name' ? `${key.substring(0, 1).toUpperCase() + key.substring(1)} : ` : ''}

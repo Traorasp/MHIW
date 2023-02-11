@@ -59,65 +59,118 @@ function DocListPanel(prop) {
 
   const { listOf } = prop;
   const [list, setList] = useState(aoes);
-  let docDelete = deleteAOE;
-  let docUpdate = updateAOE;
+
+  const selectDelete = (id) => {
+    switch (listOf) {
+      case 'AOEs':
+        deleteAOE(id);
+        break;
+      case 'Effects':
+        deleteEffect(id);
+        break;
+      case 'Enchants':
+        deleteEnchantment(id);
+        break;
+      case 'Items':
+        deleteItem(id);
+        break;
+      case 'Magics':
+        deleteMagic(id);
+        break;
+      case 'Materials':
+        deleteMaterial(id);
+        break;
+      case 'Races':
+        deleteRace(id);
+        break;
+      case 'Skills':
+        deleteSkill(id);
+        break;
+      case 'Spells':
+        deleteSpell(id);
+        break;
+      case 'Talents':
+        deleteTalent(id);
+        break;
+      case 'Titles':
+        deleteTitle(id);
+        break;
+      default:
+    }
+  };
+
+  const selectUpdater = (newDoc) => {
+    switch (listOf) {
+      case 'AOEs':
+        updateAOE(newDoc);
+        break;
+      case 'Effects':
+        updateEffect(newDoc);
+        break;
+      case 'Enchants':
+        return;
+      case 'Items':
+        updateItem(newDoc);
+        break;
+      case 'Magics':
+        updateMagic(newDoc);
+        break;
+      case 'Materials':
+        updateMaterial(newDoc);
+        break;
+      case 'Races':
+        updateRace(newDoc);
+        break;
+      case 'Skills':
+        updateSkill(newDoc);
+        break;
+      case 'Spells':
+        updateSpell(newDoc);
+        break;
+      case 'Talents':
+        updateTalent(newDoc);
+        break;
+      case 'Titles':
+        updateTitle(newDoc);
+        break;
+      default:
+    }
+  };
 
   const selectList = () => {
     switch (listOf) {
       case 'AOEs':
         setList(aoes);
-        docDelete = deleteAOE;
-        docUpdate = updateAOE;
         break;
       case 'Effects':
         setList(effects);
-        docDelete = deleteEffect;
-        docUpdate = updateEffect;
         break;
       case 'Enchants':
         setList(enchants);
-        docDelete = deleteEnchantment;
-        docUpdate = 0;
         break;
       case 'Items':
         setList(items);
-        docDelete = deleteItem;
-        docUpdate = updateItem;
         break;
       case 'Magics':
         setList(magics);
-        docDelete = deleteMagic;
-        docUpdate = updateMagic;
         break;
       case 'Materials':
         setList(materials);
-        docDelete = deleteMaterial;
-        docUpdate = updateMaterial;
         break;
       case 'Races':
         setList(races);
-        docDelete = deleteRace;
-        docUpdate = updateRace;
         break;
       case 'Skills':
         setList(skills);
-        docDelete = deleteSkill;
-        docUpdate = updateSkill;
         break;
       case 'Spells':
         setList(spells);
-        docDelete = deleteSpell;
-        docUpdate = updateSpell;
         break;
       case 'Talents':
         setList(talents);
-        docDelete = deleteTalent;
-        docUpdate = updateTalent;
         break;
       case 'Titles':
         setList(titles);
-        docDelete = deleteTitle;
-        docUpdate = updateTitle;
         break;
       default:
     }
@@ -131,7 +184,7 @@ function DocListPanel(prop) {
 
   return (
     <div>
-      {!list ? '' : Object.values(list)[0].map((data) => <DocInfoCard data={data} listOf={listOf} list={list} docUpdate={docUpdate} docDelete={docDelete} key={data._id} id={data._id} />)}
+      {!list ? '' : Object.values(list)[0].map((data) => <DocInfoCard data={data} listOf={listOf} list={list} docUpdate={selectUpdater} docDelete={selectDelete} key={data._id} id={data._id} />)}
     </div>
   );
 }

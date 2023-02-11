@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import DocNav from './DocNav';
 import DocListPanel from './DocListPanel';
 import AoeForm from './aoes/AoeForm';
+import EffectForm from './effects/EffectForm';
 
 function Documentation() {
   const [selection, setSelection] = useState('AOEs');
@@ -11,7 +12,6 @@ function Documentation() {
 
   const select = (e) => {
     setSelection(e.target.textContent);
-    setShowForm(selection);
   };
 
   const displayForm = () => {
@@ -23,7 +23,7 @@ function Documentation() {
       case 'AOEs':
         return <AoeForm hide={displayForm} />;
       case 'Effects':
-        return <AoeForm />;
+        return <EffectForm hide={displayForm} />;
       case 'Enchants':
         return <AoeForm />;
       case 'Items':

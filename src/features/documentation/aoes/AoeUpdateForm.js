@@ -15,7 +15,8 @@ function AoeUpdateForm(prop) {
   const changeFixed = () => setFixed(!fixed);
   const changeRange = (e) => setRange(e.target.value);
 
-  const handleUpdate = () => {
+  const handleUpdate = (e) => {
+    e.preventDefault();
     newDoc.id = aoe._id;
     newDoc.name = name;
     newDoc.fixed = fixed;
@@ -25,7 +26,7 @@ function AoeUpdateForm(prop) {
 
   return (
     <div className="fixed bg-black/60 h-full w-full top-[4rem] left-0">
-      <form className="bg-white text-xl p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[100%]">
+      <form onSubmit={handleUpdate} className="bg-white text-xl p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[100%]">
         <button className="px-2" type="button" onClick={hide}>X</button>
         <div>
           <label htmlFor="name">
@@ -45,7 +46,7 @@ function AoeUpdateForm(prop) {
             <input type="number" id="range" min="1" value={range} onChange={changeRange} required />
           </label>
         </div>
-        <button onClick={handleUpdate} type="button">Update</button>
+        <button type="submit">Update</button>
       </form>
     </div>
   );
