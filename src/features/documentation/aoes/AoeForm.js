@@ -16,7 +16,7 @@ function AoeForm(prop) {
   const [createAOE] = useCreateAOEMutation();
 
   const changeName = (e) => setName(e.target.value);
-  const changeFixed = (e) => setFixed(e.target.value);
+  const changeFixed = () => setFixed(!fixed);
   const changeRange = (e) => setRange(e.target.value);
 
   const handleSubmit = async () => {

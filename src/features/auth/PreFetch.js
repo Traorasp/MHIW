@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useGetEffectListMutation } from '../documentation/effects/effectApiSlice';
 import { useGetAOEListMutation } from '../documentation/aoes/aoeApiSlice';
-import { useGetEnchantmentListMutation } from '../documentation/enchntments/enchantmentApiSlice';
+import { useGetEnchantmentListMutation } from '../documentation/enchantments/enchantmentApiSlice';
 import { useGetItemListMutation } from '../documentation/items/itemApiSlice';
 import { useGetMagicListMutation } from '../documentation/magics/magicApiSlice';
 import { useGetMaterialListMutation } from '../documentation/materials/materialApiSlice';
