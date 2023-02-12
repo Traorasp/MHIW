@@ -102,7 +102,7 @@ function EffectUpdateForm(prop) {
             <input type="number" min={1} id="duration" value={duration} onChange={changeDuration} required />
           </label>
         </div>
-        <button type="submit">Create</button>
+        <button type="submit">Update</button>
       </form>
     </div>
   );

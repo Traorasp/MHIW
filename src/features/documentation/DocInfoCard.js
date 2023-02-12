@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { addDoc } from './documentationSlice';
 import AoeUpdateForm from './aoes/AoeUpdateForm';
 import EffectUpdateForm from './effects/EffectUpdateForm';
+import SkillUpdateForm from './skills/SkillUpdateForm';
 
 /* eslint-disable react/prop-types */
 function DocInfoCard(prop) {
@@ -42,7 +43,7 @@ function DocInfoCard(prop) {
       case 'Effects':
         return <EffectUpdateForm oldEffect={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Enchants':
-        return <AoeUpdateForm />;
+        return <SkillUpdateForm skill={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Items':
         return <AoeUpdateForm />;
       case 'Magics':
@@ -52,7 +53,7 @@ function DocInfoCard(prop) {
       case 'Spells':
         return <AoeUpdateForm />;
       case 'Skills':
-        return <AoeUpdateForm />;
+        return <SkillUpdateForm skill={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Talents':
         return <AoeUpdateForm />;
       case 'Titles':

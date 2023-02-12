@@ -5,6 +5,7 @@ import DocNav from './DocNav';
 import DocListPanel from './DocListPanel';
 import AoeForm from './aoes/AoeForm';
 import EffectForm from './effects/EffectForm';
+import SkillForm from './skills/SkillForm';
 
 function Documentation() {
   const [selection, setSelection] = useState('AOEs');
@@ -35,7 +36,7 @@ function Documentation() {
       case 'Spells':
         return <AoeForm />;
       case 'Skills':
-        return <AoeForm />;
+        return <SkillForm hide={displayForm} />;
       case 'Talents':
         return <AoeForm />;
       case 'Titles':
