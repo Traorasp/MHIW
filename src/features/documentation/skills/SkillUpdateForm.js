@@ -15,6 +15,18 @@ function SkillUpdateForm(prop) {
   const aoeList = useSelector(selectCurrentAoes);
   const effectsList = useSelector(selectCurrentEffects);
 
+  const getEffects = () => {
+    const list = effectsList[Object.keys(effectsList)[0]]
+      .filter((effect) => (!!skill.effects.find((id) => id === effect._id)));
+    return list.map((effect) => ({ id: effect._id, effectName: effect.name }));
+  };
+
+  const getAoes = () => {
+    const list = aoeList[Object.keys(aoeList)[0]]
+      .filter((aoe) => (!!skill.aoe.find((id) => id === aoe._id)));
+    return list.map((aoe) => ({ id: aoe._id, aoeName: aoe.name }));
+  };
+
   const [name, setName] = useState(skill.name);
   const [type, setType] = useState(skill.type);
   const [priority, setPriority] = useState(skill.priority);
@@ -23,8 +35,8 @@ function SkillUpdateForm(prop) {
   const [stat, setStat] = useState(skill.stat);
   const [roll, setRoll] = useState(skill.roll);
   const [range, setRange] = useState(skill.range);
-  const [aoes, setAoe] = useState([...skill.aoe]);
-  const [effects, setEffects] = useState([...skill.effects]);
+  const [aoes, setAoe] = useState([...getAoes(skill.aoe)]);
+  const [effects, setEffects] = useState([...getEffects(skill.effects)]);
   const [description, setDescription] = useState(skill.description);
 
   const changeName = (e) => setName(e.target.value);
@@ -56,6 +68,8 @@ function SkillUpdateForm(prop) {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    const newEffects = effects.map((effect) => effect.id);
+    const newAoes = aoes.map((aoe) => aoe.id);
 
     newDoc.id = skill._id;
     newDoc.name = name;
@@ -66,8 +80,8 @@ function SkillUpdateForm(prop) {
     newDoc.stat = stat;
     newDoc.roll = roll;
     newDoc.range = range;
-    newDoc.aoe = aoes;
-    newDoc.effects = effects;
+    newDoc.aoe = newAoes;
+    newDoc.effects = newEffects;
     newDoc.description = description;
 
     update();
@@ -210,7 +224,7 @@ function SkillUpdateForm(prop) {
         <div>
           <label htmlFor="description">
             Description:
-            <textarea onChange={changeDescription} name="description" id="description" required />
+            <textarea onChange={changeDescription} value={description} name="description" id="description" required />
           </label>
         </div>
         <button type="submit">update</button>

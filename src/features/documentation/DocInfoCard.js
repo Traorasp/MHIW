@@ -75,13 +75,17 @@ function DocInfoCard(prop) {
     }
   };
 
-  const info = Object.entries(data).map(([key, value]) => ((key.substring(0, 1) === '_' || value === '' || value === 0) ? ''
-    : (
+  const info = Object.entries(data).map(([key, value]) => {
+    if (value === '' || value === undefined || value === 0 || key.substring(0, 1) === '_' || (Array.isArray(value) && value.length === 0)) {
+      return '';
+    }
+    return (
       <div key={key}>
         { key !== 'name' ? `${key.substring(0, 1).toUpperCase() + key.substring(1)} : ` : ''}
         {typeof value === 'boolean' ? value ? 'True' : 'False' : value}
       </div>
-    )));
+    );
+  });
 
   return (
     <div className="border-2 border-black pl-2">
