@@ -7,6 +7,7 @@ import { addDoc } from './documentationSlice';
 import AoeUpdateForm from './aoes/AoeUpdateForm';
 import EffectUpdateForm from './effects/EffectUpdateForm';
 import SkillUpdateForm from './skills/SkillUpdateForm';
+import SpellUpdateForm from './spells/SpellUpdateForm';
 
 /* eslint-disable react/prop-types */
 function DocInfoCard(prop) {
@@ -51,7 +52,7 @@ function DocInfoCard(prop) {
       case 'Races':
         return <AoeUpdateForm />;
       case 'Spells':
-        return <AoeUpdateForm />;
+        return <SpellUpdateForm spell={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Skills':
         return <SkillUpdateForm skill={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Talents':
