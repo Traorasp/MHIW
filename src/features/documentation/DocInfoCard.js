@@ -9,6 +9,7 @@ import EffectUpdateForm from './effects/EffectUpdateForm';
 import SkillUpdateForm from './skills/SkillUpdateForm';
 import SpellUpdateForm from './spells/SpellUpdateForm';
 import TalentUpdateForm from './talents/TalentUpdateForm';
+import TitleUpdateForm from './titles/TitleUpdateForm';
 
 /* eslint-disable react/prop-types */
 function DocInfoCard(prop) {
@@ -62,7 +63,7 @@ function DocInfoCard(prop) {
       case 'Talents':
         return <TalentUpdateForm talent={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Titles':
-        return <AoeUpdateForm />;
+        return <TitleUpdateForm title={data} newDoc={newDoc} update={update} hide={updateForm} />;
       default:
         return '';
     }
@@ -81,7 +82,7 @@ function DocInfoCard(prop) {
   };
 
   const info = Object.entries(data).map(([key, value]) => {
-    if (value === '' || value === undefined || value === 0 || key.substring(0, 1) === '_' || (Array.isArray(value) && (value.length === 0 || value[0] === ''))) {
+    if (value === '' || value === undefined || value === 0 || key.substring(0, 1) === '_' || key === 'effects' || key === 'aoe' || key === 'skills' || (Array.isArray(value) && (value.length === 0 || value[0] === ''))) {
       return '';
     }
     return (

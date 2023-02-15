@@ -8,6 +8,7 @@ import EffectForm from './effects/EffectForm';
 import SkillForm from './skills/SkillForm';
 import SpellForm from './spells/SpellForm';
 import TalentForm from './talents/TalentForm';
+import TitleForm from './titles/TitleForm';
 
 function Documentation() {
   const [selection, setSelection] = useState('AOEs');
@@ -42,7 +43,7 @@ function Documentation() {
       case 'Talents':
         return <TalentForm hde={displayForm} />;
       case 'Titles':
-        return <AoeForm />;
+        return <TitleForm hide={displayForm} />;
       default:
         return '';
     }
