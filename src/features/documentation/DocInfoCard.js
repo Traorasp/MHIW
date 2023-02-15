@@ -8,6 +8,7 @@ import AoeUpdateForm from './aoes/AoeUpdateForm';
 import EffectUpdateForm from './effects/EffectUpdateForm';
 import SkillUpdateForm from './skills/SkillUpdateForm';
 import SpellUpdateForm from './spells/SpellUpdateForm';
+import TalentUpdateForm from './talents/TalentUpdateForm';
 
 /* eslint-disable react/prop-types */
 function DocInfoCard(prop) {
@@ -29,6 +30,9 @@ function DocInfoCard(prop) {
       const index = prevList.findIndex((doc) => doc._id === id);
       newDoc._id = newDoc.id;
       delete newDoc.id;
+      if (newDoc.measurements) {
+        newDoc.measurements = newDoc.measurements.join(', ');
+      }
       prevList[index] = newDoc;
       dispatch(addDoc({ key: listOf.toLowerCase(), data: [...prevList] }));
       updateForm();
@@ -56,7 +60,7 @@ function DocInfoCard(prop) {
       case 'Skills':
         return <SkillUpdateForm skill={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Talents':
-        return <AoeUpdateForm />;
+        return <TalentUpdateForm talent={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Titles':
         return <AoeUpdateForm />;
       default:
@@ -77,7 +81,7 @@ function DocInfoCard(prop) {
   };
 
   const info = Object.entries(data).map(([key, value]) => {
-    if (value === '' || value === undefined || value === 0 || key.substring(0, 1) === '_' || (Array.isArray(value) && value.length === 0)) {
+    if (value === '' || value === undefined || value === 0 || key.substring(0, 1) === '_' || (Array.isArray(value) && (value.length === 0 || value[0] === ''))) {
       return '';
     }
     return (
