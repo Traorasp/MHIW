@@ -1,8 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-unused-vars */
 import { Outlet } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetEffectListMutation } from '../documentation/effects/effectApiSlice';
 import { useGetAOEListMutation } from '../documentation/aoes/aoeApiSlice';
 import { useGetEnchantmentListMutation } from '../documentation/enchantments/enchantmentApiSlice';
@@ -15,8 +16,11 @@ import { useGetSpellListMutation } from '../documentation/spells/spellApiSlice';
 import { useGetTalentListMutation } from '../documentation/talents/talentApiSlice';
 import { useGetTitleListMutation } from '../documentation/titles/titleApiSlice';
 import { setDoc } from '../documentation/documentationSlice';
+import { useGetImage } from '../image/getImage';
+import { selectCurrentToken } from './authSlice';
 
 function PreFetch() {
+  const token = useSelector(selectCurrentToken);
   const dispatch = useDispatch();
   const [getAOEs] = useGetAOEListMutation();
   const [getEffects] = useGetEffectListMutation();
@@ -30,6 +34,20 @@ function PreFetch() {
   const [getTalents] = useGetTalentListMutation();
   const [getTitles] = useGetTitleListMutation();
 
+  const getMaterialsList = async () => {
+    let list = await getMaterials().unwrap();
+    let images = [];
+    const getImageUrl = async (id) => {
+      if (id === null) return '';
+      return useGetImage(id, token)
+        .then((res) => URL.createObjectURL(res.data));
+    };
+    images = list.materials.map((material) => getImageUrl(material.image));
+    images = await Promise.all(images);
+    list = list.materials.map((material, i) => ({ material, url: images[i] }));
+    return list;
+  };
+
   const getDocumentation = async () => {
     const doc = await Promise.all([
       getAOEs().unwrap(),
@@ -37,7 +55,7 @@ function PreFetch() {
       getEnchantments().unwrap(),
       getItems().unwrap(),
       getMagics().unwrap(),
-      getMaterials().unwrap(),
+      getMaterialsList(),
       getRaces().unwrap(),
       getSkills().unwrap(),
       getSpells().unwrap(),

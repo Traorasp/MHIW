@@ -8,7 +8,6 @@ import {
   selectCurrentTalents, selectCurrentTitles,
 } from './documentationSlice';
 import DocInfoCard from './DocInfoCard';
-
 import { useDeleteAOEMutation, useUpdateAOEMutation } from './aoes/aoeApiSlice';
 import { useDeleteEffectMutation, useUpdateEffectMutation } from './effects/effectApiSlice';
 import { useDeleteEnchantmentMutation } from './enchantments/enchantmentApiSlice';
@@ -182,9 +181,42 @@ function DocListPanel(prop) {
     magics, materials, races, skills, spells,
     talents, titles]);
 
+  const listPanel = () => {
+    if (!list) {
+      return '';
+    }
+    if (Array.isArray(list)) {
+      return list.map((data) => (
+        <DocInfoCard
+          data={data.material}
+          listOf={listOf}
+          list={list}
+          docUpdate={selectUpdater}
+          docDelete={selectDelete}
+          key={data.material._id}
+          id={data.material._id}
+          url={data.url}
+        />
+      ));
+    }
+
+    return Object.values(list)[0].map((data) => (
+      <DocInfoCard
+        data={data}
+        listOf={listOf}
+        list={list}
+        docUpdate={selectUpdater}
+        docDelete={selectDelete}
+        key={data.material ? data.material._id : data._id}
+        id={data.material ? data.material._id : data._id}
+        url={data.url}
+      />
+    ));
+  };
+
   return (
     <div>
-      {!list ? '' : Object.values(list)[0].map((data) => <DocInfoCard data={data} listOf={listOf} list={list} docUpdate={selectUpdater} docDelete={selectDelete} key={data._id} id={data._id} />)}
+      {listPanel()}
     </div>
   );
 }

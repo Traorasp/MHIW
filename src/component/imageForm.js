@@ -31,7 +31,7 @@ function ImageForm(prop) {
 
   const content = (isLoading || isLoadingUpdate) ? <p>Loading...</p> : (
     <form onSubmit={submitImage}>
-      <button type="button" onClick={hideForm}>X</button>
+      {hideForm !== 'None' ? <button type="button" onClick={hideForm}>X</button> : ''}
       <label htmlFor="image">
         <input
           type="file"
