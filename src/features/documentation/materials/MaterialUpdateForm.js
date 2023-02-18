@@ -47,7 +47,7 @@ function MaterialUpdateForm(prop) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newEffects = effects.map((effect) => effect.id);
+    const newEffects = effects.map((effect) => ({ _id: effect.id }));
 
     newDoc.id = oldMaterial._id;
     newDoc.name = name;
