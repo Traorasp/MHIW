@@ -120,6 +120,9 @@ function SkillUpdateForm(prop) {
               <option value="Utility">Utility</option>
               <option value="Bonus">Bonus</option>
               <option value="Racial">Racial</option>
+              <option value="Will">Will</option>
+              <option value="Charisma">Charisma</option>
+              <option value="Intimidation">Intimidation</option>
             </select>
           </label>
         </div>

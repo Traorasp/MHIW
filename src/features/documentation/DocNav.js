@@ -5,7 +5,7 @@ function DocNav(prop) {
     <nav className="border-black border-2 flex flex-row justify-around">
       <button type="button" onClick={select}>AOEs</button>
       <button type="button" onClick={select}>Effects</button>
-      <button type="button" onClick={select}>Enchants</button>
+      <button type="button" onClick={select}>Enchantments</button>
       <button type="button" onClick={select}>Items</button>
       <button type="button" onClick={select}>Magics</button>
       <button type="button" onClick={select}>Materials</button>

@@ -63,8 +63,6 @@ function DocInfoCard(prop) {
         return <AoeUpdateForm aoe={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Effects':
         return <EffectUpdateForm oldEffect={data} newDoc={newDoc} update={update} hide={updateForm} />;
-      case 'Enchants':
-        return <SkillUpdateForm skill={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Items':
         return <AoeUpdateForm />;
       case 'Magics':
@@ -89,7 +87,7 @@ function DocInfoCard(prop) {
   const deleteCard = async () => {
     try {
       docDelete(id);
-      if (url !== '') {
+      if (url !== '' && url) {
         if (data.material) {
           deleteImage(data.material.image);
         } else {
@@ -129,7 +127,7 @@ function DocInfoCard(prop) {
     <div className="border-2 border-black pl-2">
       {info}
       <button className="hover:bg-red-600 hover:border-black hover:border-2" onClick={deleteCard} type="button">Delete</button>
-      <button className="hover:bg-yellow-400 hover:border-black hover:border-2" onClick={updateForm} type="button">Edit</button>
+      {listOf === 'Enchantments' ? '' : <button className="hover:bg-yellow-400 hover:border-black hover:border-2" onClick={updateForm} type="button">Edit</button>}
       {showForm ? selectForm() : ''}
     </div>
   );

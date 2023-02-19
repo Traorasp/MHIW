@@ -11,6 +11,7 @@ import TalentForm from './talents/TalentForm';
 import TitleForm from './titles/TitleForm';
 import MagicForm from './magics/MagicForm';
 import MaterialForm from './materials/MaterialForm';
+import EnchantmentForm from './enchantments/EnchantmentForm';
 
 function Documentation() {
   const [selection, setSelection] = useState('AOEs');
@@ -30,8 +31,8 @@ function Documentation() {
         return <AoeForm hide={displayForm} />;
       case 'Effects':
         return <EffectForm hide={displayForm} />;
-      case 'Enchants':
-        return <AoeForm />;
+      case 'Enchantments':
+        return <EnchantmentForm hide={displayForm} />;
       case 'Items':
         return <AoeForm />;
       case 'Magics':

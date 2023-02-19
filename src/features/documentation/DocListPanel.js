@@ -67,7 +67,7 @@ function DocListPanel(prop) {
       case 'Effects':
         deleteEffect(id);
         break;
-      case 'Enchants':
+      case 'Enchantments':
         deleteEnchantment(id);
         break;
       case 'Items':
@@ -106,7 +106,7 @@ function DocListPanel(prop) {
       case 'Effects':
         updateEffect(newDoc);
         break;
-      case 'Enchants':
+      case 'Enchantments':
         return;
       case 'Items':
         updateItem(newDoc);
@@ -144,7 +144,7 @@ function DocListPanel(prop) {
       case 'Effects':
         setList(effects);
         break;
-      case 'Enchants':
+      case 'Enchantments':
         setList(enchants);
         break;
       case 'Items':
