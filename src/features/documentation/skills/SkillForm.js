@@ -18,11 +18,11 @@ function SkillForm(prop) {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [type, setType] = useState('Unique');
-  const [priority, setPriority] = useState('Action');
+  const [priority, setPriority] = useState('Passive');
   const [cooldown, setCooldown] = useState(0);
   const [duration, setDuration] = useState(0);
   const [stat, setStat] = useState('');
-  const [roll, setRoll] = useState('');
+  const [roll, setRoll] = useState(0);
   const [range, setRange] = useState(0);
   const [aoes, setAoe] = useState([]);
   const [effects, setEffects] = useState([]);
@@ -139,6 +139,7 @@ function SkillForm(prop) {
           <label htmlFor="priority">
             Priority:
             <select id="type" name="type" onChange={changePriority} required>
+              <option value="Passive">Passive</option>
               <option value="Action">Action</option>
               <option value="Bonus Action">Bonus Action</option>
               <option value="Reaction">Reaction</option>
@@ -168,7 +169,7 @@ function SkillForm(prop) {
         <div>
           <label htmlFor="roll">
             Roll:
-            <input type="text" id="roll" value={roll} onChange={changeRoll} />
+            <input type="number" min="0" id="roll" value={roll} onChange={changeRoll} />
           </label>
         </div>
         <div>

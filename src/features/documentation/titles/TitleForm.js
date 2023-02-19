@@ -106,11 +106,7 @@ function TitleForm(prop) {
                   {' '}
                   :
                   {' '}
-                  {skill.fixed ? 'T' : 'F'}
-                  {' '}
-                  :
-                  {' '}
-                  {skill.range}
+                  {skill.type}
                 </option>
               ))}
             </select>

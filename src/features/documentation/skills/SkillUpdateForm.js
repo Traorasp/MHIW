@@ -130,6 +130,7 @@ function SkillUpdateForm(prop) {
           <label htmlFor="priority">
             Priority:
             <select id="type" name="type" onChange={changePriority} required>
+              <option value="Passive">Passive</option>
               <option value="Action">Action</option>
               <option value="Bonus Action">Bonus Action</option>
               <option value="Reaction">Reaction</option>
@@ -159,7 +160,7 @@ function SkillUpdateForm(prop) {
         <div>
           <label htmlFor="roll">
             Roll:
-            <input type="text" id="roll" value={roll} onChange={changeRoll} />
+            <input type="number" min="0" id="roll" value={roll} onChange={changeRoll} />
           </label>
         </div>
         <div>

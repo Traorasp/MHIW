@@ -12,6 +12,7 @@ import TitleForm from './titles/TitleForm';
 import MagicForm from './magics/MagicForm';
 import MaterialForm from './materials/MaterialForm';
 import EnchantmentForm from './enchantments/EnchantmentForm';
+import RaceForm from './races/RaceForm';
 
 function Documentation() {
   const [selection, setSelection] = useState('AOEs');
@@ -40,7 +41,7 @@ function Documentation() {
       case 'Materials':
         return <MaterialForm hide={displayForm} />;
       case 'Races':
-        return <AoeForm />;
+        return <RaceForm hide={displayForm} />;
       case 'Spells':
         return <SpellForm hide={displayForm} />;
       case 'Skills':

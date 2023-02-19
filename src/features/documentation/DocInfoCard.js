@@ -13,6 +13,7 @@ import TalentUpdateForm from './talents/TalentUpdateForm';
 import TitleUpdateForm from './titles/TitleUpdateForm';
 import MagicUpdateForm from './magics/MagicUpdateForm';
 import MaterialUpdateForm from './materials/MaterialUpdateForm';
+import RaceUpdateForm from './races/RaceUpdateForm';
 
 /* eslint-disable react/prop-types */
 function DocInfoCard(prop) {
@@ -70,7 +71,7 @@ function DocInfoCard(prop) {
       case 'Materials':
         return <MaterialUpdateForm material={data} imageUrl={url} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Races':
-        return <AoeUpdateForm />;
+        return <RaceUpdateForm race={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Spells':
         return <SpellUpdateForm spell={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Skills':
@@ -108,12 +109,34 @@ function DocInfoCard(prop) {
     return arrayList;
   };
 
+  const ignoredKeys = ['effects', 'aoe', 'spells', 'skills', 'mainSkills', 'subSkills'];
+
   const info = dataList().map(([key, value]) => {
-    if (value === '' || value === null || value === undefined || value === 0 || key.substring(0, 1) === '_' || key === 'effects' || key === 'aoe' || key === 'spells' || key === 'skills' || (Array.isArray(value) && (value.length === 0 || value[0] === ''))) {
+    if (value === '' || value === null || value === undefined || value === 0 || key.substring(0, 1) === '_' || ignoredKeys.find((ignore) => ignore === key) || (Array.isArray(value) && (value.length === 0 || value[0] === ''))) {
       return '';
+    }
+    if (key === 'baseStats') {
+      return (
+        <div key={key}>
+          {Object.entries(value).map(([statKey, statValue]) => (
+            <div key={statKey}>
+              {`${statKey.substring(0, 1).toUpperCase() + statKey.substring(1)} : `}
+              {statValue}
+            </div>
+          ))}
+        </div>
+      );
     }
     if (key === 'image') {
       return <img key={url} className="object-scale-down h-36 w-36" src={url} alt="Material" />;
+    }
+    if (key === 'weakness') {
+      return (
+        <div key={key}>
+          {`${key.substring(0, 1).toUpperCase() + key.substring(1)} : `}
+          {value.join(', ')}
+        </div>
+      );
     }
     return (
       <div key={key}>
