@@ -181,6 +181,16 @@ function DocListPanel(prop) {
     magics, materials, races, skills, spells,
     talents, titles]);
 
+  const selectData = (data) => {
+    if (data.material) {
+      return data.material._id;
+    }
+    if (data.item) {
+      return data.item._id;
+    }
+    return data._id;
+  };
+
   const listPanel = () => {
     if (!list) {
       return '';
@@ -188,18 +198,17 @@ function DocListPanel(prop) {
     if (Array.isArray(list)) {
       return list.map((data) => (
         <DocInfoCard
-          data={data.material}
+          data={data.material ? data.material : data.item}
           listOf={listOf}
           list={list}
           docUpdate={selectUpdater}
           docDelete={selectDelete}
-          key={data.material._id}
-          id={data.material._id}
+          key={selectData(data)}
+          id={selectData(data)}
           url={data.url}
         />
       ));
     }
-
     return Object.values(list)[0].map((data) => (
       <DocInfoCard
         data={data}
@@ -207,8 +216,8 @@ function DocListPanel(prop) {
         list={list}
         docUpdate={selectUpdater}
         docDelete={selectDelete}
-        key={data.material ? data.material._id : data._id}
-        id={data.material ? data.material._id : data._id}
+        key={selectData(data)}
+        id={selectData(data)}
         url={data.url}
       />
     ));

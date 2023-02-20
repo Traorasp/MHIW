@@ -2,9 +2,10 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-nested-ternary */
 import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { addDoc } from './documentationSlice';
 import { useDeleteImageMutation } from '../image/imageApiSlice';
+import { useGetEnchantmentMutation } from './enchantments/enchantmentApiSlice';
 import AoeUpdateForm from './aoes/AoeUpdateForm';
 import EffectUpdateForm from './effects/EffectUpdateForm';
 import SkillUpdateForm from './skills/SkillUpdateForm';
@@ -14,6 +15,7 @@ import TitleUpdateForm from './titles/TitleUpdateForm';
 import MagicUpdateForm from './magics/MagicUpdateForm';
 import MaterialUpdateForm from './materials/MaterialUpdateForm';
 import RaceUpdateForm from './races/RaceUpdateForm';
+import ItemUpdateForm from './items/ItemUpdateForm';
 
 /* eslint-disable react/prop-types */
 function DocInfoCard(prop) {
@@ -21,9 +23,11 @@ function DocInfoCard(prop) {
     data, docUpdate, docDelete, id, list, listOf, url,
   } = prop;
   const [showForm, displayForm] = useState(false);
+  const [newData, setNewData] = useState('');
   const [deleteImage] = useDeleteImageMutation();
   const dispatch = useDispatch();
   const newDoc = {};
+  const [enchantDetails] = useGetEnchantmentMutation();
 
   const updateForm = () => {
     displayForm(!showForm);
@@ -33,7 +37,14 @@ function DocInfoCard(prop) {
     try {
       docUpdate(newDoc);
       const prevList = Array.isArray(list) ? [...list] : [...list[Object.keys(list)[0]]];
-      const index = Array.isArray(list) || prevList[0].material ? prevList.findIndex((doc) => doc.material._id === id) : prevList.findIndex((doc) => doc._id === id);
+      let index;
+      if (listOf === 'Items') {
+        index = prevList.findIndex((doc) => doc.item._id === id);
+      } else if (listOf === 'Materials') {
+        index = prevList.findIndex((doc) => doc.material._id === id);
+      } else {
+        index = prevList.findIndex((doc) => doc._id === id);
+      }
       newDoc._id = newDoc.id;
       delete newDoc.id;
       if (newDoc.measurements) {
@@ -51,6 +62,7 @@ function DocInfoCard(prop) {
       } else {
         prevList[index] = newDoc;
       }
+
       dispatch(addDoc({ key: listOf.toLowerCase(), data: [...prevList] }));
       updateForm();
     } catch (err) {
@@ -65,7 +77,7 @@ function DocInfoCard(prop) {
       case 'Effects':
         return <EffectUpdateForm oldEffect={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Items':
-        return <AoeUpdateForm />;
+        return <ItemUpdateForm item={data} imageUrl={url} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Magics':
         return <MagicUpdateForm magic={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Materials':
@@ -88,7 +100,7 @@ function DocInfoCard(prop) {
   const deleteCard = async () => {
     try {
       docDelete(id);
-      if (url !== '' && url) {
+      if (url !== '' && url !== undefined && url !== null && url) {
         if (data.material) {
           deleteImage(data.material.image);
         } else {
@@ -96,7 +108,14 @@ function DocInfoCard(prop) {
         }
       }
       const prevList = Array.isArray(list) ? [...list] : [...list[Object.keys(list)[0]]];
-      const index = Array.isArray(list) ? prevList.findIndex((doc) => doc.material._id === id) : prevList.findIndex((doc) => doc._id === id);
+      let index;
+      if (listOf === 'Items') {
+        index = prevList.findIndex((doc) => doc.item._id === id);
+      } else if (listOf === 'Materials') {
+        index = prevList.findIndex((doc) => doc.material._id === id);
+      } else {
+        index = prevList.findIndex((doc) => doc._id === id);
+      }
       prevList.splice(index, 1);
       dispatch(addDoc({ key: listOf.toLowerCase(), data: [...prevList] }));
     } catch (err) {
@@ -105,11 +124,15 @@ function DocInfoCard(prop) {
   };
 
   const dataList = () => {
-    const arrayList = data.material ? Object.entries(data.material) : Object.entries(data);
-    return arrayList;
+    if (data.item) {
+      return Object.entries(data.item);
+    }
+    if (data.material && !data.baseStats) {
+      return Object.entries(data.material);
+    }
+    return Object.entries(data);
   };
-
-  const ignoredKeys = ['effects', 'aoe', 'spells', 'skills', 'mainSkills', 'subSkills'];
+  const ignoredKeys = ['effects', 'aoe', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStat'];
 
   const info = dataList().map(([key, value]) => {
     if (value === '' || value === null || value === undefined || value === 0 || key.substring(0, 1) === '_' || ignoredKeys.find((ignore) => ignore === key) || (Array.isArray(value) && (value.length === 0 || value[0] === ''))) {
@@ -146,9 +169,51 @@ function DocInfoCard(prop) {
     );
   });
 
+  const populateEnchants = async () => {
+    try {
+      const enchants = await enchantDetails(data._id).unwrap();
+      setNewData(enchants.enchantment);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const enchantmentInfo = () => Object.entries(newData).map(([key, value]) => {
+    if (key === 'amount') {
+      return (
+        <div key={key}>
+          Amount:
+          {' '}
+          {value}
+        </div>
+      );
+    }
+    if (typeof value === 'object') {
+      const objectInfo = Object.entries(value).map(([objKey, objValue]) => {
+        if (objValue === '' || objValue === null || objValue === undefined || objValue === 0 || objKey.substring(0, 1) === '_' || ignoredKeys.find((ignore) => ignore === objKey) || (Array.isArray(objValue) && (objValue.length === 0 || objValue[0] === ''))) {
+          return '';
+        }
+        return (
+          <div key={objKey}>
+            { objKey !== 'name' ? `${objKey.substring(0, 1).toUpperCase() + objKey.substring(1)} : ` : ''}
+            {objValue}
+          </div>
+        );
+      });
+      return <div key={key}>{objectInfo}</div>;
+    }
+    return '';
+  });
+
+  useEffect(() => {
+    if (listOf === 'Enchantments') {
+      populateEnchants();
+    }
+  }, []);
+
   return (
     <div className="border-2 border-black pl-2">
-      {info}
+      {newData !== '' ? enchantmentInfo() : info}
       <button className="hover:bg-red-600 hover:border-black hover:border-2" onClick={deleteCard} type="button">Delete</button>
       {listOf === 'Enchantments' ? '' : <button className="hover:bg-yellow-400 hover:border-black hover:border-2" onClick={updateForm} type="button">Edit</button>}
       {showForm ? selectForm() : ''}

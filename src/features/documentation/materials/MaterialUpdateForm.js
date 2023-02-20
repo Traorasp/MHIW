@@ -21,7 +21,7 @@ function MaterialUpdateForm(prop) {
 
   const getEffects = () => {
     const list = effectsList[Object.keys(effectsList)[0]]
-      .filter((effect) => (!!oldMaterial.effects.find((id) => id._id === effect._id)));
+      .filter((effect) => (!!oldMaterial.effects.find((id) => id === effect._id)));
     return list.map((effect) => ({ id: effect._id, effectName: effect.name }));
   };
 

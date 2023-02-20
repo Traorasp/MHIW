@@ -38,7 +38,7 @@ function PreFetch() {
     let list = await getMaterials().unwrap();
     let images = [];
     const getImageUrl = async (id) => {
-      if (id === null) return '';
+      if (id === null || id === undefined) return '';
       return useGetImage(id, token)
         .then((res) => URL.createObjectURL(res.data));
     };
@@ -48,12 +48,26 @@ function PreFetch() {
     return list;
   };
 
+  const getItemsList = async () => {
+    let list = await getItems().unwrap();
+    let images = [];
+    const getImageUrl = async (id) => {
+      if (id === null || id === undefined) return '';
+      return useGetImage(id, token)
+        .then((res) => URL.createObjectURL(res.data));
+    };
+    images = list.items.map((item) => getImageUrl(item.image));
+    images = await Promise.all(images);
+    list = list.items.map((item, i) => ({ item, url: images[i] }));
+    return list;
+  };
+
   const getDocumentation = async () => {
     const doc = await Promise.all([
       getAOEs().unwrap(),
       getEffects().unwrap(),
       getEnchantments().unwrap(),
-      getItems().unwrap(),
+      getItemsList(),
       getMagics().unwrap(),
       getMaterialsList(),
       getRaces().unwrap(),

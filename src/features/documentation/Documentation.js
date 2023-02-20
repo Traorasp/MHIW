@@ -13,6 +13,7 @@ import MagicForm from './magics/MagicForm';
 import MaterialForm from './materials/MaterialForm';
 import EnchantmentForm from './enchantments/EnchantmentForm';
 import RaceForm from './races/RaceForm';
+import ItemForm from './items/ItemForm';
 
 function Documentation() {
   const [selection, setSelection] = useState('AOEs');
@@ -35,7 +36,7 @@ function Documentation() {
       case 'Enchantments':
         return <EnchantmentForm hide={displayForm} />;
       case 'Items':
-        return <AoeForm />;
+        return <ItemForm hide={displayForm} />;
       case 'Magics':
         return <MagicForm hide={displayForm} />;
       case 'Materials':
