@@ -58,6 +58,9 @@ function DocListPanel(prop) {
 
   const { listOf } = prop;
   const [list, setList] = useState(aoes);
+  const [newList, setNewList] = useState(null);
+  const [search, setSearch] = useState('');
+  const [searchType, setSearchType] = useState('');
 
   const selectDelete = (id) => {
     switch (listOf) {
@@ -177,6 +180,7 @@ function DocListPanel(prop) {
 
   useEffect(() => {
     selectList();
+    setNewList(null);
   }, [listOf, aoes, effects, enchants, items,
     magics, materials, races, skills, spells,
     talents, titles]);
@@ -191,12 +195,29 @@ function DocListPanel(prop) {
     return data._id;
   };
 
-  const listPanel = () => {
-    if (!list) {
+  const listPanel = (currList) => {
+    if (!currList) {
       return '';
     }
-    if (Array.isArray(list)) {
-      return list.map((data) => (
+    if (currList.length === 0) {
+      return <div>No search results</div>;
+    }
+    if (Array.isArray(currList)) {
+      if (listOf !== 'Items' && listOf !== 'Materials') {
+        return currList.map((data) => (
+          <DocInfoCard
+            data={data}
+            listOf={listOf}
+            list={list}
+            docUpdate={selectUpdater}
+            docDelete={selectDelete}
+            key={selectData(data)}
+            id={selectData(data)}
+            url={data.url}
+          />
+        ));
+      }
+      return currList.map((data) => (
         <DocInfoCard
           data={data.material ? data.material : data.item}
           listOf={listOf}
@@ -209,7 +230,7 @@ function DocListPanel(prop) {
         />
       ));
     }
-    return Object.values(list)[0].map((data) => (
+    return Object.values(currList)[0].map((data) => (
       <DocInfoCard
         data={data}
         listOf={listOf}
@@ -223,9 +244,79 @@ function DocListPanel(prop) {
     ));
   };
 
+  const changeSearch = (e) => {
+    setSearch(e.target.value);
+    if (!list) {
+      return;
+    }
+    if (e.target.value === '') {
+      setNewList(null);
+      return;
+    }
+    let allItems;
+    let filteredList;
+    const expression = new RegExp(`${e.target.value.toLowerCase()}`);
+
+    if (Array.isArray(list) && listOf !== 'Races') {
+      if (listOf === 'Materials') {
+        filteredList = list.filter((item) => (`${item.material[searchType]}`.toLowerCase().search(expression) !== -1));
+      } else {
+        filteredList = list.filter((item) => (`${item.item[searchType]}`.toLowerCase().search(expression) !== -1));
+      }
+    } else {
+      allItems = list[Object.keys(list)[0]];
+      filteredList = allItems.filter((item) => (`${item[searchType]}`.toLowerCase().search(expression) !== -1));
+    }
+    setNewList(filteredList);
+  };
+
+  const changeSearchType = (e) => setSearchType(e.target.value);
+
+  const ignoredKeys = ['_id', '__v', 'baseStats', 'effects', 'aoe', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStat'];
+
+  const [searchOptionList, setSearchOptionList] = useState([]);
+
+  const getSearchOptions = () => {
+    if (!list) {
+      return;
+    }
+    let searchTerms;
+    if (Array.isArray(list) && listOf !== 'Races') {
+      if (listOf === 'Materials' && list[0].material) {
+        searchTerms = Object.keys(list[0].material);
+      } else if (listOf === 'Items' && list[0].item) {
+        searchTerms = Object.keys(list[0].item);
+      }
+      return;
+    }
+    searchTerms = Object.keys(Object.values(list)[0][0]);
+
+    searchTerms = searchTerms.filter((key) => !ignoredKeys.find((ignore) => ignore === key));
+    setSearchOptionList(searchTerms);
+    setSearchType(searchTerms[0]);
+    setSearch('');
+  };
+
+  useEffect(() => {
+    getSearchOptions();
+  }, [list]);
+
   return (
     <div>
-      {listPanel()}
+      <label htmlFor="searchBar">
+        Search
+        <input id="searchBar" type="text" name="search" onChange={changeSearch} value={search} />
+        <select id="searchType" onChange={changeSearchType} value={searchType}>
+          {
+            searchOptionList.map((option) => (
+              <option key={option} value={option}>
+                {`${option.substring(0, 1).toUpperCase() + option.substring(1)}`}
+              </option>
+            ))
+          }
+        </select>
+      </label>
+      {listPanel(newList || list)}
     </div>
   );
 }
