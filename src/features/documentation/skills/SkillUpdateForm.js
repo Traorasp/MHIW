@@ -35,7 +35,7 @@ function SkillUpdateForm(prop) {
   const [stat, setStat] = useState(skill.stat);
   const [roll, setRoll] = useState(skill.roll);
   const [range, setRange] = useState(skill.range);
-  const [aoes, setAoe] = useState([...getAoes(skill.aoe)]);
+  const [aoes, setAoe] = useState([...getAoes(skill.aoes)]);
   const [effects, setEffects] = useState([...getEffects(skill.effects)]);
   const [description, setDescription] = useState(skill.description);
 
@@ -47,7 +47,7 @@ function SkillUpdateForm(prop) {
   const changeStat = (e) => setStat(e.target.value);
   const changeRoll = (e) => setRoll(e.target.value);
   const changeRange = (e) => setRange(e.target.value);
-  const changeAoe = (e) => {
+  const changeAoes = (e) => {
     if (aoes.length > 0 && aoes.find((aoe) => e.target.value === aoe.id)) {
       return;
     }
@@ -170,9 +170,9 @@ function SkillUpdateForm(prop) {
           </label>
         </div>
         <div>
-          <label htmlFor="aoe">
-            Aoe:
-            <select id="aoe" name="aoe" onClick={changeAoe}>
+          <label htmlFor="aoes">
+            Aoes:
+            <select id="aoes" name="aoes" onClick={changeAoes}>
               {aoeList[Object.keys(aoeList)[0]].map((aoe) => (
                 <option key={aoe._id} value={aoe._id}>
                   {aoe.name}

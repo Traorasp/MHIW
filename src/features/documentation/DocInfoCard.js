@@ -16,6 +16,7 @@ import MagicUpdateForm from './magics/MagicUpdateForm';
 import MaterialUpdateForm from './materials/MaterialUpdateForm';
 import RaceUpdateForm from './races/RaceUpdateForm';
 import ItemUpdateForm from './items/ItemUpdateForm';
+import DetailedCard from './DetailedCard';
 
 /* eslint-disable react/prop-types */
 function DocInfoCard(prop) {
@@ -23,6 +24,7 @@ function DocInfoCard(prop) {
     data, docUpdate, docDelete, id, list, listOf, url,
   } = prop;
   const [showForm, displayForm] = useState(false);
+  const [showDetails, displayDetailsForm] = useState(false);
   const [newData, setNewData] = useState('');
   const [deleteImage] = useDeleteImageMutation();
   const dispatch = useDispatch();
@@ -132,7 +134,7 @@ function DocInfoCard(prop) {
     }
     return Object.entries(data);
   };
-  const ignoredKeys = ['effects', 'aoe', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStat'];
+  const ignoredKeys = ['effects', 'aoes', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStats'];
 
   const info = dataList().map(([key, value]) => {
     if (value === '' || value === null || value === undefined || value === 0 || key.substring(0, 1) === '_' || ignoredKeys.find((ignore) => ignore === key) || (Array.isArray(value) && (value.length === 0 || value[0] === ''))) {
@@ -211,12 +213,18 @@ function DocInfoCard(prop) {
     }
   }, []);
 
+  const handleShowDetails = () => displayDetailsForm(!showDetails);
+
+  const ignoreDetails = ['AOEs', 'Talents', 'Effects', 'Enchantments'];
+
   return (
     <div className="border-2 border-black pl-2">
       {newData !== '' ? enchantmentInfo() : info}
       <button className="hover:bg-red-600 hover:border-black hover:border-2" onClick={deleteCard} type="button">Delete</button>
       {listOf === 'Enchantments' ? '' : <button className="hover:bg-yellow-400 hover:border-black hover:border-2" onClick={updateForm} type="button">Edit</button>}
       {showForm ? selectForm() : ''}
+      {!ignoreDetails.find((type) => type === listOf) ? <button className="hover:bg-cyan-400 hover:border-black hover:border-2" type="button" onClick={handleShowDetails}>Details</button> : ''}
+      {showDetails ? <DetailedCard id={id} count={0} listOf={listOf} /> : ''}
     </div>
   );
 }

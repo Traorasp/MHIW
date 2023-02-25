@@ -30,7 +30,7 @@ function ItemUpdateForm(prop) {
   const [rarity, setRarity] = useState(item.rarity);
   const [level, setLevel] = useState(item.level);
   const [material, setMaterial] = useState(item.material);
-  const [subStat, setSubStat] = useState(item.subStat);
+  const [subStats, setSubStats] = useState(item.subStats);
   const [cost, setCost] = useState(item.cost);
   const [type, setType] = useState(item.type);
   const [maxDurability, setMaxDurability] = useState(item.baseStats.maxDurability);
@@ -70,7 +70,7 @@ function ItemUpdateForm(prop) {
   const changeRarity = (e) => setRarity(e.target.value);
   const changeLevel = (e) => setLevel(e.target.value);
   const changeMaterial = (e) => setMaterial(e.target.value);
-  const changeSubStat = (e) => setSubStat(e.target.value);
+  const changeSubStats = (e) => setSubStats(e.target.value);
   const changeCost = (e) => setCost(e.target.value);
   const changeType = (e) => setType(e.target.value);
   const changeMaxDurability = (e) => setMaxDurability(e.target.value);
@@ -101,7 +101,7 @@ function ItemUpdateForm(prop) {
     newDoc.rarity = rarity;
     newDoc.level = level;
     newDoc.material = material;
-    newDoc.subStat = subStat;
+    newDoc.subStats = subStats;
     newDoc.cost = cost;
     newDoc.type = type;
     newDoc.baseStats = {};
@@ -136,7 +136,7 @@ function ItemUpdateForm(prop) {
   const setUp = () => {
     document.getElementById('material').value = item.material;
     document.getElementById('rarity').value = item.rarity;
-    document.getElementById('subStat').value = item.subStat;
+    document.getElementById('subStats').value = item.subStats;
     document.getElementById('type').value = item.type;
   };
 
@@ -232,9 +232,9 @@ function ItemUpdateForm(prop) {
               </label>
             </div>
             <div>
-              <label htmlFor="subStat">
+              <label htmlFor="subStats">
                 Sub Stat:
-                <select id="subStat" name="subStat" onClick={changeSubStat}>
+                <select id="subStats" name="subStats" onClick={changeSubStats}>
                   <option value="">None</option>
                   {effectsList[Object.keys(effectsList)[0]].map((effect) => {
                     if (effect.stat.length < 1) return '';

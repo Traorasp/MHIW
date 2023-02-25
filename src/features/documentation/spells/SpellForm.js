@@ -44,7 +44,7 @@ function SpellForm(prop) {
   const changeRange = (e) => setRange(e.target.value);
   const changeCharge = (e) => setCharge(e.target.value);
   const changeFollowUp = (e) => setFollowUp(e.target.value);
-  const changeAoe = (e) => {
+  const changeAoes = (e) => {
     if (aoes.length > 0 && aoes.find((aoe) => e.target.value === aoe.id)) {
       return;
     }
@@ -79,7 +79,7 @@ function SpellForm(prop) {
         knockbackRatio,
         cost,
         range,
-        aoe: newAoes,
+        aoes: newAoes,
         effects: newEffects,
         description,
         charge,
@@ -183,9 +183,9 @@ function SpellForm(prop) {
           </label>
         </div>
         <div>
-          <label htmlFor="aoe">
-            Aoe:
-            <select id="aoe" name="aoe" onClick={changeAoe}>
+          <label htmlFor="aoes">
+            Aoes:
+            <select id="aoes" name="aoes" onClick={changeAoes}>
               {aoeList[Object.keys(aoeList)[0]].map((aoe) => (
                 <option key={aoe._id} value={aoe._id}>
                   {aoe.name}

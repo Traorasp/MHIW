@@ -37,7 +37,7 @@ function SpellUpdateForm(prop) {
   const [knockbackRatio, setKnockbackRatio] = useState(spell.knockbackRatio);
   const [cost, setCost] = useState(spell.cost);
   const [range, setRange] = useState(spell.range);
-  const [aoes, setAoe] = useState([...getAoes(spell.aoe)]);
+  const [aoes, setAoe] = useState([...getAoes(spell.aoes)]);
   const [effects, setEffects] = useState([...getEffects(spell.effects)]);
   const [description, setDescription] = useState(spell.description);
   const [charge, setCharge] = useState(spell.charge);
@@ -54,7 +54,7 @@ function SpellUpdateForm(prop) {
   const changeRange = (e) => setRange(e.target.value);
   const changeCharge = (e) => setCharge(e.target.value);
   const changeFollowUp = (e) => setFollowUp(e.target.value);
-  const changeAoe = (e) => {
+  const changeAoes = (e) => {
     if (aoes.length > 0 && aoes.find((aoe) => e.target.value === aoe.id)) {
       return;
     }
@@ -88,7 +88,7 @@ function SpellUpdateForm(prop) {
     newDoc.knockbackRatio = knockbackRatio;
     newDoc.cost = cost;
     newDoc.range = range;
-    newDoc.aoe = newAoes;
+    newDoc.aoes = newAoes;
     newDoc.effects = newEffects;
     newDoc.description = description;
     newDoc.charge = charge;
@@ -171,9 +171,9 @@ function SpellUpdateForm(prop) {
           </label>
         </div>
         <div>
-          <label htmlFor="aoe">
-            Aoe:
-            <select id="aoe" name="aoe" onClick={changeAoe}>
+          <label htmlFor="aoes">
+            Aoes:
+            <select id="aoes" name="aoes" onClick={changeAoes}>
               {aoeList[Object.keys(aoeList)[0]].map((aoe) => (
                 <option key={aoe._id} value={aoe._id}>
                   {aoe.name}

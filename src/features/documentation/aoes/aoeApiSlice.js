@@ -9,9 +9,15 @@ const aoeApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getAOE: builder.mutation({
+      query: (id) => ({
+        url: `/aoe/${id}`,
+        method: 'GET',
+      }),
+    }),
     getAOEList: builder.mutation({
       query: () => ({
-        url: '/aoe',
+        url: '/aoes',
         method: 'GET',
       }),
     }),
@@ -32,6 +38,7 @@ const aoeApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
+  useGetAOEMutation,
   useGetAOEListMutation,
   useCreateAOEMutation,
   useUpdateAOEMutation,

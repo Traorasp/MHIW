@@ -38,7 +38,7 @@ function SkillForm(prop) {
   const changeStat = (e) => setStat(e.target.value);
   const changeRoll = (e) => setRoll(e.target.value);
   const changeRange = (e) => setRange(e.target.value);
-  const changeAoe = (e) => {
+  const changeAoes = (e) => {
     if (aoes.length > 0 && aoes.find((aoe) => e.target.value === aoe.id)) {
       return;
     }
@@ -71,7 +71,7 @@ function SkillForm(prop) {
         stat,
         roll,
         range,
-        aoe: newAoes,
+        aoes: newAoes,
         effects: newEffects,
         description,
       }).unwrap();
@@ -179,9 +179,9 @@ function SkillForm(prop) {
           </label>
         </div>
         <div>
-          <label htmlFor="aoe">
-            Aoe:
-            <select id="aoe" name="aoe" onClick={changeAoe}>
+          <label htmlFor="aoes">
+            Aoes:
+            <select id="aoes" name="aoes" onClick={changeAoes}>
               {aoeList[Object.keys(aoeList)[0]].map((aoe) => (
                 <option key={aoe._id} value={aoe._id}>
                   {aoe.name}

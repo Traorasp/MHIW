@@ -47,7 +47,7 @@ function ItemForm(prop) {
   const [rarity, setRarity] = useState('Very Common');
   const [level, setLevel] = useState(1);
   const [material, setMaterial] = useState('');
-  const [subStat, setSubStat] = useState(0);
+  const [subStats, setSubStats] = useState(0);
   const [cost, setCost] = useState(0);
   const [type, setType] = useState('Item');
   const [maxDurability, setMaxDurability] = useState(0);
@@ -69,7 +69,7 @@ function ItemForm(prop) {
   const changeRarity = (e) => setRarity(e.target.value);
   const changeLevel = (e) => setLevel(e.target.value);
   const changeMaterial = (e) => setMaterial(e.target.value);
-  const changeSubStat = (e) => setSubStat(e.target.value);
+  const changeSubStat = (e) => setSubStats(e.target.value);
   const changeCost = (e) => setCost(e.target.value);
   const changeType = (e) => setType(e.target.value);
   const changeMaxDurability = (e) => setMaxDurability(e.target.value);
@@ -100,7 +100,7 @@ function ItemForm(prop) {
         rarity,
         level,
         material,
-        subStat,
+        subStats,
         cost,
         type,
         baseStats: {
@@ -124,7 +124,7 @@ function ItemForm(prop) {
       setRarity('Very Common');
       setLevel(1);
       setMaterial('None');
-      setSubStat('None');
+      setSubStats('None');
       setCost(0);
       setType('Item');
       setMaxDurability(0);
@@ -238,9 +238,9 @@ function ItemForm(prop) {
             </label>
           </div>
           <div>
-            <label htmlFor="subStat">
+            <label htmlFor="subStats">
               Sub Stat:
-              <select id="subStat" name="subStat" onClick={changeSubStat}>
+              <select id="subStats" name="subStats" onClick={changeSubStat}>
                 <option value="">None</option>
                 {effectsList[Object.keys(effectsList)[0]].map((effect) => {
                   if (effect.stat.length < 1) return '';
