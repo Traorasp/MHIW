@@ -24,14 +24,14 @@ function SpellUpdateForm(prop) {
 
   const getAoes = () => {
     const list = aoeList[Object.keys(aoeList)[0]]
-      .filter((aoe) => (!!spell.aoe.find((id) => id === aoe._id)));
+      .filter((aoe) => (!!spell.aoes.find((id) => id === aoe._id)));
     return list.map((aoe) => ({ id: aoe._id, aoeName: aoe.name }));
   };
 
   const [name, setName] = useState(spell.name);
   const [type, setType] = useState(spell.type);
   const [requirements, setRequirements] = useState(spell.requirements);
-  const [damageType, setDamageType] = useState(spell.damageType);
+  const [damageType, setDamageType] = useState(spell.damageType.join(', '));
   const [damageRatio, setDamageRatio] = useState(spell.damageRatio);
   const [durabilityRatio, setDurabilityRatio] = useState(spell.durabilityRatio);
   const [knockbackRatio, setKnockbackRatio] = useState(spell.knockbackRatio);
@@ -77,12 +77,13 @@ function SpellUpdateForm(prop) {
     e.preventDefault();
     const newAoes = aoes.map((aoe) => aoe.id);
     const newEffects = effects.map((effect) => effect.id);
+    const damageTypeList = damageType.split(', ');
 
     newDoc.id = spell._id;
     newDoc.name = name;
     newDoc.type = type;
     newDoc.requirements = requirements;
-    newDoc.damageType = damageType;
+    newDoc.damageType = damageTypeList;
     newDoc.damageRatio = damageRatio;
     newDoc.durabilityRatio = durabilityRatio;
     newDoc.knockbackRatio = knockbackRatio;
@@ -142,19 +143,19 @@ function SpellUpdateForm(prop) {
         </div>
         <div>
           <label htmlFor="damageRatio">
-            Damage Ratio:
+            Damage:
             <input type="number" min="0" id="damageRatio" value={damageRatio} onChange={changeDamageRatio} step=".1" />
           </label>
         </div>
         <div>
           <label htmlFor="durabilityRatio">
-            Durability Ratio:
+            Durability:
             <input type="number" min="0" id="durabilityRatio" value={durabilityRatio} onChange={changeDurabilityRatio} step=".1" />
           </label>
         </div>
         <div>
           <label htmlFor="knockbackRatio">
-            Knockback Ratio:
+            Knockback:
             <input type="number" min="0" id="knockbackRatio" value={knockbackRatio} onChange={changeKnockbackRatio} step=".01" />
           </label>
         </div>
@@ -168,6 +169,25 @@ function SpellUpdateForm(prop) {
           <label htmlFor="range">
             Range:
             <input type="number" min="0" id="range" value={range} onChange={changeRange} required />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="charge">
+            Charge:
+            <input type="text" onChange={changeCharge} value={charge} name="charge" id="charge" />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="followUp">
+            Follow Up:
+            <select id="followUp" name="followUp" onChange={changeFollowUp}>
+              <option value="">None</option>
+              {spells[Object.keys(spells)[0]].map((spellCell) => (
+                <option key={spellCell._id} value={spellCell._id}>
+                  {spellCell.name}
+                </option>
+              ))}
+            </select>
           </label>
         </div>
         <div>
@@ -230,24 +250,6 @@ function SpellUpdateForm(prop) {
           <label htmlFor="description">
             Description:
             <textarea onChange={changeDescription} name="description" id="description" value={description} required />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="charge">
-            Charge:
-            <input type="text" onChange={changeCharge} value={charge} name="charge" id="charge" />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="followUp">
-            Follow Up:
-            <select id="followUp" name="followUp" onChange={changeFollowUp}>
-              {spells[Object.keys(spells)[0]].map((spellCell) => (
-                <option key={spellCell._id} value={spellCell._id}>
-                  {spellCell.name}
-                </option>
-              ))}
-            </select>
           </label>
         </div>
         <button type="submit">Update</button>

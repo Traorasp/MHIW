@@ -23,7 +23,7 @@ function SkillUpdateForm(prop) {
 
   const getAoes = () => {
     const list = aoeList[Object.keys(aoeList)[0]]
-      .filter((aoe) => (!!skill.aoe.find((id) => id === aoe._id)));
+      .filter((aoe) => (!!skill.aoes.find((id) => id === aoe._id)));
     return list.map((aoe) => ({ id: aoe._id, aoeName: aoe.name }));
   };
 
@@ -207,11 +207,7 @@ function SkillUpdateForm(prop) {
                   {' '}
                   :
                   {' '}
-                  {effect.damage}
-                  {' '}
-                  :
-                  {' '}
-                  {effect.duration}
+                  {effect.effect}
                 </option>
               ))}
             </select>

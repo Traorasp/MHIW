@@ -101,7 +101,7 @@ function EnchantmentForm(prop) {
             <select id="skill" name="skill" onClick={changeSkill}>
               <option value="">None</option>
               {skillList[Object.keys(skillList)[0]].map((skillOpt) => {
-                if (skillOpt.type === 'Unique' || skillOpt.type === 'Stance' || skillOpt.type === 'Will' || skillOpt.type === 'Charisma' || skillOpt.type === 'Intimidation') {
+                if (skillOpt.type === 'Unique' || skillOpt.type === 'Stance' || skillOpt.type === 'Racial') {
                   return '';
                 }
 

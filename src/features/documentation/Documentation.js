@@ -48,7 +48,7 @@ function Documentation() {
       case 'Skills':
         return <SkillForm hide={displayForm} />;
       case 'Talents':
-        return <TalentForm hde={displayForm} />;
+        return <TalentForm hide={displayForm} />;
       case 'Titles':
         return <TitleForm hide={displayForm} />;
       default:

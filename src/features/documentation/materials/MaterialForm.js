@@ -125,11 +125,7 @@ function MaterialForm(prop) {
                     {' '}
                     :
                     {' '}
-                    {effect.damage}
-                    {' '}
-                    :
-                    {' '}
-                    {effect.duration}
+                    {effect.effect}
                   </option>
                 ))}
               </select>

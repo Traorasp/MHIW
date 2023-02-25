@@ -86,6 +86,7 @@ function RaceForm(prop) {
       const newMainSkills = mainSkills.map((skill) => skill.id);
       const newSubSkills = subSkills.map((skill) => skill.id);
       const weaknessList = weakness.split(', ');
+
       const { race } = await createRace({
         name,
         parent,

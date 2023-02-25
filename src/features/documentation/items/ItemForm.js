@@ -202,6 +202,12 @@ function ItemForm(prop) {
             </label>
           </div>
           <div>
+            <label htmlFor="level">
+              Level:
+              <input type="number" id="level" min={1} max={15} onChange={changeLevel} value={level} required />
+            </label>
+          </div>
+          <div>
             <label htmlFor="rarity">
               Rarity:
               <select id="rarity" name="rarity" onChange={changeRarity}>
@@ -216,12 +222,6 @@ function ItemForm(prop) {
                 <option value="Quasi Artifact">Quasi Artifact</option>
                 <option value="Artifact">Artifact</option>
               </select>
-            </label>
-          </div>
-          <div>
-            <label htmlFor="level">
-              Level:
-              <input type="number" id="level" min={1} max={15} onChange={changeLevel} value={level} required />
             </label>
           </div>
           <div>
@@ -247,16 +247,12 @@ function ItemForm(prop) {
                   return (
                     <option key={effect._id} value={effect._id}>
                       {effect.name}
+                      :
+                      {effect.stat}
                     </option>
                   );
                 })}
               </select>
-            </label>
-          </div>
-          <div>
-            <label htmlFor="cost">
-              Cost:
-              <input type="number" min="0" id="cost" onChange={changeCost} value={cost} />
             </label>
           </div>
           <div>
@@ -275,6 +271,12 @@ function ItemForm(prop) {
                 <option value="Shield">Shield</option>
                 <option value="Bow">Bow</option>
               </select>
+            </label>
+          </div>
+          <div>
+            <label htmlFor="cost">
+              Cost:
+              <input type="number" min="0" id="cost" onChange={changeCost} value={cost} />
             </label>
           </div>
           <div>

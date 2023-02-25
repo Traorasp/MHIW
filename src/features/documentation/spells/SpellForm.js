@@ -68,12 +68,13 @@ function SpellForm(prop) {
     try {
       const newAoes = aoes.map((aoe) => aoe.id);
       const newEffects = effects.map((effect) => effect.id);
+      const damageTypeList = damageType.split(', ');
 
       const { spell } = await createSpell({
         name,
         type,
         requirements,
-        damageType,
+        damageType: damageTypeList,
         damageRatio,
         durabilityRatio,
         knockbackRatio,
@@ -154,19 +155,19 @@ function SpellForm(prop) {
         </div>
         <div>
           <label htmlFor="damageRatio">
-            Damage Ratio:
+            Damage:
             <input type="number" min="0" id="damageRatio" value={damageRatio} onChange={changeDamageRatio} step=".1" />
           </label>
         </div>
         <div>
           <label htmlFor="durabilityRatio">
-            Durability Ratio:
+            Durability:
             <input type="number" min="0" id="durabilityRatio" value={durabilityRatio} onChange={changeDurabilityRatio} step=".1" />
           </label>
         </div>
         <div>
           <label htmlFor="knockbackRatio">
-            Knockback Ratio:
+            Knockback:
             <input type="number" min="0" id="knockbackRatio" value={knockbackRatio} onChange={changeKnockbackRatio} step=".01" />
           </label>
         </div>
@@ -180,6 +181,25 @@ function SpellForm(prop) {
           <label htmlFor="range">
             Range:
             <input type="number" min="0" id="range" value={range} onChange={changeRange} required />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="charge">
+            Charge:
+            <input type="text" onChange={changeCharge} value={charge} name="charge" id="charge" />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="followUp">
+            Follow Up:
+            <select id="followUp" name="followUp" onChange={changeFollowUp}>
+              <option value="">None</option>
+              {spells[Object.keys(spells)[0]].map((spell) => (
+                <option key={spell._id} value={spell._id}>
+                  {spell.name}
+                </option>
+              ))}
+            </select>
           </label>
         </div>
         <div>
@@ -242,24 +262,6 @@ function SpellForm(prop) {
           <label htmlFor="description">
             Description:
             <textarea onChange={changeDescription} name="description" id="description" required />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="charge">
-            Charge:
-            <input type="text" onChange={changeCharge} value={charge} name="charge" id="charge" />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="followUp">
-            Follow Up:
-            <select id="followUp" name="followUp" onChange={changeFollowUp}>
-              {spells[Object.keys(spells)[0]].map((spell) => (
-                <option key={spell._id} value={spell._id}>
-                  {spell.name}
-                </option>
-              ))}
-            </select>
           </label>
         </div>
         <button type="submit">Create</button>

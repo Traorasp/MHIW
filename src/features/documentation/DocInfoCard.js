@@ -26,6 +26,8 @@ function DocInfoCard(prop) {
   const [showForm, displayForm] = useState(false);
   const [showDetails, displayDetailsForm] = useState(false);
   const [newData, setNewData] = useState('');
+  const [title, setTitle] = useState('');
+
   const [deleteImage] = useDeleteImageMutation();
   const dispatch = useDispatch();
   const newDoc = {};
@@ -134,9 +136,14 @@ function DocInfoCard(prop) {
     }
     return Object.entries(data);
   };
+
   const ignoredKeys = ['effects', 'aoes', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStats'];
 
   const info = dataList().map(([key, value]) => {
+    if (!title && key === 'name') {
+      setTitle(value);
+      return '';
+    }
     if (value === '' || value === null || value === undefined || value === 0 || key.substring(0, 1) === '_' || ignoredKeys.find((ignore) => ignore === key) || (Array.isArray(value) && (value.length === 0 || value[0] === ''))) {
       return '';
     }
@@ -155,7 +162,7 @@ function DocInfoCard(prop) {
     if (key === 'image') {
       return <img key={url} className="object-scale-down h-36 w-36" src={url} alt="Material" />;
     }
-    if (key === 'weakness') {
+    if (key === 'weakness' || (key === 'damageType' && listOf === 'spells')) {
       return (
         <div key={key}>
           {`${key.substring(0, 1).toUpperCase() + key.substring(1)} : `}
@@ -163,9 +170,10 @@ function DocInfoCard(prop) {
         </div>
       );
     }
+
     return (
       <div key={key}>
-        { key !== 'name' ? `${key.substring(0, 1).toUpperCase() + key.substring(1)} : ` : ''}
+        {`${key.substring(0, 1).toUpperCase() + key.substring(1)} : `}
         {typeof value === 'boolean' ? value ? 'True' : 'False' : value}
       </div>
     );
@@ -192,6 +200,11 @@ function DocInfoCard(prop) {
     }
     if (typeof value === 'object') {
       const objectInfo = Object.entries(value).map(([objKey, objValue]) => {
+        if (!title && objKey === 'name') {
+          setTitle(objValue);
+          return '';
+        }
+        if (objKey === 'name') return '';
         if (objValue === '' || objValue === null || objValue === undefined || objValue === 0 || objKey.substring(0, 1) === '_' || ignoredKeys.find((ignore) => ignore === objKey) || (Array.isArray(objValue) && (objValue.length === 0 || objValue[0] === ''))) {
           return '';
         }
@@ -219,6 +232,7 @@ function DocInfoCard(prop) {
 
   return (
     <div className="border-2 border-black pl-2">
+      <h2 className="font-bold">{title}</h2>
       {newData !== '' ? enchantmentInfo() : info}
       <button className="hover:bg-red-600 hover:border-black hover:border-2" onClick={deleteCard} type="button">Delete</button>
       {listOf === 'Enchantments' ? '' : <button className="hover:bg-yellow-400 hover:border-black hover:border-2" onClick={updateForm} type="button">Edit</button>}
