@@ -21,7 +21,7 @@ function EnchantmentForm(prop) {
   const [spell, setSpell] = useState('');
   const [antiTalent, setAntiTalent] = useState('');
   const [amount, setAmount] = useState(1);
-
+  const [errors, setErrors] = useState([]);
   const [createEnchantment] = useCreateEnchantmentMutation();
 
   const changeAmount = (e) => setAmount(e.target.value);
@@ -64,14 +64,14 @@ function EnchantmentForm(prop) {
       setSpell('');
       setAntiTalent('');
       setAmount(0);
-
+      setErrors([]);
       const prevEnchantments = enchantments.enchantments
         ? enchantments.enchantments : enchantments.data;
 
       dispatch(addDoc({ key: 'enchantments', data: [...prevEnchantments, enchantment] }));
       hide();
     } catch (err) {
-      console.log(err);
+      setErrors(err.data.errors.errors);
     }
   };
 
@@ -162,6 +162,12 @@ function EnchantmentForm(prop) {
             <input type="number" onChange={changeAmount} value={amount} name="amount" id="amount" />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Create</button>
       </form>
     </div>

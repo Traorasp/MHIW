@@ -27,6 +27,7 @@ function DocInfoCard(prop) {
   const [showDetails, displayDetailsForm] = useState(false);
   const [newData, setNewData] = useState('');
   const [title, setTitle] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const [deleteImage] = useDeleteImageMutation();
   const dispatch = useDispatch();
@@ -34,12 +35,16 @@ function DocInfoCard(prop) {
   const [enchantDetails] = useGetEnchantmentMutation();
 
   const updateForm = () => {
+    if (showForm) {
+      setErrors([]);
+    }
     displayForm(!showForm);
   };
 
   const update = async () => {
     try {
-      docUpdate(newDoc);
+      const result = await docUpdate(newDoc);
+      if (result.error) { throw result; }
       const prevList = Array.isArray(list) ? [...list] : [...list[Object.keys(list)[0]]];
       let index;
       if (listOf === 'Items') {
@@ -66,36 +71,36 @@ function DocInfoCard(prop) {
       } else {
         prevList[index] = newDoc;
       }
-
+      setErrors([]);
       dispatch(addDoc({ key: listOf.toLowerCase(), data: [...prevList] }));
       updateForm();
     } catch (err) {
-      console.log(err);
+      setErrors(err.error.data.errors.errors);
     }
   };
 
   const selectForm = () => {
     switch (listOf) {
       case 'AOEs':
-        return <AoeUpdateForm aoe={data} newDoc={newDoc} update={update} hide={updateForm} />;
+        return <AoeUpdateForm errors={errors} aoe={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Effects':
-        return <EffectUpdateForm oldEffect={data} newDoc={newDoc} update={update} hide={updateForm} />;
+        return <EffectUpdateForm errors={errors} oldEffect={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Items':
-        return <ItemUpdateForm item={data} imageUrl={url} newDoc={newDoc} update={update} hide={updateForm} />;
+        return <ItemUpdateForm errors={errors} item={data} imageUrl={url} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Magics':
-        return <MagicUpdateForm magic={data} newDoc={newDoc} update={update} hide={updateForm} />;
+        return <MagicUpdateForm errors={errors} magic={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Materials':
-        return <MaterialUpdateForm material={data} imageUrl={url} newDoc={newDoc} update={update} hide={updateForm} />;
+        return <MaterialUpdateForm errors={errors} material={data} imageUrl={url} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Races':
-        return <RaceUpdateForm race={data} newDoc={newDoc} update={update} hide={updateForm} />;
+        return <RaceUpdateForm errors={errors} race={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Spells':
-        return <SpellUpdateForm spell={data} newDoc={newDoc} update={update} hide={updateForm} />;
+        return <SpellUpdateForm errors={errors} spell={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Skills':
-        return <SkillUpdateForm skill={data} newDoc={newDoc} update={update} hide={updateForm} />;
+        return <SkillUpdateForm errors={errors} skill={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Talents':
-        return <TalentUpdateForm talent={data} newDoc={newDoc} update={update} hide={updateForm} />;
+        return <TalentUpdateForm errors={errors} talent={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Titles':
-        return <TitleUpdateForm title={data} newDoc={newDoc} update={update} hide={updateForm} />;
+        return <TitleUpdateForm errors={errors} title={data} newDoc={newDoc} update={update} hide={updateForm} />;
       default:
         return '';
     }

@@ -36,6 +36,7 @@ function RaceForm(prop) {
   const [mainSkills, setMainSkills] = useState([]);
   const [subSkills, setSubSkills] = useState([]);
   const [description, setDescription] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const [createRace] = useCreateRaceMutation();
 
@@ -132,12 +133,13 @@ function RaceForm(prop) {
       setMainSkills([]);
       setSubSkills([]);
       setDescription('');
+      setErrors([]);
 
       const prevRaces = races.races ? races.races : races.data;
       dispatch(addDoc({ key: 'races', data: [...prevRaces, race] }));
       hide();
     } catch (err) {
-      console.log(err);
+      setErrors(err.data.errors.errors);
     }
   };
 
@@ -321,6 +323,12 @@ function RaceForm(prop) {
             <textarea onChange={changeDescription} name="description" id="description" required />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Create</button>
       </form>
     </div>

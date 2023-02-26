@@ -30,6 +30,7 @@ function SpellForm(prop) {
   const [description, setDescription] = useState('');
   const [charge, setCharge] = useState(0);
   const [followUp, setFollowUp] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const [createSpell] = useCreateSpellMutation();
 
@@ -101,12 +102,12 @@ function SpellForm(prop) {
       setDescription('');
       setCharge(0);
       setFollowUp('');
-
+      setErrors([]);
       const prevSpells = spells.spells ? spells.spells : spells.data;
       dispatch(addDoc({ key: 'spells', data: [...prevSpells, spell] }));
       hide();
     } catch (err) {
-      console.log(err);
+      setErrors(err.data.errors.errors);
     }
   };
 
@@ -264,6 +265,12 @@ function SpellForm(prop) {
             <textarea onChange={changeDescription} name="description" id="description" required />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Create</button>
       </form>
     </div>

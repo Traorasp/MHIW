@@ -19,7 +19,7 @@ function EffectForm(prop) {
   const [property, setProperty] = useState('');
   const [effect, setEffect] = useState('');
   const [duration, setDuration] = useState(1);
-
+  const [errors, setErrors] = useState([]);
   const [createEffect] = useCreateEffectMutation();
 
   const changeName = (e) => setName(e.target.value);
@@ -48,12 +48,12 @@ function EffectForm(prop) {
       setProperty('');
       setEffect('');
       setDuration(1);
-
+      setErrors([]);
       const prevEffects = effects.effects ? effects.effects : effects.data;
       dispatch(addDoc({ key: 'effects', data: [...prevEffects, newEffect] }));
       hide();
     } catch (err) {
-      console.log(err);
+      setErrors(err.data.errors.errors);
     }
   };
 
@@ -115,6 +115,12 @@ function EffectForm(prop) {
             <input type="number" min={1} id="duration" value={duration} onChange={changeDuration} required />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Create</button>
       </form>
     </div>

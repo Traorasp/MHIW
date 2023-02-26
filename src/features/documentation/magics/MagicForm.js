@@ -18,6 +18,7 @@ function MagicForm(prop) {
   const [name, setName] = useState('');
   const [spells, setSpells] = useState([]);
   const [description, setDescription] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const [createMagic] = useCreateMagicMutation();
 
@@ -47,12 +48,13 @@ function MagicForm(prop) {
       setName('');
       setSpells([]);
       setDescription('');
+      setErrors([]);
 
       const prevMagics = magics.magics ? magics.magics : magics.data;
       dispatch(addDoc({ key: 'magics', data: [...prevMagics, magic] }));
       hide();
     } catch (err) {
-      console.log(err);
+      setErrors(err.data.errors.errors);
     }
   };
 
@@ -96,6 +98,12 @@ function MagicForm(prop) {
             <textarea onChange={changeDescription} name="description" id="description" required />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Create</button>
       </form>
     </div>

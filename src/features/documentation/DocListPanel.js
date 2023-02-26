@@ -101,42 +101,33 @@ function DocListPanel(prop) {
     }
   };
 
-  const selectUpdater = (newDoc) => {
+  const selectUpdater = async (newDoc) => {
     switch (listOf) {
       case 'AOEs':
-        updateAOE(newDoc);
-        break;
+        return updateAOE(newDoc);
       case 'Effects':
-        updateEffect(newDoc);
-        break;
+        return updateEffect(newDoc);
       case 'Enchantments':
-        return;
+        return '';
       case 'Items':
-        updateItem(newDoc);
-        break;
+        return updateItem(newDoc);
       case 'Magics':
-        updateMagic(newDoc);
-        break;
+        return updateMagic(newDoc);
       case 'Materials':
-        updateMaterial(newDoc);
-        break;
+        return updateMaterial(newDoc);
       case 'Races':
-        updateRace(newDoc);
-        break;
+        return updateRace(newDoc);
       case 'Skills':
-        updateSkill(newDoc);
-        break;
+        return updateSkill(newDoc);
       case 'Spells':
-        updateSpell(newDoc);
-        break;
+        return updateSpell(newDoc);
       case 'Talents':
-        updateTalent(newDoc);
-        break;
+        return updateTalent(newDoc);
       case 'Titles':
-        updateTitle(newDoc);
-        break;
+        return updateTitle(newDoc);
       default:
     }
+    return '';
   };
 
   const selectList = () => {

@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 function AoeUpdateForm(prop) {
   const {
-    hide, update, aoe, newDoc,
+    hide, update, aoe, newDoc, errors,
   } = prop;
   const [name, setName] = useState(aoe.name);
   const [fixed, setFixed] = useState(aoe.fixed);
@@ -46,6 +46,12 @@ function AoeUpdateForm(prop) {
             <input type="number" id="range" min="1" value={range} onChange={changeRange} required />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Update</button>
       </form>
     </div>

@@ -60,6 +60,7 @@ function ItemForm(prop) {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('');
   const [url, setUrl] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const [deleteImage] = useDeleteImageMutation();
 
@@ -137,8 +138,9 @@ function ItemForm(prop) {
       setUrl('');
       setDescription('');
       setBackground('');
+      setErrors([]);
     } catch (err) {
-      console.log(err);
+      setErrors(err.data.errors.errors);
     }
   };
 
@@ -348,6 +350,12 @@ function ItemForm(prop) {
               <textarea onChange={changeBackground} name="background" id="background" required />
             </label>
           </div>
+          {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+            <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+              *
+              {err.msg}
+            </div>
+          )) : ''}
           <button type="submit">Create</button>
         </form>
       </div>

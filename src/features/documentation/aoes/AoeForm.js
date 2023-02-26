@@ -8,7 +8,7 @@ import { addDoc, selectCurrentAoes } from '../documentationSlice';
 function AoeForm(prop) {
   const { hide } = prop;
   const aoes = useSelector(selectCurrentAoes);
-
+  const [errors, setErrors] = useState([]);
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [fixed, setFixed] = useState(false);
@@ -26,11 +26,12 @@ function AoeForm(prop) {
       setName('');
       setFixed(false);
       setRange(1);
+      setErrors([]);
       const prevAoes = aoes.aoes ? aoes.aoes : aoes.data;
       dispatch(addDoc({ key: 'aoes', data: [...prevAoes, aoe] }));
       hide();
     } catch (err) {
-      console.log(err);
+      setErrors(err.data.errors.errors);
     }
   };
 
@@ -56,6 +57,12 @@ function AoeForm(prop) {
             <input type="number" id="range" min="1" value={range} onChange={changeRange} required />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Create</button>
       </form>
     </div>

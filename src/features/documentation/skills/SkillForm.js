@@ -27,6 +27,7 @@ function SkillForm(prop) {
   const [aoes, setAoe] = useState([]);
   const [effects, setEffects] = useState([]);
   const [description, setDescription] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const [createSkill] = useCreateSkillMutation();
 
@@ -87,12 +88,12 @@ function SkillForm(prop) {
       setAoe([]);
       setEffects([]);
       setDescription('');
-
+      setErrors([]);
       const prevSkills = skills.skills ? skills.skills : skills.data;
       dispatch(addDoc({ key: 'skills', data: [...prevSkills, skill] }));
       hide();
     } catch (err) {
-      console.log(err);
+      setErrors(err.data.errors.errors);
     }
   };
 
@@ -236,6 +237,12 @@ function SkillForm(prop) {
             <textarea onChange={changeDescription} name="description" id="description" required />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Create</button>
       </form>
     </div>

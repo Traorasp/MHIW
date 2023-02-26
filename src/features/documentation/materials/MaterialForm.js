@@ -26,6 +26,7 @@ function MaterialForm(prop) {
   const [description, setDescription] = useState('');
   const [url, setUrl] = useState('');
   const [deleteImage] = useDeleteImageMutation();
+  const [errors, setErrors] = useState([]);
 
   const [createMaterial] = useCreateMaterialMutation();
 
@@ -61,8 +62,9 @@ function MaterialForm(prop) {
       setImage('');
       setUrl('');
       setDescription('');
+      setErrors([]);
     } catch (err) {
-      console.log(err);
+      setErrors(err.data.errors.errors);
     }
   };
 
@@ -145,6 +147,12 @@ function MaterialForm(prop) {
               <textarea onChange={changeDescription} name="description" id="description" required />
             </label>
           </div>
+          {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+            <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+              *
+              {err.msg}
+            </div>
+          )) : ''}
           <button type="submit">Create</button>
         </form>
       </div>

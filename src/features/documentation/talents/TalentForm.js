@@ -19,6 +19,7 @@ function TalentForm(prop) {
   const [cooldown, setCooldown] = useState(0);
   const [charges, setCharges] = useState(0);
   const [description, setDescription] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const [createTalent] = useCreateTalentMutation();
 
@@ -57,12 +58,13 @@ function TalentForm(prop) {
       setCooldown(0);
       setCharges(0);
       setDescription('');
+      setErrors([]);
 
       const prevTalents = talents.talents ? talents.talents : talents.data;
       dispatch(addDoc({ key: 'talents', data: [...prevTalents, newTalent] }));
       hide();
     } catch (err) {
-      console.log(err);
+      setErrors(err.data.errors.errors);
     }
   };
 
@@ -145,6 +147,12 @@ function TalentForm(prop) {
             <textarea onChange={changeDescription} name="description" id="description" required />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Create</button>
       </form>
     </div>
