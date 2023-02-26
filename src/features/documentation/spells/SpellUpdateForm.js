@@ -10,7 +10,7 @@ import {
 
 function SpellUpdateForm(prop) {
   const {
-    hide, spell, update, newDoc,
+    hide, spell, update, newDoc, errors,
   } = prop;
   const aoeList = useSelector(selectCurrentAoes);
   const effectsList = useSelector(selectCurrentEffects);
@@ -252,6 +252,12 @@ function SpellUpdateForm(prop) {
             <textarea onChange={changeDescription} name="description" id="description" value={description} required />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Update</button>
       </form>
     </div>

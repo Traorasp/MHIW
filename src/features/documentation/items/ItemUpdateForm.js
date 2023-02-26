@@ -13,7 +13,7 @@ import { useGetEnchantmentMutation } from '../enchantments/enchantmentApiSlice';
 
 function ItemUpdateForm(prop) {
   const {
-    hide, update, newDoc,
+    hide, update, newDoc, errors,
   } = prop;
   let { item } = prop;
   const enchantsList = useSelector(selectCurrentEnchantments);
@@ -345,6 +345,12 @@ function ItemUpdateForm(prop) {
               </label>
             </div>
           </div>
+          {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+            <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+              *
+              {err.msg}
+            </div>
+          )) : ''}
           <button type="submit">update</button>
         </form>
       </div>

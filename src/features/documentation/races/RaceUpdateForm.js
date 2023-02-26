@@ -8,7 +8,7 @@ import { selectCurrentSkills, selectCurrentEffects } from '../documentationSlice
 
 function RaceUpdateForm(prop) {
   const {
-    hide, race, newDoc, update,
+    hide, race, newDoc, update, errors,
   } = prop;
   const skillList = useSelector(selectCurrentSkills);
   const effectsList = useSelector(selectCurrentEffects);
@@ -300,6 +300,12 @@ function RaceUpdateForm(prop) {
             </div>
           </div>
         </section>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Update</button>
       </form>
     </div>

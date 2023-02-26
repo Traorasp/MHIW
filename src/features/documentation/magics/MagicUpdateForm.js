@@ -8,7 +8,7 @@ import { selectCurrentSpells } from '../documentationSlice';
 
 function MagicUpdateForm(prop) {
   const {
-    hide, magic, newDoc, update,
+    hide, magic, newDoc, update, errors,
   } = prop;
   const spellsList = useSelector(selectCurrentSpells);
 
@@ -88,6 +88,12 @@ function MagicUpdateForm(prop) {
             <textarea value={description} onChange={changeDescription} name="description" id="description" required />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Update</button>
       </form>
     </div>

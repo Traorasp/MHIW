@@ -12,7 +12,7 @@ import { useDeleteImageMutation } from '../../image/imageApiSlice';
 
 function MaterialUpdateForm(prop) {
   const {
-    hide, material, newDoc, update, imageUrl,
+    hide, material, newDoc, update, imageUrl, errors,
   } = prop;
   const effectsList = useSelector(selectCurrentEffects);
   const token = useSelector(selectCurrentToken);
@@ -138,6 +138,12 @@ function MaterialUpdateForm(prop) {
               <textarea value={description} onChange={changeDescription} name="description" id="description" required />
             </label>
           </div>
+          {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+            <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+              *
+              {err.msg}
+            </div>
+          )) : ''}
           <button type="submit">Update</button>
         </form>
       </div>

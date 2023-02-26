@@ -10,7 +10,7 @@ import {
 
 function SkillUpdateForm(prop) {
   const {
-    hide, skill, update, newDoc,
+    hide, skill, update, newDoc, errors,
   } = prop;
   const aoeList = useSelector(selectCurrentAoes);
   const effectsList = useSelector(selectCurrentEffects);
@@ -227,6 +227,12 @@ function SkillUpdateForm(prop) {
             <textarea onChange={changeDescription} value={description} name="description" id="description" required />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">update</button>
       </form>
     </div>

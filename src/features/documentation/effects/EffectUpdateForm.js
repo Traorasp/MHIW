@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 function EffectUpdateForm(prop) {
   const {
-    hide, oldEffect, update, newDoc,
+    hide, oldEffect, update, newDoc, errors,
   } = prop;
 
   const [name, setName] = useState(oldEffect.name);
@@ -102,6 +102,12 @@ function EffectUpdateForm(prop) {
             <input type="number" min={1} id="duration" value={duration} onChange={changeDuration} required />
           </label>
         </div>
+        {errors !== undefined && errors.length > 0 ? errors.map((err) => (
+          <div className="red bg-red-500 text-white text-bold" key={err.msg}>
+            *
+            {err.msg}
+          </div>
+        )) : ''}
         <button type="submit">Update</button>
       </form>
     </div>
