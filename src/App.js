@@ -9,6 +9,8 @@ import PersistLogin from './features/auth/PersistLogin';
 import NavBar from './component/NavBar';
 import Documentation from './features/documentation/Documentation';
 import PreFetch from './features/auth/PreFetch';
+import CharacterListPanel from './features/characters/components/CharacterListPanel';
+import CharSheet from './features/characters/components/CharSheet';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
                 <Route element={<PreFetch />}>
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/documentation" element={<Documentation />} />
+                  <Route path="/characters" element={<CharacterListPanel />} />
+                  <Route path="/characters/:charId" element={<CharSheet />} />
                 </Route>
               </Route>
             </Route>

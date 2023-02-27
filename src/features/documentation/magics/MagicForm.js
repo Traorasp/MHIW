@@ -6,47 +6,32 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCreateMagicMutation } from './magicApiSlice';
 import {
-  addDoc, selectCurrentMagics, selectCurrentSpells,
+  addDoc, selectCurrentMagics,
 } from '../documentationSlice';
 
 function MagicForm(prop) {
   const { hide } = prop;
-  const spellsList = useSelector(selectCurrentSpells);
   const magics = useSelector(selectCurrentMagics);
 
   const dispatch = useDispatch();
   const [name, setName] = useState('');
-  const [spells, setSpells] = useState([]);
   const [description, setDescription] = useState('');
   const [errors, setErrors] = useState([]);
 
   const [createMagic] = useCreateMagicMutation();
 
   const changeName = (e) => setName(e.target.value);
-
-  const changeSpells = (e) => {
-    if (spells.length > 0 && spells.find((spell) => e.target.value === spell.id)) {
-      return;
-    }
-    const { text } = e.target.options[e.target.selectedIndex];
-    const spellName = text.split(' :')[0].trim();
-    setSpells([...spells, { id: e.target.value, spellName }]);
-  };
-
   const changeDescription = (e) => setDescription(e.target.value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const newSpells = spells.map((spell) => spell.id);
       const { magic } = await createMagic({
         name,
-        spells: newSpells,
         description,
       }).unwrap();
 
       setName('');
-      setSpells([]);
       setDescription('');
       setErrors([]);
 
@@ -54,12 +39,9 @@ function MagicForm(prop) {
       dispatch(addDoc({ key: 'magics', data: [...prevMagics, magic] }));
       hide();
     } catch (err) {
-      setErrors(err.data.errors.errors);
+      console.log(err);
+      setErrors(err.data.errors);
     }
-  };
-
-  const removeSpell = (e) => {
-    setSpells(spells.length === 1 ? [] : spells.splice(e.target.key, 1));
   };
 
   return (
@@ -72,26 +54,6 @@ function MagicForm(prop) {
             <input type="text" id="name" onChange={changeName} value={name} required />
           </label>
         </div>
-        <div>
-          <label htmlFor="spells">
-            Spells:
-            <select id="spells" name="spells" onClick={changeSpells}>
-              {spellsList[Object.keys(spellsList)[0]].map((spell) => (
-                <option key={spell._id} value={spell._id}>
-                  {spell.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        {spells.length < 1 ? '' : spells.map((spell, i) => (
-          <div key={spell.id}>
-            {' '}
-            {spell.spellName}
-            {' '}
-            <button key={i} type="button" onClick={removeSpell}>X</button>
-          </div>
-        )) }
         <div>
           <label htmlFor="description">
             Description:

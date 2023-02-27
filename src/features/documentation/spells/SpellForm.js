@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCreateSpellMutation } from './spellApiSlice';
 import {
-  addDoc, selectCurrentSpells, selectCurrentAoes, selectCurrentEffects,
+  addDoc, selectCurrentSpells, selectCurrentAoes, selectCurrentEffects, selectCurrentMagics,
 } from '../documentationSlice';
 
 function SpellForm(prop) {
@@ -14,6 +14,7 @@ function SpellForm(prop) {
   const aoeList = useSelector(selectCurrentAoes);
   const effectsList = useSelector(selectCurrentEffects);
   const spells = useSelector(selectCurrentSpells);
+  const magicList = useSelector(selectCurrentMagics);
 
   const dispatch = useDispatch();
   const [name, setName] = useState('');
@@ -25,6 +26,7 @@ function SpellForm(prop) {
   const [knockbackRatio, setKnockbackRatio] = useState(0);
   const [cost, setCost] = useState(1);
   const [range, setRange] = useState(0);
+  const [magics, setMagics] = useState([]);
   const [aoes, setAoe] = useState([]);
   const [effects, setEffects] = useState([]);
   const [description, setDescription] = useState('');
@@ -53,6 +55,14 @@ function SpellForm(prop) {
     const aoeName = text.split(' :')[0].trim();
     setAoe([...aoes, { id: e.target.value, aoeName }]);
   };
+  const changeMagics = (e) => {
+    if (magics.length > 0 && magics.find((magic) => e.target.value === magic.id)) {
+      return;
+    }
+    const { text } = e.target.options[e.target.selectedIndex];
+    const magicName = text.split(' :')[0].trim();
+    setMagics([...magics, { id: e.target.value, magicName }]);
+  };
   const changeEffects = (e) => {
     if (effects.length > 0 && effects.find((effect) => e.target.value === effect.id)) {
       return;
@@ -69,10 +79,12 @@ function SpellForm(prop) {
     try {
       const newAoes = aoes.map((aoe) => aoe.id);
       const newEffects = effects.map((effect) => effect.id);
+      const newMagics = magics.map((magic) => magic.id);
       const damageTypeList = damageType.split(', ');
 
       const { spell } = await createSpell({
         name,
+        magics: newMagics,
         type,
         requirements,
         damageType: damageTypeList,
@@ -89,6 +101,7 @@ function SpellForm(prop) {
       }).unwrap();
 
       setName('');
+      setMagics([]);
       setType('Offensive');
       setRequirements('');
       setDamageType('Force');
@@ -117,6 +130,10 @@ function SpellForm(prop) {
 
   const removeEffect = (e) => {
     setEffects(effects.length === 1 ? [] : effects.splice(e.target.key, 1));
+  };
+
+  const removeMagic = (e) => {
+    setMagics(magics.length === 1 ? [] : magics.splice(e.target.key, 1));
   };
 
   return (
@@ -203,6 +220,27 @@ function SpellForm(prop) {
             </select>
           </label>
         </div>
+        <div>
+          <label htmlFor="magics">
+            Magics:
+            <select id="magics" name="magics" onClick={changeMagics}>
+              {magicList[Object.keys(magicList)[0]].map((magic) => (
+                <option key={magic._id} value={magic._id}>
+                  {magic.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        {magics.length < 1 ? '' : magics.map((magic, i) => (
+          <div key={magic.id}>
+            {' '}
+            {magic.magicName}
+            {' '}
+            <button key={i} type="button" onClick={removeMagic}>X</button>
+          </div>
+        )) }
+        <div />
         <div>
           <label htmlFor="aoes">
             Aoes:

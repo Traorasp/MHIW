@@ -142,7 +142,7 @@ function DocInfoCard(prop) {
     return Object.entries(data);
   };
 
-  const ignoredKeys = ['effects', 'aoes', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStats'];
+  const ignoredKeys = ['magics', 'effects', 'aoes', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStats'];
 
   const info = dataList().map(([key, value]) => {
     if (!title && key === 'name') {
@@ -233,7 +233,7 @@ function DocInfoCard(prop) {
 
   const handleShowDetails = () => displayDetailsForm(!showDetails);
 
-  const ignoreDetails = ['AOEs', 'Talents', 'Effects', 'Enchantments'];
+  const ignoreDetails = ['AOEs', 'Talents', 'Effects', 'Enchantments', 'Magics'];
 
   return (
     <div className="border-2 border-black pl-2">
