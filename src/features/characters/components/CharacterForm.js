@@ -11,8 +11,8 @@ function CharacterForm(prop) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [level, setLevel] = useState(1);
-  const [age, setAge] = useState();
-  const [gender, setGender] = useState();
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
   const [errors, setErrors] = useState([]);
   const user = useSelector(selectCurrentUser);
 
@@ -46,6 +46,7 @@ function CharacterForm(prop) {
       dispatch(setCharacterList({ characters: [...list, { char, url: '' }] }));
       hide();
     } catch (err) {
+      console.log(err);
       setErrors(err.data.errors);
     }
   };

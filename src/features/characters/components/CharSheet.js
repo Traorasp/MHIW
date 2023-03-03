@@ -4,18 +4,22 @@ import { useSelector } from 'react-redux';
 import { useGetCharacterDetailsMutation, useUpdateCharacterMutation } from '../characterApeSlice';
 import { useGetImage } from '../../image/getImage';
 import { selectCurrentToken } from '../../auth/authSlice';
-import ImageForm from '../../../component/imageForm';
+import StatsView from './StatsView';
+import InformationView from './InformationView';
 
 function CharSheet() {
   const params = useParams();
+  const token = useSelector(selectCurrentToken);
+
   const [getDetails, { isLoading }] = useGetCharacterDetailsMutation();
+  const [updateCharacter] = useUpdateCharacterMutation();
+
   const [character, setCharacter] = useState();
   const [icon, setIcon] = useState();
   const [iconUrl, setIconUrl] = useState();
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState();
-  const token = useSelector(selectCurrentToken);
-  const [updateCharacter] = useUpdateCharacterMutation();
+  const [currentView, setCurrentView] = useState('Stats');
 
   const getImageUrl = async (id) => {
     if (id === null || id === undefined) return '';
@@ -85,19 +89,43 @@ function CharSheet() {
     }
   };
 
-  const content = () => (
+  const content = () => {
+    switch (currentView) {
+      case 'Stats':
+        return <StatsView character={character} url={imageUrl} imageChange={handleImageChange} />;
+      case 'Abilities':
+        return '';
+      case 'Inventory':
+        return '';
+      case 'Information':
+        return (
+          <InformationView
+            character={character}
+            url={iconUrl}
+            iconChange={handleIconChange}
+          />
+        );
+      default:
+        return '';
+    }
+  };
+
+  const changeView = (e) => {
+    setCurrentView(e.target.textContent);
+  };
+
+  return isLoading || !character ? <h1>Loading...</h1> : (
     <div>
+      <nav>
+        <button type="button" onClick={changeView}>Stats</button>
+        <button type="button" onClick={changeView}>Abilities</button>
+        <button type="button" onClick={changeView}>Inventory</button>
+        <button type="button" onClick={changeView}>Information</button>
+      </nav>
       <Link to="/characters">Back</Link>
-      <ImageForm hideForm="None" setImageId={handleIconChange} prevImageId={character.charIcon} />
-      <ImageForm hideForm="None" setImageId={handleImageChange} prevImageId={character.charImage} />
-
-      {imageUrl ? <img className="object-scale-down h-36 w-36" src={imageUrl} alt={character.firstName} /> : ''}
-      {iconUrl ? <img className="object-scale-down h-36 w-36" src={iconUrl} alt={`${character.firstName} icon`} /> : ''}
-
+      {currentView ? content() : ''}
     </div>
   );
-  console.log(character);
-  return isLoading || !character ? <h1>Loading...</h1> : content();
 }
 
 export default CharSheet;

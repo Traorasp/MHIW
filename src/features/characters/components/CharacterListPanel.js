@@ -21,7 +21,7 @@ function CharacterListPanel() {
 
   const createCardList = () => characterList.map((character) => (
     <button type="button" onClick={openCharacter} key={character.char._id} id={character.char._id} className="border-black border-2 flex w-[100%] items-center">
-      <img src={character.icon !== '' ? character.icon : profileSVG} alt={`Profile of ${character.char.firstName}`} className="object-scale-down h-24 w-24" />
+      <img src={(character.icon !== '' && character.icon) ? character.icon : profileSVG} alt={`Profile of ${character.char.firstName}`} className="object-scale-down h-24 w-24" />
       <div>
         <h2>
           {character.char.firstName}
