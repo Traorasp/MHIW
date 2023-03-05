@@ -119,7 +119,9 @@ function ItemUpdateForm(prop) {
   };
 
   const removeEnchantment = (e) => {
-    setEnchantments(enchantments.length === 1 ? [] : enchantments.splice(e.target.key, 1));
+    const newEnchantments = enchantments.map((info) => info);
+    newEnchantments.splice(e.target.value, 1);
+    setEnchantments(newEnchantments);
   };
 
   const populateEnchants = async () => {
@@ -291,7 +293,7 @@ function ItemUpdateForm(prop) {
                 {enchantment.enchantmentName}
                 :
                 {enchantment.amount}
-                <button key={i} type="button" onClick={removeEnchantment}>X</button>
+                <button value={i} type="button" onClick={removeEnchantment}>X</button>
               </div>
             )) }
             <div>

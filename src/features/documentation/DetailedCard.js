@@ -13,6 +13,7 @@ import { useGetEnchantmentMutation } from './enchantments/enchantmentApiSlice';
 import { useGetEffectMutation } from './effects/effectApiSlice';
 import { useGetMagicMutation } from './magics/magicApiSlice';
 import { useGetAOEMutation } from './aoes/aoeApiSlice';
+import { useGetClassesMutation } from './classes/classesApieSlice';
 
 /* eslint-disable react/prop-types */
 function DetailedCard(prop) {
@@ -30,6 +31,7 @@ function DetailedCard(prop) {
   const [getEffectDetails] = useGetEffectMutation();
   const [getMagicDetails] = useGetMagicMutation();
   const [getAoeDetails] = useGetAOEMutation();
+  const [getClassDetails] = useGetClassesMutation();
 
   const selectRequest = (requestId, dataType) => {
     switch (dataType) {
@@ -61,6 +63,9 @@ function DetailedCard(prop) {
         return getTalentDetails(requestId).unwrap();
       case 'titles':
         return getTitleDetails(requestId).unwrap();
+      case 'classes':
+      case 'class':
+        return getClassDetails(requestId).unwrap();
       default:
         console.log(dataType);
         return '';

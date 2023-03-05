@@ -60,7 +60,9 @@ function MaterialUpdateForm(prop) {
   };
 
   const removeEffect = (e) => {
-    setEffects(effects.length === 1 ? [] : effects.splice(e.target.key, 1));
+    const newEffects = effects.map((info) => info);
+    newEffects.splice(e.target.value, 1);
+    setEffects(newEffects);
   };
 
   const getImage = () => {
@@ -129,7 +131,7 @@ function MaterialUpdateForm(prop) {
               {' '}
               {effect.effectName}
               {' '}
-              <button key={i} type="button" onClick={removeEffect}>X</button>
+              <button value={i} type="button" onClick={removeEffect}>X</button>
             </div>
           )) }
           <div>

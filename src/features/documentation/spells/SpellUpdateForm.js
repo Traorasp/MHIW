@@ -5,7 +5,7 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
-  selectCurrentSpells, selectCurrentAoes, selectCurrentEffects,
+  selectCurrentSpells, selectCurrentAoes, selectCurrentEffects, selectCurrentMagics,
 } from '../documentationSlice';
 
 function SpellUpdateForm(prop) {
@@ -15,6 +15,7 @@ function SpellUpdateForm(prop) {
   const aoeList = useSelector(selectCurrentAoes);
   const effectsList = useSelector(selectCurrentEffects);
   const spells = useSelector(selectCurrentSpells);
+  const magicList = useSelector(selectCurrentMagics);
 
   const getEffects = () => {
     const list = effectsList[Object.keys(effectsList)[0]]
@@ -42,6 +43,7 @@ function SpellUpdateForm(prop) {
   const [description, setDescription] = useState(spell.description);
   const [charge, setCharge] = useState(spell.charge);
   const [followUp, setFollowUp] = useState(spell.followUp);
+  const [magics, setMagics] = useState(spell.magics);
 
   const changeName = (e) => setName(e.target.value);
   const changeType = (e) => setType(e.target.value);
@@ -62,6 +64,14 @@ function SpellUpdateForm(prop) {
     const aoeName = text.split(' :')[0].trim();
     setAoe([...aoes, { id: e.target.value, aoeName }]);
   };
+  const changeMagics = (e) => {
+    if (magics.length > 0 && magics.find((magic) => e.target.value === magic.id)) {
+      return;
+    }
+    const { text } = e.target.options[e.target.selectedIndex];
+    const magicName = text.split(' :')[0].trim();
+    setMagics([...magics, { id: e.target.value, magicName }]);
+  };
   const changeEffects = (e) => {
     if (effects.length > 0 && effects.find((effect) => e.target.value === effect.id)) {
       return;
@@ -78,10 +88,12 @@ function SpellUpdateForm(prop) {
     const newAoes = aoes.map((aoe) => aoe.id);
     const newEffects = effects.map((effect) => effect.id);
     const damageTypeList = damageType.split(', ');
+    const newMagics = magics.map((magic) => magic.id);
 
     newDoc.id = spell._id;
     newDoc.name = name;
     newDoc.type = type;
+    newDoc.magics = newMagics;
     newDoc.requirements = requirements;
     newDoc.damageType = damageTypeList;
     newDoc.damageRatio = damageRatio;
@@ -99,11 +111,21 @@ function SpellUpdateForm(prop) {
   };
 
   const removeAoe = (e) => {
-    setAoe(aoes.length === 1 ? [] : aoes.splice(e.target.key, 1));
+    const newAoes = aoes.map((info) => info);
+    newAoes.splice(e.target.value, 1);
+    setAoe(newAoes);
   };
 
   const removeEffect = (e) => {
-    setEffects(effects.length === 1 ? [] : effects.splice(e.target.key, 1));
+    const newEffects = effects.map((info) => info);
+    newEffects.splice(e.target.value, 1);
+    setEffects(newEffects);
+  };
+
+  const removeMagic = (e) => {
+    const newMagics = magics.map((info) => info);
+    newMagics.splice(e.target.value, 1);
+    setMagics(newMagics);
   };
 
   return (
@@ -191,6 +213,27 @@ function SpellUpdateForm(prop) {
           </label>
         </div>
         <div>
+          <label htmlFor="magics">
+            Magics:
+            <select id="magics" name="magics" onClick={changeMagics}>
+              {magicList[Object.keys(magicList)[0]].map((magic) => (
+                <option key={magic._id} value={magic._id}>
+                  {magic.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        {magics.length < 1 ? '' : magics.map((magic, i) => (
+          <div key={magic.id}>
+            {' '}
+            {magic.magicName}
+            {' '}
+            <button value={i} type="button" onClick={removeMagic}>X</button>
+          </div>
+        )) }
+        <div />
+        <div>
           <label htmlFor="aoes">
             Aoes:
             <select id="aoes" name="aoes" onClick={changeAoes}>
@@ -215,7 +258,7 @@ function SpellUpdateForm(prop) {
             {' '}
             {aoe.aoeName}
             {' '}
-            <button key={i} type="button" onClick={removeAoe}>X</button>
+            <button value={i} type="button" onClick={removeAoe}>X</button>
           </div>
         )) }
         <div>
@@ -243,7 +286,7 @@ function SpellUpdateForm(prop) {
             {' '}
             {effect.effectName}
             {' '}
-            <button key={i} type="button" onClick={removeEffect}>X</button>
+            <button value={i} type="button" onClick={removeEffect}>X</button>
           </div>
         )) }
         <div>

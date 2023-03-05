@@ -145,7 +145,9 @@ function ItemForm(prop) {
   };
 
   const removeEnchantment = (e) => {
-    setEnchantments(enchantments.length === 1 ? [] : enchantments.splice(e.target.key, 1));
+    const newEnchantments = enchantments.map((info) => info);
+    newEnchantments.splice(e.target.value, 1);
+    setEnchantments(newEnchantments);
   };
 
   const getImage = () => {
@@ -335,7 +337,7 @@ function ItemForm(prop) {
           {enchantments.length < 1 ? '' : enchantments.map((enchantment, i) => (
             <div key={enchantment.id}>
               {enchantment.enchantmentName}
-              <button key={i} type="button" onClick={removeEnchantment}>X</button>
+              <button value={i} type="button" onClick={removeEnchantment}>X</button>
             </div>
           )) }
           <div>

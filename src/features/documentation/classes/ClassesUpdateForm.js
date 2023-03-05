@@ -4,37 +4,37 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  selectCurrentSkills, selectCurrentEffects,
-} from '../documentationSlice';
+import { selectCurrentSkills, selectCurrentEffects } from '../documentationSlice';
 
-function TitleUpdateForm(prop) {
+function ClassesUpdateForm(prop) {
   const {
-    hide, title, newDoc, update, errors,
+    hide, oldClass, newDoc, update, errors,
   } = prop;
   const skillList = useSelector(selectCurrentSkills);
   const effectsList = useSelector(selectCurrentEffects);
 
   const getEffects = () => {
     const list = effectsList[Object.keys(effectsList)[0]]
-      .filter((effect) => (!!title.effects.find((id) => id === effect._id)));
+      .filter((effect) => (!!oldClass.effects.find((id) => id === effect._id)));
     return list.map((effect) => ({ id: effect._id, effectName: effect.name }));
   };
 
   const getSkills = () => {
     const list = skillList[Object.keys(skillList)[0]]
-      .filter((skill) => (!!title.skills.find((id) => id === skill._id)));
+      .filter((skill) => (!!oldClass.skills.find((id) => id === skill._id)));
     return list.map((skill) => ({ id: skill._id, skillName: skill.name }));
   };
 
-  const [name, setName] = useState(title.name);
-  const [level, setLevel] = useState(title.level);
+  const [name, setName] = useState(oldClass.name);
+  const [requirements, setRequirements] = useState(oldClass.requirements);
   const [effects, setEffects] = useState([...getEffects()]);
   const [skills, setSkill] = useState([...getSkills()]);
-  const [description, setDescription] = useState(title.description);
+  const [description, setDescription] = useState(oldClass.description);
+  const [type, setType] = useState(oldClass.type);
 
   const changeName = (e) => setName(e.target.value);
-  const changeLevel = (e) => setLevel(e.target.value);
+  const changeRequirements = (e) => setRequirements(e.target.value);
+  const changeType = (e) => setType(e.target.value);
   const changeSkill = (e) => {
     if (skills.length > 0 && skills.find((skill) => e.target.value === skill.id)) {
       return;
@@ -60,11 +60,12 @@ function TitleUpdateForm(prop) {
     const newSkills = skills.map((skill) => skill.id);
     const newEffects = effects.map((effect) => effect.id);
 
-    newDoc.id = title._id;
+    newDoc.id = oldClass._id;
     newDoc.name = name;
-    newDoc.level = level;
+    newDoc.requirements = requirements;
     newDoc.effects = newEffects;
     newDoc.skills = newSkills;
+    newDoc.type = type;
     newDoc.description = description;
 
     update();
@@ -93,24 +94,35 @@ function TitleUpdateForm(prop) {
           </label>
         </div>
         <div>
-          <label htmlFor="level">
-            Level:
-            <input type="number" id="level" onChange={changeLevel} value={level} required />
+          <label htmlFor="type">
+            Type:
+            <select id="type" name="type" onClick={changeType}>
+              <option value="Warrior">Warrior</option>
+              <option value="Wizard">Wizard</option>
+              <option value="Tank">Tank</option>
+              <option value="Rogue">Rogue</option>
+            </select>
           </label>
         </div>
+
         <div>
           <label htmlFor="skill">
             Skill:
             <select id="skill" name="skill" onClick={changeSkill}>
-              {skillList[Object.keys(skillList)[0]].map((skill) => (
-                <option key={skill._id} value={skill._id}>
-                  {skill.name}
-                  {' '}
-                  :
-                  {' '}
-                  {skill.type}
-                </option>
-              ))}
+              {skillList[Object.keys(skillList)[0]].map((skill) => {
+                if (skill.type === 'Unique' || skill.type === 'Racial') {
+                  return '';
+                }
+                return (
+                  <option key={skill._id} value={skill._id}>
+                    {skill.name}
+                    {' '}
+                    :
+                    {' '}
+                    {skill.type}
+                  </option>
+                );
+              })}
             </select>
           </label>
         </div>
@@ -151,6 +163,12 @@ function TitleUpdateForm(prop) {
           </div>
         )) }
         <div>
+          <label htmlFor="requirements">
+            Requirements:
+            <input type="text" id="requirements" onChange={changeRequirements} value={requirements} required />
+          </label>
+        </div>
+        <div>
           <label htmlFor="description">
             Description:
             <textarea value={description} onChange={changeDescription} name="description" id="description" required />
@@ -162,10 +180,10 @@ function TitleUpdateForm(prop) {
             {err.msg}
           </div>
         )) : ''}
-        <button type="submit">update</button>
+        <button type="submit">Update</button>
       </form>
     </div>
   );
 }
 
-export default TitleUpdateForm;
+export default ClassesUpdateForm;

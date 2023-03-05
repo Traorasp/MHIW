@@ -15,6 +15,7 @@ const documentationSlice = createSlice({
     spells: null,
     talents: null,
     titles: null,
+    classes: null,
   },
   reducers: {
     setDoc: (state, action) => {
@@ -30,6 +31,7 @@ const documentationSlice = createSlice({
         state.spells,
         state.talents,
         state.titles,
+        state.classes,
       ] = action.payload;
     },
     addDoc: (state, action) => {
@@ -54,3 +56,4 @@ export const selectCurrentSkills = (state) => state.doc.skills;
 export const selectCurrentSpells = (state) => state.doc.spells;
 export const selectCurrentTalents = (state) => state.doc.talents;
 export const selectCurrentTitles = (state) => state.doc.titles;
+export const selectCurrentClasses = (state) => state.doc.classes;

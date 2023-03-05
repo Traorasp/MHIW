@@ -16,6 +16,7 @@ import MagicUpdateForm from './magics/MagicUpdateForm';
 import MaterialUpdateForm from './materials/MaterialUpdateForm';
 import RaceUpdateForm from './races/RaceUpdateForm';
 import ItemUpdateForm from './items/ItemUpdateForm';
+import ClassesUpdateForm from './classes/ClassesUpdateForm';
 import DetailedCard from './DetailedCard';
 
 /* eslint-disable react/prop-types */
@@ -43,6 +44,8 @@ function DocInfoCard(prop) {
 
   const update = async () => {
     try {
+      newDoc._id = newDoc.id;
+      delete newDoc.id;
       const result = await docUpdate(newDoc);
       if (result.error) { throw result; }
       const prevList = Array.isArray(list) ? [...list] : [...list[Object.keys(list)[0]]];
@@ -54,8 +57,6 @@ function DocInfoCard(prop) {
       } else {
         index = prevList.findIndex((doc) => doc._id === id);
       }
-      newDoc._id = newDoc.id;
-      delete newDoc.id;
       if (newDoc.measurements) {
         newDoc.measurements = newDoc.measurements.join(', ');
       }
@@ -75,7 +76,7 @@ function DocInfoCard(prop) {
       dispatch(addDoc({ key: listOf.toLowerCase(), data: [...prevList] }));
       updateForm();
     } catch (err) {
-      setErrors(err.error.data.errors.errors);
+      setErrors(err.error.data.errors);
     }
   };
 
@@ -101,6 +102,8 @@ function DocInfoCard(prop) {
         return <TalentUpdateForm errors={errors} talent={data} newDoc={newDoc} update={update} hide={updateForm} />;
       case 'Titles':
         return <TitleUpdateForm errors={errors} title={data} newDoc={newDoc} update={update} hide={updateForm} />;
+      case 'Classes':
+        return <ClassesUpdateForm errors={errors} oldClass={data} newDoc={newDoc} update={update} hide={updateForm} />;
       default:
         return '';
     }

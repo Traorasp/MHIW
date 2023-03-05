@@ -3,38 +3,32 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCreateClassesMutation } from './classesApieSlice';
 import {
-  selectCurrentSkills, selectCurrentEffects,
+  addDoc, selectCurrentClasses, selectCurrentSkills, selectCurrentEffects,
 } from '../documentationSlice';
 
-function TitleUpdateForm(prop) {
-  const {
-    hide, title, newDoc, update, errors,
-  } = prop;
+function ClassesForm(prop) {
+  const { hide } = prop;
   const skillList = useSelector(selectCurrentSkills);
   const effectsList = useSelector(selectCurrentEffects);
+  const classesList = useSelector(selectCurrentClasses);
 
-  const getEffects = () => {
-    const list = effectsList[Object.keys(effectsList)[0]]
-      .filter((effect) => (!!title.effects.find((id) => id === effect._id)));
-    return list.map((effect) => ({ id: effect._id, effectName: effect.name }));
-  };
+  const dispatch = useDispatch();
+  const [name, setName] = useState('');
+  const [requirements, setRequirements] = useState('');
+  const [effects, setEffects] = useState([]);
+  const [skills, setSkill] = useState([]);
+  const [description, setDescription] = useState('');
+  const [type, setType] = useState('Warrior');
+  const [errors, setErrors] = useState([]);
 
-  const getSkills = () => {
-    const list = skillList[Object.keys(skillList)[0]]
-      .filter((skill) => (!!title.skills.find((id) => id === skill._id)));
-    return list.map((skill) => ({ id: skill._id, skillName: skill.name }));
-  };
-
-  const [name, setName] = useState(title.name);
-  const [level, setLevel] = useState(title.level);
-  const [effects, setEffects] = useState([...getEffects()]);
-  const [skills, setSkill] = useState([...getSkills()]);
-  const [description, setDescription] = useState(title.description);
+  const [createClasses] = useCreateClassesMutation();
 
   const changeName = (e) => setName(e.target.value);
-  const changeLevel = (e) => setLevel(e.target.value);
+  const changeRequirements = (e) => setRequirements(e.target.value);
+  const changeType = (e) => setType(e.target.value);
   const changeSkill = (e) => {
     if (skills.length > 0 && skills.find((skill) => e.target.value === skill.id)) {
       return;
@@ -56,18 +50,32 @@ function TitleUpdateForm(prop) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const newSkills = skills.map((skill) => skill.id);
+      const newEffects = effects.map((effect) => effect.id);
+      const { classes } = await createClasses({
+        name,
+        requirements,
+        skill: newSkills,
+        effects: newEffects,
+        type,
+        description,
+      }).unwrap();
 
-    const newSkills = skills.map((skill) => skill.id);
-    const newEffects = effects.map((effect) => effect.id);
-
-    newDoc.id = title._id;
-    newDoc.name = name;
-    newDoc.level = level;
-    newDoc.effects = newEffects;
-    newDoc.skills = newSkills;
-    newDoc.description = description;
-
-    update();
+      setName('');
+      setRequirements(1);
+      setSkill([]);
+      setEffects([]);
+      setDescription('');
+      setErrors([]);
+      console.log(classesList);
+      const prevClassess = classesList.classes ? classesList.classes : classesList.data;
+      dispatch(addDoc({ key: 'classes', data: [...prevClassess, classes] }));
+      hide();
+    } catch (err) {
+      console.log(err);
+      setErrors(err.data.errors);
+    }
   };
 
   const removeSkill = (e) => {
@@ -83,7 +91,7 @@ function TitleUpdateForm(prop) {
   };
 
   return (
-    <div className="fixed bg-black/60 h-full w-full top-[4rem] left-0">
+    <div className="fixed bg-black/60 h-full w-full">
       <form onSubmit={handleSubmit} className="bg-white text-xl p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[60%]">
         <button className="px-2" type="button" onClick={hide}>X</button>
         <div>
@@ -93,24 +101,35 @@ function TitleUpdateForm(prop) {
           </label>
         </div>
         <div>
-          <label htmlFor="level">
-            Level:
-            <input type="number" id="level" onChange={changeLevel} value={level} required />
+          <label htmlFor="type">
+            Type:
+            <select id="type" name="type" onClick={changeType}>
+              <option value="Warrior">Warrior</option>
+              <option value="Wizard">Wizard</option>
+              <option value="Tank">Tank</option>
+              <option value="Rogue">Rogue</option>
+            </select>
           </label>
         </div>
+
         <div>
           <label htmlFor="skill">
             Skill:
             <select id="skill" name="skill" onClick={changeSkill}>
-              {skillList[Object.keys(skillList)[0]].map((skill) => (
-                <option key={skill._id} value={skill._id}>
-                  {skill.name}
-                  {' '}
-                  :
-                  {' '}
-                  {skill.type}
-                </option>
-              ))}
+              {skillList[Object.keys(skillList)[0]].map((skill) => {
+                if (skill.type === 'Unique' || skill.type === 'Racial') {
+                  return '';
+                }
+                return (
+                  <option key={skill._id} value={skill._id}>
+                    {skill.name}
+                    {' '}
+                    :
+                    {' '}
+                    {skill.type}
+                  </option>
+                );
+              })}
             </select>
           </label>
         </div>
@@ -151,9 +170,15 @@ function TitleUpdateForm(prop) {
           </div>
         )) }
         <div>
+          <label htmlFor="requirements">
+            Requirements:
+            <input type="text" id="requirements" onChange={changeRequirements} value={requirements} required />
+          </label>
+        </div>
+        <div>
           <label htmlFor="description">
             Description:
-            <textarea value={description} onChange={changeDescription} name="description" id="description" required />
+            <textarea onChange={changeDescription} name="description" id="description" required />
           </label>
         </div>
         {errors !== undefined && errors.length > 0 ? errors.map((err) => (
@@ -162,10 +187,10 @@ function TitleUpdateForm(prop) {
             {err.msg}
           </div>
         )) : ''}
-        <button type="submit">update</button>
+        <button type="submit">Create</button>
       </form>
     </div>
   );
 }
 
-export default TitleUpdateForm;
+export default ClassesForm;

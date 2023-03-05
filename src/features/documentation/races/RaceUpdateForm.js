@@ -115,11 +115,15 @@ function RaceUpdateForm(prop) {
   };
 
   const removeMainSkill = (e) => {
-    setMainSkills(mainSkills.length === 1 ? [] : mainSkills.splice(e.target.key, 1));
+    const newMainSkills = mainSkills.map((info) => info);
+    newMainSkills.splice(e.target.value, 1);
+    setMainSkills(newMainSkills);
   };
 
   const removeSubSkill = (e) => {
-    setSubSkills(subSkills.length === 1 ? [] : subSkills.splice(e.target.key, 1));
+    const newSubSkills = subSkills.map((info) => info);
+    newSubSkills.splice(e.target.value, 1);
+    setSubSkills(newSubSkills);
   };
 
   return (
@@ -198,7 +202,7 @@ function RaceUpdateForm(prop) {
                 {' '}
                 {skill.skillName}
                 {' '}
-                <button key={i} type="button" onClick={removeMainSkill}>X</button>
+                <button value={i} type="button" onClick={removeMainSkill}>X</button>
               </div>
             )) }
             <div>
@@ -221,7 +225,7 @@ function RaceUpdateForm(prop) {
                 {' '}
                 {skill.skillName}
                 {' '}
-                <button key={i} type="button" onClick={removeSubSkill}>X</button>
+                <button value={i} type="button" onClick={removeSubSkill}>X</button>
               </div>
             )) }
             <div>

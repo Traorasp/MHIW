@@ -16,6 +16,7 @@ import { useGetSpellListMutation } from '../documentation/spells/spellApiSlice';
 import { useGetTalentListMutation } from '../documentation/talents/talentApiSlice';
 import { useGetTitleListMutation } from '../documentation/titles/titleApiSlice';
 import { useGetCharacterListMutation } from '../characters/characterApeSlice';
+import { useGetClassesListMutation } from '../documentation/classes/classesApieSlice';
 import { setDoc } from '../documentation/documentationSlice';
 import { setCharacterList } from '../characters/charactersSlice';
 import { useGetImage } from '../image/getImage';
@@ -37,6 +38,7 @@ function PreFetch() {
   const [getTalents] = useGetTalentListMutation();
   const [getTitles] = useGetTitleListMutation();
   const [getCharacters] = useGetCharacterListMutation();
+  const [getClasses] = useGetClassesListMutation();
 
   const getImageUrl = async (id) => {
     if (id === null || id === undefined) return '';
@@ -76,6 +78,7 @@ function PreFetch() {
       getSpells().unwrap(),
       getTalents().unwrap(),
       getTitles().unwrap(),
+      getClasses().unwrap(),
     ]);
     dispatch(setDoc(doc));
   };

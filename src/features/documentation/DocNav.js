@@ -12,6 +12,7 @@ function DocNav(prop) {
       <button type="button" onClick={select}>Races</button>
       <button type="button" onClick={select}>Spells</button>
       <button type="button" onClick={select}>Skills</button>
+      <button type="button" onClick={select}>Classes</button>
       <button type="button" onClick={select}>Talents</button>
       <button type="button" onClick={select}>Titles</button>
     </nav>

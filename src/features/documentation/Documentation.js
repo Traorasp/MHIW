@@ -14,6 +14,7 @@ import MaterialForm from './materials/MaterialForm';
 import EnchantmentForm from './enchantments/EnchantmentForm';
 import RaceForm from './races/RaceForm';
 import ItemForm from './items/ItemForm';
+import ClassesForm from './classes/ClassesForm';
 
 function Documentation() {
   const [selection, setSelection] = useState('AOEs');
@@ -51,6 +52,8 @@ function Documentation() {
         return <TalentForm hide={displayForm} />;
       case 'Titles':
         return <TitleForm hide={displayForm} />;
+      case 'Classes':
+        return <ClassesForm hide={displayForm} />;
       default:
         return '';
     }

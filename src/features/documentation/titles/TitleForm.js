@@ -75,11 +75,15 @@ function TitleForm(prop) {
   };
 
   const removeSkill = (e) => {
-    setSkill(skills.length === 1 ? [] : skills.splice(e.target.key, 1));
+    const newSkills = skills.map((info) => info);
+    newSkills.splice(e.target.value, 1);
+    setSkill(newSkills);
   };
 
   const removeEffect = (e) => {
-    setEffects(effects.length === 1 ? [] : effects.splice(e.target.key, 1));
+    const newEffects = effects.map((info) => info);
+    newEffects.splice(e.target.value, 1);
+    setEffects(newEffects);
   };
 
   return (
@@ -119,7 +123,7 @@ function TitleForm(prop) {
             {' '}
             {skill.skillName}
             {' '}
-            <button key={i} type="button" onClick={removeSkill}>X</button>
+            <button value={i} type="button" onClick={removeSkill}>X</button>
           </div>
         )) }
         <div>
@@ -147,7 +151,7 @@ function TitleForm(prop) {
             {' '}
             {effect.effectName}
             {' '}
-            <button key={i} type="button" onClick={removeEffect}>X</button>
+            <button value={i} type="button" onClick={removeEffect}>X</button>
           </div>
         )) }
         <div>

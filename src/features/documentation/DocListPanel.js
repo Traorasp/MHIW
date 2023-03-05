@@ -5,7 +5,7 @@ import {
   selectCurrentAoes, selectCurrentEffects, selectCurrentEnchantments,
   selectCurrentItems, selectCurrentMagics, selectCurrentMaterials,
   selectCurrentRaces, selectCurrentSkills, selectCurrentSpells,
-  selectCurrentTalents, selectCurrentTitles,
+  selectCurrentTalents, selectCurrentTitles, selectCurrentClasses,
 } from './documentationSlice';
 import DocInfoCard from './DocInfoCard';
 import { useDeleteAOEMutation, useUpdateAOEMutation } from './aoes/aoeApiSlice';
@@ -19,6 +19,7 @@ import { useDeleteSkillMutation, useUpdateSkillMutation } from './skills/skillAp
 import { useDeleteSpellMutation, useUpdateSpellMutation } from './spells/spellApiSlice';
 import { useDeleteTalentMutation, useUpdateTalentMutation } from './talents/talentApiSlice';
 import { useDeleteTitleMutation, useUpdateTitleMutation } from './titles/titleApiSlice';
+import { useDeleteClassesMutation, useUpdateClassesMutation } from './classes/classesApieSlice';
 
 function DocListPanel(prop) {
   const aoes = useSelector(selectCurrentAoes);
@@ -32,6 +33,7 @@ function DocListPanel(prop) {
   const spells = useSelector(selectCurrentSpells);
   const talents = useSelector(selectCurrentTalents);
   const titles = useSelector(selectCurrentTitles);
+  const classes = useSelector(selectCurrentClasses);
 
   const [deleteAOE] = useDeleteAOEMutation();
   const [deleteEffect] = useDeleteEffectMutation();
@@ -44,6 +46,7 @@ function DocListPanel(prop) {
   const [deleteSpell] = useDeleteSpellMutation();
   const [deleteTalent] = useDeleteTalentMutation();
   const [deleteTitle] = useDeleteTitleMutation();
+  const [deleteClass] = useDeleteClassesMutation();
 
   const [updateAOE] = useUpdateAOEMutation();
   const [updateEffect] = useUpdateEffectMutation();
@@ -55,6 +58,7 @@ function DocListPanel(prop) {
   const [updateSpell] = useUpdateSpellMutation();
   const [updateTalent] = useUpdateTalentMutation();
   const [updateTitle] = useUpdateTitleMutation();
+  const [updateClass] = useUpdateClassesMutation();
 
   const { listOf } = prop;
   const [list, setList] = useState(aoes);
@@ -97,6 +101,9 @@ function DocListPanel(prop) {
       case 'Titles':
         deleteTitle(id);
         break;
+      case 'Classes':
+        deleteClass(id);
+        break;
       default:
     }
   };
@@ -125,6 +132,8 @@ function DocListPanel(prop) {
         return updateTalent(newDoc);
       case 'Titles':
         return updateTitle(newDoc);
+      case 'Classes':
+        return updateClass(newDoc);
       default:
     }
     return '';
@@ -165,6 +174,9 @@ function DocListPanel(prop) {
       case 'Titles':
         setList(titles);
         break;
+      case 'Classes':
+        setList(classes);
+        break;
       default:
     }
   };
@@ -174,7 +186,7 @@ function DocListPanel(prop) {
     setNewList(null);
   }, [listOf, aoes, effects, enchants, items,
     magics, materials, races, skills, spells,
-    talents, titles]);
+    talents, titles, classes]);
 
   const selectData = (data) => {
     if (data.material) {

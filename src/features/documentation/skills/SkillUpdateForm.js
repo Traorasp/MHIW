@@ -87,12 +87,16 @@ function SkillUpdateForm(prop) {
     update();
   };
 
-  const removeAoe = (e) => {
-    setAoe(aoes.length === 1 ? [] : aoes.splice(e.target.key, 1));
+  const removeEffect = (e) => {
+    const newEffects = effects.map((info) => info);
+    newEffects.splice(e.target.value, 1);
+    setEffects(newEffects);
   };
 
-  const removeEffect = (e) => {
-    setEffects(effects.length === 1 ? [] : effects.splice(e.target.key, 1));
+  const removeAoe = (e) => {
+    const newAoes = aoes.map((info) => info);
+    newAoes.splice(e.target.value, 1);
+    setAoe(newAoes);
   };
 
   return (
@@ -194,7 +198,7 @@ function SkillUpdateForm(prop) {
             {' '}
             {aoe.aoeName}
             {' '}
-            <button key={i} type="button" onClick={removeAoe}>X</button>
+            <button value={i} type="button" onClick={removeAoe}>X</button>
           </div>
         )) }
         <div>
@@ -218,7 +222,7 @@ function SkillUpdateForm(prop) {
             {' '}
             {effect.effectName}
             {' '}
-            <button key={i} type="button" onClick={removeEffect}>X</button>
+            <button value={i} type="button" onClick={removeEffect}>X</button>
           </div>
         )) }
         <div>

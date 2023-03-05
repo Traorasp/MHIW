@@ -124,16 +124,22 @@ function SpellForm(prop) {
     }
   };
 
-  const removeAoe = (e) => {
-    setAoe(aoes.length === 1 ? [] : aoes.splice(e.target.key, 1));
+  const removeEffect = (e) => {
+    const newEffects = effects.map((info) => info);
+    newEffects.splice(e.target.value, 1);
+    setEffects(newEffects);
   };
 
-  const removeEffect = (e) => {
-    setEffects(effects.length === 1 ? [] : effects.splice(e.target.key, 1));
+  const removeAoe = (e) => {
+    const newAoes = aoes.map((info) => info);
+    newAoes.splice(e.target.value, 1);
+    setAoe(newAoes);
   };
 
   const removeMagic = (e) => {
-    setMagics(magics.length === 1 ? [] : magics.splice(e.target.key, 1));
+    const newMagics = magics.map((info) => info);
+    newMagics.splice(e.target.value, 1);
+    setMagics(newMagics);
   };
 
   return (
@@ -237,7 +243,7 @@ function SpellForm(prop) {
             {' '}
             {magic.magicName}
             {' '}
-            <button key={i} type="button" onClick={removeMagic}>X</button>
+            <button value={i} type="button" onClick={removeMagic}>X</button>
           </div>
         )) }
         <div />
@@ -266,7 +272,7 @@ function SpellForm(prop) {
             {' '}
             {aoe.aoeName}
             {' '}
-            <button key={i} type="button" onClick={removeAoe}>X</button>
+            <button value={i} type="button" onClick={removeAoe}>X</button>
           </div>
         )) }
         <div>
@@ -294,7 +300,7 @@ function SpellForm(prop) {
             {' '}
             {effect.effectName}
             {' '}
-            <button key={i} type="button" onClick={removeEffect}>X</button>
+            <button value={i} type="button" onClick={removeEffect}>X</button>
           </div>
         )) }
         <div>
