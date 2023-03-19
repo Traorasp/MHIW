@@ -2,12 +2,12 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import ImageForm from '../../../component/imageForm';
+import ImageForm from '../../../../component/imageForm';
 import {
   selectCurrentTitles, selectCurrentMagics,
   selectCurrentRaces, selectCurrentClasses,
-} from '../../documentation/documentationSlice';
-import { useUpdateCharacterMutation } from '../characterApeSlice';
+} from '../../../documentation/documentationSlice';
+import { useUpdateCharacterMutation } from '../../characterApeSlice';
 
 function InformationView(prop) {
   const { character, url, iconChange } = prop;
@@ -327,12 +327,12 @@ function InformationView(prop) {
         {' '}
         {edit ? <input type="text" onChange={changeAge} name="age" id="age" value={age} /> : age}
       </div>
-      <div>
+      <div className="row-start-[7] col-span-2">
         Description:
         {' '}
         {edit ? <textarea onChange={changeDescription} value={description} /> : description}
       </div>
-      <div className="row-start-[8]">
+      <div className="row-start-[8] col-span-2">
         Background:
         {' '}
         {edit ? <textarea onChange={changeBackground} value={background} /> : background}

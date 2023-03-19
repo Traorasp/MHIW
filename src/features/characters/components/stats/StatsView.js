@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import { useState } from 'react';
-import ImageForm from '../../../component/imageForm';
-import { useUpdateCharacterMutation } from '../characterApeSlice';
+import ImageForm from '../../../../component/imageForm';
+import { useUpdateCharacterMutation } from '../../characterApeSlice';
 
 function StatsView(prop) {
   const { character, url, imageChange } = prop;

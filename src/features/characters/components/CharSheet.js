@@ -4,8 +4,9 @@ import { useSelector } from 'react-redux';
 import { useGetCharacterDetailsMutation, useUpdateCharacterMutation } from '../characterApeSlice';
 import { useGetImage } from '../../image/getImage';
 import { selectCurrentToken } from '../../auth/authSlice';
-import StatsView from './StatsView';
-import InformationView from './InformationView';
+import StatsView from './stats/StatsView';
+import InformationView from './information/InformationView';
+import CharacterInvenory from './inventory/CharacterInventory';
 
 function CharSheet() {
   const params = useParams();
@@ -96,7 +97,7 @@ function CharSheet() {
       case 'Abilities':
         return '';
       case 'Inventory':
-        return '';
+        return <CharacterInvenory update={getCharacterDetails} character={character} />;
       case 'Information':
         return (
           <InformationView

@@ -85,7 +85,6 @@ function DetailedCard(prop) {
   }, []);
 
   const referenceTypes = ['magics', 'effects', 'aoes', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStats', 'skill', 'spell'];
-
   const detailsBar = () => Object.entries(data[Object.keys(data)[0]]).map(([key, value]) => {
     if (value === '' || key === 'image' || value === null || value === undefined || value === 0 || key.substring(0, 1) === '_' || (Array.isArray(value) && (value.length === 0 || value[0] === ''))) {
       return '';
