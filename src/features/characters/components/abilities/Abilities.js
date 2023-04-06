@@ -1,18 +1,24 @@
 import { useState } from 'react';
 import Skillsview from './SkillsView';
+import ClassView from './ClassView';
 
 function Abilities(prop) {
-  const { character, update } = prop;
-  const [selection, setSelection] = useState('Skills');
+  const {
+    character, update, abilityOn, moveAbilityOn,
+  } = prop;
+  const [selection, setSelection] = useState(abilityOn);
 
-  const changeSelection = (e) => setSelection(e.target.textContent);
+  const changeSelection = (e) => {
+    moveAbilityOn(e.target.textContent);
+    setSelection(e.target.textContent);
+  };
 
   const selectedView = () => {
     switch (selection) {
       case 'Skills':
         return <Skillsview character={character} update={update} />;
       case 'Class':
-        return '';
+        return <ClassView character={character} update={update} />;
       case 'Titles':
         return '';
       case 'Race':

@@ -11,7 +11,7 @@ function Skillsview(prop) {
   const { character, update } = prop;
 
   const categories = ['Name', 'Type', 'Priority', 'Cooldown', 'Duration', 'Stat', 'Roll', 'Range', 'Aoes', 'Effects', 'Description'];
-  const data = useSelector(selectCurrentSkills).skills.filter((skill) => skill.type !== 'Charisma' && skill.type !== 'Will' && skill.type !== 'Intimidation');
+  const data = useSelector(selectCurrentSkills).skills.filter((skill) => skill.type !== 'Charisma' && skill.type !== 'Will' && skill.type !== 'Intimidation' && skill.type !== 'Racial');
   const skills = character.skills ? character.skills : [];
   const [skillsShown, setSkillsShown] = useState(skills);
   const [showForm, setShowForm] = useState(false);
@@ -49,7 +49,7 @@ function Skillsview(prop) {
       setShowError(true);
       setTimeout(() => {
         setShowError(false);
-      }, 5000);
+      }, 3000);
       return;
     }
     updateSkills([...skills, id]);

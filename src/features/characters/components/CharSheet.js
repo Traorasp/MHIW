@@ -22,6 +22,9 @@ function CharSheet() {
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState();
   const [currentView, setCurrentView] = useState('Stats');
+  const [abilityOn, setAbilityOn] = useState('Skills');
+
+  const handleAbilityOn = (target) => setAbilityOn(target);
 
   const getImageUrl = async (id) => {
     if (id === null || id === undefined) return '';
@@ -96,7 +99,14 @@ function CharSheet() {
       case 'Stats':
         return <StatsView character={character} url={imageUrl} imageChange={handleImageChange} />;
       case 'Abilities':
-        return <Abilities update={getCharacterDetails} character={character} />;
+        return (
+          <Abilities
+            abilityOn={abilityOn}
+            moveAbilityOn={handleAbilityOn}
+            update={getCharacterDetails}
+            character={character}
+          />
+        );
       case 'Inventory':
         return <CharacterInvenory update={getCharacterDetails} character={character} />;
       case 'Information':
