@@ -10,6 +10,7 @@ import DetailsBtn from './DetailsBtn';
 function CharacterInvenory(prop) {
   const { character, update } = prop;
 
+  const categories = ['Name', 'Rarity', 'Level', 'Cost', 'Type'];
   const itemList = useSelector(selectCurrentItems);
   const [equipError, setEquipError] = useState(false);
   const [items, setItems] = useState([...character.inventory]);
@@ -262,7 +263,7 @@ function CharacterInvenory(prop) {
           </div>
         )) }
       </div>
-      {showForm ? <ListDisplay listOf="items" hide={handleShowForm} data={itemList} addItem={addItem} /> : ''}
+      {showForm ? <ListDisplay categories={categories} listOf="items" hide={handleShowForm} data={itemList} addItem={addItem} /> : ''}
       {inventory()}
       {equipError ? (
         <div className="absolue left-2 bottom-2 bg-red-600 text-white">

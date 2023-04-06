@@ -7,6 +7,7 @@ import { selectCurrentToken } from '../../auth/authSlice';
 import StatsView from './stats/StatsView';
 import InformationView from './information/InformationView';
 import CharacterInvenory from './inventory/CharacterInventory';
+import Abilities from './abilities/Abilities';
 
 function CharSheet() {
   const params = useParams();
@@ -95,7 +96,7 @@ function CharSheet() {
       case 'Stats':
         return <StatsView character={character} url={imageUrl} imageChange={handleImageChange} />;
       case 'Abilities':
-        return '';
+        return <Abilities update={getCharacterDetails} character={character} />;
       case 'Inventory':
         return <CharacterInvenory update={getCharacterDetails} character={character} />;
       case 'Information':

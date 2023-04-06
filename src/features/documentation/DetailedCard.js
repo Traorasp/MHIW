@@ -140,7 +140,6 @@ function DetailedCard(prop) {
     }
     return listOf.substring(0, 1).toUpperCase() + listOf.substring(1);
   };
-
   return (
     <div id={`${id}-${count}`} className={count === 0 ? '' : 'border-2 border-black pl-2'}>
       <h3 className="font-bold">{getTitleContent()}</h3>

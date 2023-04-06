@@ -8,6 +8,7 @@ function InventoryCard(prop) {
   } = prop;
 
   const [details, showDetails] = useState(false);
+  const [hasDetails, setHasDetails] = useState(false);
 
   const changeDetails = () => showDetails(!details);
   const ignoredKeys = ['_id', '__v', 'material', 'image', 'enchantments', 'subStats', 'name'];
@@ -22,7 +23,7 @@ function InventoryCard(prop) {
     <div className={count === 1 ? 'border-2 border-black' : ''} key={itemId()}>
       {dataList.name}
       {Object.entries(dataList).map(([key, value]) => {
-        if (value.length < 1 || ignoredKeys.find((ignore) => ignore === key)) {
+        if (key >= 0 || value.length < 1 || ignoredKeys.find((ignore) => ignore === key)) {
           return '';
         }
         if (key === 'url' || key === 'item') {
@@ -32,6 +33,9 @@ function InventoryCard(prop) {
           return <InventoryCard key={key} dataList={value} count={count + 1} />;
         }
         if (typeof value === 'object') {
+          if (!hasDetails) {
+            setHasDetails(true);
+          }
           return <InventoryCard key={key} dataList={value} count={count + 1} />;
         }
         return (
@@ -41,7 +45,8 @@ function InventoryCard(prop) {
           </div>
         );
       })}
-      <button type="button" onClick={changeDetails}>Details</button>
+      {count === 1 && hasDetails ? <button className="active:bg-yellow-400" type="button" onClick={changeDetails}>Details</button> : ''}
+      {count === 1 ? <button type="button" value={itemId()} onClick={addItem}>+</button> : ''}
       {count === 1 && details
         ? (
           <DetailedCard
@@ -50,7 +55,6 @@ function InventoryCard(prop) {
             listOf={listOf}
           />
         ) : ''}
-      {count === 1 ? <button type="button" value={itemId()} onClick={addItem}>+</button> : ''}
     </div>
   );
 }

@@ -32,7 +32,7 @@ function DetailsBtn(prop) {
   const getDetails = (info) => (
     <div className={info._id ? 'border-2 border-black' : ''} key={id + info}>
       {Object.entries(info).map(([key, value]) => {
-        if (value.length < 1 || ignoredKeys.find((ignore) => ignore === key)) {
+        if (key >= 0 || value.length < 1 || ignoredKeys.find((ignore) => ignore === key)) {
           return '';
         }
         if (typeof value === 'object') {
