@@ -53,7 +53,6 @@ function ClassesForm(prop) {
     try {
       const newSkills = skills.map((skill) => skill.id);
       const newEffects = effects.map((effect) => effect.id);
-      console.log(newSkills);
       const { classes } = await createClasses({
         name,
         requirements,

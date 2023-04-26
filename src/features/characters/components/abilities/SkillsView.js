@@ -20,7 +20,7 @@ function Skillsview(prop) {
 
   useEffect(() => {
     setSkillsShown(skills);
-  });
+  }, [skills]);
 
   const handleShowForm = () => setShowForm(!showForm);
   const updateSkills = async (newSkills) => {

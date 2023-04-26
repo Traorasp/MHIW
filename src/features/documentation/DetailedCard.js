@@ -56,6 +56,7 @@ function DetailedCard(prop) {
         return getSpellDetails(requestId).unwrap();
       case 'skills':
       case 'skill':
+      case 'traits':
       case 'mainskills':
       case 'subskills':
         return getSkillDetails(requestId).unwrap();

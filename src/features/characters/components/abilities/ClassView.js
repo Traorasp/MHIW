@@ -20,7 +20,7 @@ function ClassView(prop) {
 
   useEffect(() => {
     setClassessShown(classes);
-  });
+  }, [classes]);
 
   const handleShowForm = () => setShowForm(!showForm);
   const updateClasses = async (newClasses) => {

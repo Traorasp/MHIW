@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Skillsview from './SkillsView';
 import ClassView from './ClassView';
 import TitlesView from './TitlesView';
+import TraitsView from './TraitsView';
 
 function Abilities(prop) {
   const {
@@ -29,7 +30,7 @@ function Abilities(prop) {
       case 'Magics':
         return '';
       case 'Traits':
-        return '';
+        return <TraitsView character={character} update={update} />;
       default:
         return '';
     }
@@ -41,10 +42,10 @@ function Abilities(prop) {
         <button type="button" onClick={changeSelection}>Skills</button>
         <button type="button" onClick={changeSelection}>Class</button>
         <button type="button" onClick={changeSelection}>Titles</button>
+        <button type="button" onClick={changeSelection}>Traits</button>
+        <button type="button" onClick={changeSelection}>Magics</button>
         <button type="button" onClick={changeSelection}>Race</button>
         <button type="button" onClick={changeSelection}>Talents</button>
-        <button type="button" onClick={changeSelection}>Magics</button>
-        <button type="button" onClick={changeSelection}>Traits</button>
       </nav>
       {selectedView()}
     </div>

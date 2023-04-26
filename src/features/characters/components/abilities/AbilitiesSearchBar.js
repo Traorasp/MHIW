@@ -23,6 +23,12 @@ function AbilitiesSearchBar(prop) {
           }
           break;
         case false:
+          if (typeof ability[searchType] === 'number') {
+            if (`${ability[searchType]}`.search(expression) !== -1) {
+              return true;
+            }
+            return false;
+          }
           if (ability[searchType].toLowerCase().search(expression) !== -1) {
             return true;
           }
@@ -32,7 +38,6 @@ function AbilitiesSearchBar(prop) {
       }
       return false;
     });
-
     setSelectedAbilities(selectedAbilities);
   };
 
