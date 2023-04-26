@@ -53,10 +53,11 @@ function ClassesForm(prop) {
     try {
       const newSkills = skills.map((skill) => skill.id);
       const newEffects = effects.map((effect) => effect.id);
+      console.log(newSkills);
       const { classes } = await createClasses({
         name,
         requirements,
-        skill: newSkills,
+        skills: newSkills,
         effects: newEffects,
         type,
         description,
@@ -68,7 +69,6 @@ function ClassesForm(prop) {
       setEffects([]);
       setDescription('');
       setErrors([]);
-      console.log(classesList);
       const prevClassess = classesList.classes ? classesList.classes : classesList.data;
       dispatch(addDoc({ key: 'classes', data: [...prevClassess, classes] }));
       hide();

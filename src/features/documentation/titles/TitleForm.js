@@ -54,7 +54,7 @@ function TitleForm(prop) {
       const { title } = await createTitle({
         name,
         level,
-        skill: newSkills,
+        skills: newSkills,
         effects: newEffects,
         description,
       }).unwrap();

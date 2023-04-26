@@ -60,6 +60,8 @@ function ClassesUpdateForm(prop) {
     const newSkills = skills.map((skill) => skill.id);
     const newEffects = effects.map((effect) => effect.id);
 
+    console.log(skills);
+
     newDoc.id = oldClass._id;
     newDoc.name = name;
     newDoc.requirements = requirements;

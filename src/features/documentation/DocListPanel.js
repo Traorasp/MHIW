@@ -305,7 +305,7 @@ function DocListPanel(prop) {
   }, [list]);
 
   return (
-    <div>
+    <div className="overflow-auto">
       <label htmlFor="searchBar">
         Search
         <input id="searchBar" type="text" name="search" onChange={changeSearch} value={search} />
