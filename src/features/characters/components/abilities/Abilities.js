@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Skillsview from './SkillsView';
 import ClassView from './ClassView';
+import TitlesView from './TitlesView';
 
 function Abilities(prop) {
   const {
@@ -20,7 +21,7 @@ function Abilities(prop) {
       case 'Class':
         return <ClassView character={character} update={update} />;
       case 'Titles':
-        return '';
+        return <TitlesView character={character} update={update} />;
       case 'Race':
         return '';
       case 'Talents':
