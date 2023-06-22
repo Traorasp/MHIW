@@ -64,7 +64,7 @@ function TraitsView(prop) {
 
   const displaytraits = () => traitsShown.map((trait, index) => (
     <div className="border-2 border-black" key={trait._id}>
-      {`${trait.name}  LV ${trait.level} `}
+      {`${trait.name} ${trait.priority} `}
       <button type="button" value={index} onClick={removeTrait}>Remove</button>
       <DetailsBtn
         id={trait._id}
