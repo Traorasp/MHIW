@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react';
@@ -11,7 +12,8 @@ function TalentForm(prop) {
 
   const dispatch = useDispatch();
   const [name, setName] = useState('');
-  const [parent, setParent] = useState('Space');
+  const [talent, setTalent] = useState('Space');
+  const [parent, setParent] = useState([]);
   const [priority, setPriority] = useState('Action');
   const [measurements, setMeasurements] = useState('');
   const [castTime, setCastTime] = useState(0);
@@ -24,7 +26,7 @@ function TalentForm(prop) {
   const [createTalent] = useCreateTalentMutation();
 
   const changeName = (e) => setName(e.target.value);
-  const changeParent = (e) => setParent(e.target.value);
+  const changeTalent = (e) => setTalent(e.target.value);
   const changePriority = (e) => setPriority(e.target.value);
   const changeCastTime = (e) => setCastTime(e.target.value);
   const changeDuration = (e) => setDuration(e.target.value);
@@ -33,14 +35,32 @@ function TalentForm(prop) {
   const changeDescription = (e) => setDescription(e.target.value);
   const changeMeasurements = (e) => setMeasurements(e.target.value);
 
+  const changeParent = (e) => {
+    if (parent.length > 0 && parent.find((parentTalent) => e.target.value === parentTalent.id)) {
+      return;
+    }
+    const { text } = e.target.options[e.target.selectedIndex];
+    const parentName = text.split(' :')[0].trim();
+    setParent([...parent, { id: e.target.value, parentName }]);
+  };
+
+  const removeParent = (e) => {
+    const newParents = parent.map((info) => info);
+    newParents.splice(e.target.value, 1);
+    setParent(newParents);
+  };
+
   const handleSubmit = async (e) => {
     const measurementsList = measurements.split(', ');
     e.preventDefault();
+    let parentsList = parent.map((data) => data.id);
+    parentsList = Array.isArray(parentsList) ? parentsList : [parentsList];
     try {
       const { talent: newTalent } = await createTalent({
         name,
-        parent,
+        talent,
         priority,
+        parent: parentsList,
         measurements: measurementsList,
         castTime,
         duration,
@@ -50,7 +70,7 @@ function TalentForm(prop) {
       }).unwrap();
 
       setName('');
-      setParent('Space');
+      setTalent('Space');
       setPriority('Action');
       setMeasurements('');
       setCastTime(0);
@@ -64,7 +84,11 @@ function TalentForm(prop) {
       dispatch(addDoc({ key: 'talents', data: [...prevTalents, newTalent] }));
       hide();
     } catch (err) {
-      setErrors(err.data.errors.errors);
+      if (err.data) {
+        setErrors(err.data);
+      } else {
+        setErrors(err.data.errors.errors);
+      }
     }
   };
 
@@ -79,9 +103,9 @@ function TalentForm(prop) {
           </label>
         </div>
         <div>
-          <label htmlFor="parent">
-            Parent:
-            <select id="parent" name="parent" onChange={changeParent} required>
+          <label htmlFor="talent">
+            Talent:
+            <select id="talent" name="talent" onChange={changeTalent} required>
               <option value="Space">Space</option>
               <option value="Eagle Eye">Eagle Eye</option>
               <option value="Energy">Energy</option>
@@ -99,6 +123,26 @@ function TalentForm(prop) {
             </select>
           </label>
         </div>
+        <div>
+          <label htmlFor="parents">
+            Parents:
+            <select id="parent" name="parent" onChange={changeParent}>
+              {talents[Object.keys(talents)[0]].map((parentType) => (
+                <option key={parentType._id} value={parentType._id}>
+                  {parentType.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        {parent.length < 1 ? '' : parent.map((pTalent, i) => (
+          <div key={pTalent.id}>
+            {' '}
+            {pTalent.parentName}
+            {' '}
+            <button value={i} type="button" onClick={removeParent}>X</button>
+          </div>
+        )) }
         <div>
           <label htmlFor="priority">
             Priority:

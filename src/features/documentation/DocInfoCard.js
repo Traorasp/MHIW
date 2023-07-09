@@ -145,7 +145,7 @@ function DocInfoCard(prop) {
     return Object.entries(data);
   };
 
-  const ignoredKeys = ['magics', 'effects', 'aoes', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStats'];
+  const ignoredKeys = ['parent', 'magics', 'effects', 'aoes', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStats'];
 
   const info = dataList().map(([key, value]) => {
     if (!title && key === 'name') {

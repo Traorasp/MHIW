@@ -10,7 +10,9 @@ import {
 import { useUpdateCharacterMutation } from '../../characterApeSlice';
 
 function InformationView(prop) {
-  const { character, url, iconChange } = prop;
+  const {
+    character, url, iconChange, update,
+  } = prop;
 
   const [updateCharacter, { isLoading }] = useUpdateCharacterMutation();
 
@@ -46,6 +48,22 @@ function InformationView(prop) {
   const [description, setDescription] = useState(character.description);
   const [background, setBackground] = useState(character.background);
 
+  useEffect(() => {
+    setFirstName(character.firstName);
+    setLastName(character.lastName);
+    setTitles(getTitles());
+    setLevel(character.level);
+    setClasses(getClasses());
+    setMagics(getMagics());
+    setTalents(character.talentTypes);
+    setRace(character.race ? character.race : '');
+    setNationality(character.nationality ? character.nationality : '');
+    setGender(character.gender);
+    setAge(character.age);
+    setDescription(character.description);
+    setBackground(character.background);
+  }, [character]);
+
   const clickedEditButton = async () => {
     if (edit) {
       try {
@@ -75,6 +93,7 @@ function InformationView(prop) {
 
         await updateCharacter(newChar);
         setEdit(!edit);
+        await update();
       } catch (err) {
         console.log(err);
       }

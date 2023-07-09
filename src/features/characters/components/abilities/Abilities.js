@@ -5,6 +5,7 @@ import TitlesView from './TitlesView';
 import TraitsView from './TraitsView';
 import Spellsview from './SpellsView';
 import RaceView from './RaceView';
+import TalentsView from './TalentsView';
 
 function Abilities(prop) {
   const {
@@ -28,7 +29,7 @@ function Abilities(prop) {
       case 'Race':
         return <RaceView character={character} update={update} />;
       case 'Talents':
-        return '';
+        return <TalentsView character={character} update={update} />;
       case 'Magics':
         return <Spellsview character={character} update={update} />;
       case 'Traits':

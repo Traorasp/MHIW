@@ -12,14 +12,13 @@ function RaceSkillCard(props) {
     const change = +e.target.value;
     const cap = main ? 5 : 3;
     if ((change > 0 && level === cap) || (change < 0 && level === 0)) {
-      console.log('wa');
       return;
     }
     changeLevel(index, change);
   };
 
   const showDetails = () => setDetails(!details);
-  console.log(skill);
+
   return (
     <main className="bg-slate-400 border-black border-2">
       <h1>{skill.name}</h1>

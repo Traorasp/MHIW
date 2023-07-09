@@ -74,10 +74,10 @@ function RaceView(prop) {
       {subSkills.map((skill, i) => (
         <RaceSkillCard
           skill={skill}
-          level={character.raceSkills[i + 4]}
+          level={character.raceSkills[i + 3]}
           main={false}
           changeLevel={changeLevel}
-          index={i + 4}
+          index={i + 3}
           key={skill._id}
         />
       ))}

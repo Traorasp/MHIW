@@ -114,6 +114,7 @@ function CharSheet() {
           <InformationView
             character={character}
             url={iconUrl}
+            update={getCharacterDetails}
             iconChange={handleIconChange}
           />
         );
