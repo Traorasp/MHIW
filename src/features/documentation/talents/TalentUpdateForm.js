@@ -58,7 +58,7 @@ function TalentUpdateForm(prop) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const measurementsList = measurements.split(', ');
+    const measurementsList = measurements === '' ? [] : measurements.split(', ');
     let parentsList = parent.map((data) => data.id);
     parentsList = Array.isArray(parentsList) ? parentsList : [parentsList];
 
