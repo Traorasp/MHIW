@@ -49,7 +49,7 @@ function Skillsview(prop) {
       setShowError(true);
       setTimeout(() => {
         setShowError(false);
-      }, 3000);
+      }, 4000);
       return;
     }
     updateSkills([...skills, id]);

@@ -1,19 +1,89 @@
 /* eslint-disable no-underscore-dangle */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectCurrentTalents } from '../../../documentation/documentationSlice';
+import { useUpdateCharacterMutation } from '../../characterApeSlice';
 import TalentTree from './TalentTree';
 
 /* eslint-disable react/prop-types */
 function TalentsView(props) {
   const { character, update } = props;
-
-  const talentList = useSelector(selectCurrentTalents).talent;
+  let talentList = useSelector(selectCurrentTalents);
+  talentList = talentList.talent ? talentList.talent : talentList.data;
 
   const { talentTypes } = character;
 
+  const filterTalents = (index) => {
+    const mainTalent = talentTypes[index];
+    return character.talents.filter((talent) => mainTalent === talent.talent);
+  };
+
   const [talentShown, setTalentShown] = useState(null);
   const [parentShown, setParentShown] = useState([]);
+  const [talentsOwned, setTalentsOwned] = useState(character.talentTypes.map(
+    (type, i) => filterTalents(i),
+  ));
+  const [showError, setShowError] = useState(false);
+  const [updateCharacter, { isLoading }] = useUpdateCharacterMutation();
+
+  const showErrorText = (err) => {
+    setShowError(err);
+    setTimeout(() => {
+      setShowError(false);
+    }, 5000);
+  };
+
+  useEffect(() => {
+    setTalentsOwned(character.talentTypes.map(
+      (type, i) => filterTalents(i),
+    ));
+  }, [character.talents]);
+
+  // eslint-disable-next-line no-unused-vars
+  const updateCharacterTalents = async (ownedTalents) => {
+    try {
+      if (isLoading) return;
+      const newChar = {};
+      Object.entries(character).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          newChar[key] = [...value];
+        } else {
+          newChar[key] = value;
+        }
+      });
+      const newTalents = [];
+      ownedTalents.forEach((talentTypeList) => {
+        newTalents.push(...talentTypeList);
+      });
+      newChar.talents = newTalents;
+      await updateCharacter(newChar);
+      update();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+  }, [talentsOwned]);
+
+  const changeTalentsOwned = (talents, ind) => {
+    const newTalents = talentsOwned.map((talentTree, i) => {
+      if (i === ind) {
+        return talents;
+      }
+      return talentTree;
+    });
+
+    const totalPoints = newTalents.map(
+      (talentTypeList) => talentTypeList.length,
+    ).reduce((a, b) => a + b, 0);
+    if (totalPoints <= character.level) {
+      setTalentsOwned(newTalents);
+      updateCharacterTalents(newTalents);
+      return;
+    }
+    showErrorText('Not enought talent points');
+  };
 
   const showTalent = (talent, parentNames) => {
     setTalentShown(talent);
@@ -67,11 +137,6 @@ function TalentsView(props) {
 
   const changeTalents = () => {
     update();
-  };
-
-  const filterTalents = (index) => {
-    const mainTalent = talentTypes[index];
-    return character.talents.filter((talent) => mainTalent === talent.talent);
   };
 
   const clearDetails = () => {
@@ -150,10 +215,18 @@ function TalentsView(props) {
           key={talentTypes[i]}
           mainTalent={talentTypes[i]}
           talentTree={tree}
-          talents={filterTalents(i)}
+          talents={talentsOwned[i]}
           showTalent={showTalent}
+          updateTalents={changeTalentsOwned}
+          treeIndex={i}
+          showErrorText={showErrorText}
         />
       ))}
+      {showError ? (
+        <div className="absolute left-2 bottom-16 bg-red-600 text-white">
+          {showError}
+        </div>
+      ) : ''}
     </div>
   );
 }

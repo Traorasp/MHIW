@@ -57,10 +57,6 @@ function DocInfoCard(prop) {
       } else {
         index = prevList.findIndex((doc) => doc._id === id);
       }
-      if (newDoc.measurements) {
-        newDoc.measurements = newDoc.measurements.join(', ');
-      }
-
       if (newDoc.file !== undefined) {
         newDoc.image = newDoc.file;
         delete newDoc.file;
@@ -76,7 +72,11 @@ function DocInfoCard(prop) {
       dispatch(addDoc({ key: listOf.toLowerCase(), data: [...prevList] }));
       updateForm();
     } catch (err) {
-      setErrors(err.error.data.errors);
+      if (err.data) {
+        setErrors(err.data);
+      } else {
+        setErrors(err.data.errors.errors);
+      }
     }
   };
 
@@ -111,7 +111,11 @@ function DocInfoCard(prop) {
 
   const deleteCard = async () => {
     try {
-      docDelete(id);
+      const response = await docDelete(id);
+      if (response.results) {
+        console.log(response.results);
+        return;
+      }
       if (url !== '' && url !== undefined && url !== null && url) {
         if (data.material) {
           deleteImage(data.material.image);
@@ -151,6 +155,15 @@ function DocInfoCard(prop) {
     if (!title && key === 'name') {
       setTitle(value);
       return '';
+    }
+    if (key === 'measurements') {
+      return (
+        <div key={key}>
+          Measurements:
+          {' '}
+          {value.join(', ')}
+        </div>
+      );
     }
     if (value === '' || value === null || value === undefined || value === 0 || key.substring(0, 1) === '_' || ignoredKeys.find((ignore) => ignore === key) || (Array.isArray(value) && (value.length === 0 || value[0] === ''))) {
       return '';

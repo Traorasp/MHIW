@@ -66,45 +66,34 @@ function DocListPanel(prop) {
   const [search, setSearch] = useState('');
   const [searchType, setSearchType] = useState('');
 
-  const selectDelete = (id) => {
+  const selectDelete = async (id) => {
     switch (listOf) {
       case 'AOEs':
-        deleteAOE(id);
-        break;
+        return deleteAOE(id).unwrap();
       case 'Effects':
-        deleteEffect(id);
-        break;
+        return deleteEffect(id).unwrap();
       case 'Enchantments':
-        deleteEnchantment(id);
-        break;
+        return deleteEnchantment(id).unwrap();
       case 'Items':
-        deleteItem(id);
-        break;
+        return deleteItem(id).unwrap();
       case 'Magics':
-        deleteMagic(id);
-        break;
+        return deleteMagic(id).unwrap();
       case 'Materials':
-        deleteMaterial(id);
-        break;
+        return deleteMaterial(id).unwrap();
       case 'Races':
-        deleteRace(id);
-        break;
+        return deleteRace(id).unwrap();
       case 'Skills':
-        deleteSkill(id);
-        break;
+        return deleteSkill(id).unwrap();
       case 'Spells':
-        deleteSpell(id);
-        break;
+        return deleteSpell(id).unwrap();
       case 'Talents':
-        deleteTalent(id);
-        break;
+        return deleteTalent(id).unwrap();
       case 'Titles':
-        deleteTitle(id);
-        break;
+        return deleteTitle(id).unwrap();
       case 'Classes':
-        deleteClass(id);
-        break;
+        return deleteClass(id).unwrap();
       default:
+        return '';
     }
   };
 
@@ -275,7 +264,7 @@ function DocListPanel(prop) {
 
   const changeSearchType = (e) => setSearchType(e.target.value);
 
-  const ignoredKeys = ['_id', '__v', 'baseStats', 'effects', 'aoe', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStat'];
+  const ignoredKeys = ['_id', '__v', 'baseStats', 'effects', 'aoe', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStat', 'parent'];
 
   const [searchOptionList, setSearchOptionList] = useState([]);
 

@@ -36,6 +36,9 @@ function TalentForm(prop) {
   const changeMeasurements = (e) => setMeasurements(e.target.value);
 
   const changeParent = (e) => {
+    if (e.target.value === 0) {
+      return;
+    }
     if (parent.length > 0 && parent.find((parentTalent) => e.target.value === parentTalent.id)) {
       return;
     }
@@ -51,10 +54,11 @@ function TalentForm(prop) {
   };
 
   const handleSubmit = async (e) => {
-    const measurementsList = measurements.split(', ');
     e.preventDefault();
     let parentsList = parent.map((data) => data.id);
     parentsList = Array.isArray(parentsList) ? parentsList : [parentsList];
+    const measurementsList = measurements.length < 1 ? [] : measurements.split(', ');
+
     try {
       const { talent: newTalent } = await createTalent({
         name,
@@ -79,8 +83,7 @@ function TalentForm(prop) {
       setCharges(0);
       setDescription('');
       setErrors([]);
-
-      const prevTalents = talents.talents ? talents.talents : talents.data;
+      const prevTalents = talents.talent ? talents.talent : talents.data;
       dispatch(addDoc({ key: 'talents', data: [...prevTalents, newTalent] }));
       hide();
     } catch (err) {
@@ -127,6 +130,7 @@ function TalentForm(prop) {
           <label htmlFor="parents">
             Parents:
             <select id="parent" name="parent" onChange={changeParent}>
+              <option value={0}>None</option>
               {talents[Object.keys(talents)[0]].map((parentType) => (
                 <option key={parentType._id} value={parentType._id}>
                   {parentType.name}
@@ -147,6 +151,7 @@ function TalentForm(prop) {
           <label htmlFor="priority">
             Priority:
             <select id="priority" name="priority" onChange={changePriority} required>
+              <option value="Passive">Passive</option>
               <option value="Action">Action</option>
               <option value="Bonus Action">Bonus Action</option>
               <option value="Reaction">Reaction</option>

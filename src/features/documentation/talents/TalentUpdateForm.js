@@ -19,7 +19,6 @@ function TalentUpdateForm(prop) {
       .filter((currParent) => (!!talent.parent.find((id) => id === currParent._id)));
     return list.map((currParent) => ({ id: currParent._id, parentName: currParent.name }));
   };
-
   const [name, setName] = useState(talent.name);
   const [parent, setParent] = useState(getParents);
   const [mainTalent, setTalent] = useState(talent.talent);
@@ -42,6 +41,9 @@ function TalentUpdateForm(prop) {
   const changeMeasurements = (e) => setMeasurements(e.target.value);
 
   const changeParent = (e) => {
+    if (!e.target.value.localeCompare('0')) {
+      return;
+    }
     if (parent.length > 0 && parent.find((parentTalent) => e.target.value === parentTalent.id)) {
       return;
     }
@@ -58,10 +60,9 @@ function TalentUpdateForm(prop) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const measurementsList = measurements === '' ? [] : measurements.split(', ');
     let parentsList = parent.map((data) => data.id);
     parentsList = Array.isArray(parentsList) ? parentsList : [parentsList];
-
+    const measurementsList = measurements.length < 1 ? [] : measurements.split(', ');
     newDoc.id = talent._id;
     newDoc.name = name;
     newDoc.talent = mainTalent;
@@ -112,6 +113,7 @@ function TalentUpdateForm(prop) {
           <label htmlFor="parents">
             Parents:
             <select id="parent" name="parent" onChange={changeParent}>
+              <option value={0}>None</option>
               {talents[Object.keys(talents)[0]].map((parentType) => (
                 <option key={parentType._id} value={parentType._id}>
                   {parentType.name}
@@ -132,6 +134,7 @@ function TalentUpdateForm(prop) {
           <label htmlFor="priority">
             Priority:
             <select id="priority" name="priority" onChange={changePriority} required>
+              <option value="Passive">Passive</option>
               <option value="Action">Action</option>
               <option value="Bonus Action">Bonus Action</option>
               <option value="Reaction">Reaction</option>
