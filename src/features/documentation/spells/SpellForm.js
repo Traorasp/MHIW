@@ -51,6 +51,7 @@ function SpellForm(prop) {
     if (aoes.length > 0 && aoes.find((aoe) => e.target.value === aoe.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const aoeName = text.split(' :')[0].trim();
     setAoe([...aoes, { id: e.target.value, aoeName }]);
@@ -67,6 +68,7 @@ function SpellForm(prop) {
     if (effects.length > 0 && effects.find((effect) => e.target.value === effect.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const effectName = text.split(' :')[0].trim();
     setEffects([...effects, { id: e.target.value, effectName }]);
@@ -251,6 +253,7 @@ function SpellForm(prop) {
           <label htmlFor="aoes">
             Aoes:
             <select id="aoes" name="aoes" onClick={changeAoes}>
+              <option value="">None</option>
               {aoeList[Object.keys(aoeList)[0]].map((aoe) => (
                 <option key={aoe._id} value={aoe._id}>
                   {aoe.name}
@@ -279,6 +282,7 @@ function SpellForm(prop) {
           <label htmlFor="effects">
             Effects:
             <select id="effects" name="effects" onClick={changeEffects}>
+              <option value="">None</option>
               {effectsList[Object.keys(effectsList)[0]].map((effect) => (
                 <option key={effect._id} value={effect._id}>
                   {effect.name}

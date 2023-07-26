@@ -58,7 +58,7 @@ function RaceForm(prop) {
   const changeHiding = (e) => setHiding(e.target.value);
   const changeTracking = (e) => setTracking(e.target.value);
   const changeMainSkills = (e) => {
-    if (mainSkills.length === 3) {
+    if (mainSkills.length === 3 || e.target.value.length < 1) {
       return;
     }
     if (mainSkills.length > 0 && mainSkills.find((skill) => e.target.value === skill.id)) {
@@ -69,7 +69,7 @@ function RaceForm(prop) {
     setMainSkills([...mainSkills, { id: e.target.value, skillName }]);
   };
   const changeSubSkills = (e) => {
-    if (subSkills.length === 5) {
+    if (subSkills.length === 5 || e.target.value.length < 1) {
       return;
     }
     if (subSkills.length > 0 && subSkills.find((skill) => e.target.value === skill.id)) {
@@ -279,6 +279,7 @@ function RaceForm(prop) {
           <label htmlFor="mainSkill">
             Main Skill:
             <select id="mainSkill" name="mainSkill" onClick={changeMainSkills}>
+              <option value="">None</option>
               {skillList[Object.keys(skillList)[0]].map((skill) => {
                 if (skill.type !== 'Racial') return '';
                 return (
@@ -302,6 +303,7 @@ function RaceForm(prop) {
           <label htmlFor="subSkill">
             Sub Skill:
             <select id="subSkill" name="subSkill" onClick={changeSubSkills}>
+              <option value="">None</option>
               {skillList[Object.keys(skillList)[0]].map((skill) => {
                 if (skill.type !== 'Racial') return '';
                 return (

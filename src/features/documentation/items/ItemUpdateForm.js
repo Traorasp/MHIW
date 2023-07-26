@@ -29,7 +29,7 @@ function ItemUpdateForm(prop) {
   const [name, setName] = useState(item.name);
   const [rarity, setRarity] = useState(item.rarity);
   const [level, setLevel] = useState(item.level);
-  const [material, setMaterial] = useState(item.material);
+  const [material, setMaterial] = useState(item.material ? item.material : '');
   const [subStats, setSubStats] = useState(item.subStats);
   const [cost, setCost] = useState(item.cost);
   const [type, setType] = useState(item.type);
@@ -83,6 +83,7 @@ function ItemUpdateForm(prop) {
         && enchantments.find((enchantment) => e.target.value === enchantment.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const enchantmentName = text.split(' :')[0];
     const amount = text.split(' :')[1];
@@ -223,7 +224,7 @@ function ItemUpdateForm(prop) {
             <div>
               <label htmlFor="material">
                 Material:
-                <select id="material" name="material" onClick={changeMaterial}>
+                <select id="material" name="material" onChange={changeMaterial} value={material}>
                   <option value="">None</option>
                   {materialsList.map((materialOpt) => (
                     <option key={materialOpt.material._id} value={materialOpt.material._id}>
@@ -271,6 +272,7 @@ function ItemUpdateForm(prop) {
               <label htmlFor="enchantments">
                 Enchantments:
                 <select id="enchantments" name="enchantments" onClick={changeEnchantments}>
+                  <option value="">None</option>
                   {!enchantmentsList ? '' : enchantmentsList.map((key) => {
                     const enchant = getEnchantment(key.enchantment);
                     if (enchant.type === 'Unique' || enchant.type === 'Stance') return '';

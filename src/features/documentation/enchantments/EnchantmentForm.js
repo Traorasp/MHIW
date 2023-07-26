@@ -144,7 +144,7 @@ function EnchantmentForm(prop) {
               <option value="">None</option>
               {antiTalentsList[Object.keys(antiTalentsList)[0]].map((antiTalentOpt) => (
                 <option key={antiTalentOpt._id} value={antiTalentOpt._id}>
-                  {antiTalentOpt.parent}
+                  {antiTalentOpt.talent}
                   {' '}
                   :
                   {' '}

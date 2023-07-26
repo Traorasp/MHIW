@@ -11,7 +11,9 @@ function TraitsView(prop) {
   const { character, update } = prop;
 
   const categories = ['Name', 'Type', 'Priority', 'Cooldown', 'Duration', 'Stat', 'Roll', 'Range', 'Description'];
-  const data = useSelector(selectCurrentSkills).skills.filter((skill) => (skill.type === 'Charisma' || skill.type === 'Will' || skill.type === 'Intimidation') && skill.type !== 'Racial');
+  let data = useSelector(selectCurrentSkills);
+  data = data.skills ? data.skills : data.data;
+  data = data.filter((skill) => (skill.type === 'Charisma' || skill.type === 'Will' || skill.type === 'Intimidation') && skill.type !== 'Racial');
   const traits = character.traits ? character.traits : [];
   const [traitsShown, setTraitsShown] = useState(traits);
   const [showForm, setShowForm] = useState(false);

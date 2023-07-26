@@ -65,6 +65,14 @@ function DocListPanel(prop) {
   const [newList, setNewList] = useState(null);
   const [search, setSearch] = useState('');
   const [searchType, setSearchType] = useState('');
+  const [error, setError] = useState(false);
+
+  const displayError = (err) => {
+    setError(err);
+    setTimeout(() => {
+      setError(false);
+    }, 5000);
+  };
 
   const selectDelete = async (id) => {
     switch (listOf) {
@@ -206,6 +214,7 @@ function DocListPanel(prop) {
             key={selectData(data)}
             id={selectData(data)}
             url={data.url}
+            showError={displayError}
           />
         ));
       }
@@ -219,6 +228,7 @@ function DocListPanel(prop) {
           key={selectData(data)}
           id={selectData(data)}
           url={data.url}
+          showError={displayError}
         />
       ));
     }
@@ -232,6 +242,7 @@ function DocListPanel(prop) {
         key={selectData(data)}
         id={selectData(data)}
         url={data.url}
+        showError={displayError}
       />
     ));
   };
@@ -281,7 +292,11 @@ function DocListPanel(prop) {
       }
       return;
     }
-    searchTerms = Object.keys(Object.values(list)[0][0]);
+    const itemsList = Object.values(list)[0];
+    if (itemsList.length < 1) {
+      return;
+    }
+    searchTerms = Object.keys(itemsList[0]);
 
     searchTerms = searchTerms.filter((key) => !ignoredKeys.find((ignore) => ignore === key));
     setSearchOptionList(searchTerms);
@@ -309,6 +324,11 @@ function DocListPanel(prop) {
         </select>
       </label>
       {listPanel(newList || list)}
+      {error ? (
+        <div className="red bg-red-500 text-white text-bold fixed bottom-0 p-2">
+          {`${error.msg}`}
+        </div>
+      ) : ''}
     </div>
   );
 }

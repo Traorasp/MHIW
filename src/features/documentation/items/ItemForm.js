@@ -83,6 +83,7 @@ function ItemForm(prop) {
         && enchantments.find((enchantment) => e.target.value === enchantment.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const enchantmentName = text.split(' :')[0];
     const amount = text.split(' :')[1];
@@ -317,6 +318,7 @@ function ItemForm(prop) {
             <label htmlFor="enchantments">
               Enchantments:
               <select id="enchantments" name="enchantments" onClick={changeEnchantments}>
+                <option value="">None</option>
                 {!enchantmentsList ? '' : enchantmentsList.map((key) => {
                   const enchant = getEnchantment(key.enchantment);
                   if (enchant.type === 'Unique' || enchant.type === 'Stance') return '';

@@ -18,7 +18,6 @@ import RaceUpdateForm from './races/RaceUpdateForm';
 import ItemUpdateForm from './items/ItemUpdateForm';
 import ClassesUpdateForm from './classes/ClassesUpdateForm';
 import DetailedCard from './DetailedCard';
-
 /* eslint-disable react/prop-types */
 function DocInfoCard(prop) {
   const {
@@ -27,7 +26,6 @@ function DocInfoCard(prop) {
   const [showForm, displayForm] = useState(false);
   const [showDetails, displayDetailsForm] = useState(false);
   const [newData, setNewData] = useState('');
-  const [title, setTitle] = useState('');
   const [errors, setErrors] = useState([]);
 
   const [deleteImage] = useDeleteImageMutation();
@@ -51,6 +49,7 @@ function DocInfoCard(prop) {
       const prevList = Array.isArray(list) ? [...list] : [...list[Object.keys(list)[0]]];
       let index;
       if (listOf === 'Items') {
+        newDoc.url = '';
         index = prevList.findIndex((doc) => doc.item._id === id);
       } else if (listOf === 'Materials') {
         index = prevList.findIndex((doc) => doc.material._id === id);
@@ -64,7 +63,15 @@ function DocInfoCard(prop) {
       if (newDoc.url !== undefined) {
         const newUrl = newDoc.url;
         delete newDoc.url;
-        prevList[index] = { material: newDoc, url: newUrl };
+        switch (listOf) {
+          case 'Items':
+            prevList[index] = { item: newDoc, url: newUrl };
+            break;
+          case 'Materials':
+            prevList[index] = { material: newDoc, url: newUrl };
+            break;
+          default:
+        }
       } else {
         prevList[index] = newDoc;
       }
@@ -74,8 +81,12 @@ function DocInfoCard(prop) {
     } catch (err) {
       if (err.data) {
         setErrors(err.data);
+      } else if (err.error.error) {
+        setErrors([{ msg: err.error.error }]);
+      } else if (err.error.data.errors.errors) {
+        setErrors(err.error.data.errors.errors);
       } else {
-        setErrors(err.data.errors.errors);
+        setErrors(err.error.data.errors);
       }
     }
   };
@@ -112,8 +123,11 @@ function DocInfoCard(prop) {
   const deleteCard = async () => {
     try {
       const response = await docDelete(id);
-      if (response.results) {
-        console.log(response.results);
+      if (response.fail) {
+        return;
+      }
+      if (response.reload) {
+        window.location.reload();
         return;
       }
       if (url !== '' && url !== undefined && url !== null && url) {
@@ -149,12 +163,18 @@ function DocInfoCard(prop) {
     return Object.entries(data);
   };
 
-  const ignoredKeys = ['parent', 'magics', 'effects', 'aoes', 'spells', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStats'];
+  const ignoredKeys = ['parent', 'magics', 'effects', 'aoes', 'spells', 'followUp', 'skills', 'mainSkills', 'subSkills', 'enchantments', 'material', 'subStats'];
 
   const info = dataList().map(([key, value]) => {
-    if (!title && key === 'name') {
-      setTitle(value);
+    if (value === '' || value === null || value === undefined || value === 0 || key.substring(0, 1) === '_' || ignoredKeys.find((ignore) => ignore === key) || (Array.isArray(value) && (value.length === 0 || value[0] === ''))) {
       return '';
+    }
+    if (key === 'name') {
+      return (
+        <div className="font-bold" key={key}>
+          {value}
+        </div>
+      );
     }
     if (key === 'measurements') {
       return (
@@ -164,9 +184,6 @@ function DocInfoCard(prop) {
           {value.join(', ')}
         </div>
       );
-    }
-    if (value === '' || value === null || value === undefined || value === 0 || key.substring(0, 1) === '_' || ignoredKeys.find((ignore) => ignore === key) || (Array.isArray(value) && (value.length === 0 || value[0] === ''))) {
-      return '';
     }
     if (key === 'baseStats') {
       return (
@@ -202,8 +219,34 @@ function DocInfoCard(prop) {
 
   const populateEnchants = async () => {
     try {
-      const enchants = await enchantDetails(data._id).unwrap();
-      setNewData(enchants.enchantment);
+      let enchants = await enchantDetails(data._id).unwrap();
+      enchants = enchants.enchantment;
+      const enchantKey = Object.keys(enchants)[1];
+      let desiredOrder = [];
+      switch (enchantKey) {
+        case 'spell':
+          desiredOrder = ['name', 'type', 'magics', 'requirements', 'damageType', 'damageRatio', 'durabilityRatio', 'knockbackRatio', 'cost', 'range', 'aoes', 'effects', 'description', 'charge', 'followUp'];
+          break;
+        case 'skill':
+          desiredOrder = ['name', 'type', 'priority', 'cooldown', 'duration', 'stat', 'roll', 'range', 'aoes', 'effects', 'description'];
+          break;
+        case 'antiTalent':
+          desiredOrder = ['name', 'talent', 'parent', 'priority', 'measurements', 'castTime', 'duration', 'cooldown', 'charges', 'description'];
+          break;
+        default:
+      }
+      const rearrangedObject = Object.fromEntries(
+        Object.entries(enchants[enchantKey]).sort(([keyA], [keyB]) => desiredOrder.indexOf(keyA) - desiredOrder.indexOf(keyB)),
+      );
+      const orderedEnchant = {};
+      Object.entries(enchants).forEach(([key, value]) => {
+        if (key === enchantKey) {
+          orderedEnchant[key] = rearrangedObject;
+        } else {
+          orderedEnchant[key] = value;
+        }
+      });
+      setNewData(orderedEnchant);
     } catch (err) {
       console.log(err);
     }
@@ -221,9 +264,12 @@ function DocInfoCard(prop) {
     }
     if (typeof value === 'object') {
       const objectInfo = Object.entries(value).map(([objKey, objValue]) => {
-        if (!title && objKey === 'name') {
-          setTitle(objValue);
-          return '';
+        if (objKey === 'name') {
+          return (
+            <div className="font-bold" key={key}>
+              {objValue}
+            </div>
+          );
         }
         if (objKey === 'name') return '';
         if (objValue === '' || objValue === null || objValue === undefined || objValue === 0 || objKey.substring(0, 1) === '_' || ignoredKeys.find((ignore) => ignore === objKey) || (Array.isArray(objValue) && (objValue.length === 0 || objValue[0] === ''))) {
@@ -253,7 +299,6 @@ function DocInfoCard(prop) {
 
   return (
     <div className="border-2 border-black pl-2">
-      <h2 className="font-bold">{title}</h2>
       {newData !== '' ? enchantmentInfo() : info}
       <button className="hover:bg-red-600 hover:border-black hover:border-2" onClick={deleteCard} type="button">Delete</button>
       {listOf === 'Enchantments' ? '' : <button className="hover:bg-yellow-400 hover:border-black hover:border-2" onClick={updateForm} type="button">Edit</button>}

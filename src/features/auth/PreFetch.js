@@ -65,8 +65,78 @@ function PreFetch() {
     return list;
   };
 
+  const reorderDocumentation = (doc) => {
+    const newDoc = doc.map((model) => {
+      let desiredOrder = [];
+      let reorderedModels = [];
+      let newModel = {};
+      let key = Object.keys(model)[0];
+      switch (key) {
+        case 'aoes':
+          desiredOrder = ['name', 'fixed', 'range'];
+          break;
+        case 'classes':
+          desiredOrder = ['name', 'requirements', 'type', 'effects', 'skills', 'description'];
+          break;
+        case 'effects':
+          desiredOrder = ['name', 'show', 'damageType', 'damage', 'training', 'stat', 'property', 'effect', 'duration'];
+          break;
+        case 'enchantments':
+          desiredOrder = ['amount', 'skill', 'spell', 'antiTalent'];
+          break;
+        case 'magics':
+          desiredOrder = ['name', 'description'];
+          break;
+        case 'races':
+          desiredOrder = ['name', 'parent', 'training', 'weakness', 'limit', 'baseStats', 'mainSkills', 'subSkills', 'description'];
+          break;
+        case 'skills':
+          desiredOrder = ['name', 'type', 'priority', 'cooldown', 'duration', 'stat', 'roll', 'range', 'aoes', 'effects', 'description'];
+          break;
+        case 'spells':
+          desiredOrder = ['name', 'type', 'magics', 'requirements', 'damageType', 'damageRatio', 'durabilityRatio', 'knockbackRatio', 'cost', 'range', 'aoes', 'effects', 'description', 'charge', 'followUp'];
+          break;
+        case 'talent':
+          desiredOrder = ['name', 'talent', 'parent', 'priority', 'measurements', 'castTime', 'duration', 'cooldown', 'charges', 'description'];
+          break;
+        case 'titles':
+          desiredOrder = ['name', 'level', 'description', 'effects', 'skills'];
+          break;
+        default:
+          [key] = Object.keys(model[0]);
+          switch (key) {
+            case 'item':
+              desiredOrder = ['name', 'rarity', 'image', 'level', 'material', 'subStats', 'cost', 'type', 'baseStats', 'enchantments', 'description', 'background'];
+              break;
+            case 'material':
+              desiredOrder = ['name', 'description', 'image', 'effects'];
+              break;
+            default:
+              return model;
+          }
+          return model.map((modelObject) => {
+            newModel = {};
+            const reorderedObject = Object.fromEntries(
+              Object.entries(modelObject[key])
+                .sort(([keyA], [keyB]) => desiredOrder.indexOf(keyA) - desiredOrder.indexOf(keyB)),
+            );
+            newModel[key] = reorderedObject;
+            newModel.url = modelObject.url;
+            return newModel;
+          });
+      }
+      reorderedModels = model[key].map((modelObject) => Object.fromEntries(
+        Object.entries(modelObject)
+          .sort(([keyA], [keyB]) => desiredOrder.indexOf(keyA) - desiredOrder.indexOf(keyB)),
+      ));
+      newModel[key] = reorderedModels;
+      return newModel;
+    });
+    return newDoc;
+  };
+
   const getDocumentation = async () => {
-    const doc = await Promise.all([
+    let doc = await Promise.all([
       getAOEs().unwrap(),
       getEffects().unwrap(),
       getEnchantments().unwrap(),
@@ -80,6 +150,7 @@ function PreFetch() {
       getTitles().unwrap(),
       getClasses().unwrap(),
     ]);
+    doc = reorderDocumentation(doc);
     dispatch(setDoc(doc));
   };
 

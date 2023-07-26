@@ -57,7 +57,7 @@ function EffectUpdateForm(prop) {
         <div>
           <label htmlFor="show">
             Show:
-            <input type="checkbox" id="show" value={show} onChange={changeShow} />
+            <input type="checkbox" id="show" checked={show} onChange={changeShow} />
           </label>
         </div>
         <div>

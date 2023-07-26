@@ -11,7 +11,8 @@ function ClassView(prop) {
   const { character, update } = prop;
 
   const categories = ['Name', 'Requirements', 'Type', 'Description'];
-  const data = useSelector(selectCurrentClasses).classes;
+  let data = useSelector(selectCurrentClasses);
+  data = data.classes ? data.classes : data.data;
   const classes = character.class ? character.class : [];
   const [classesShown, setClassessShown] = useState(classes);
   const [showForm, setShowForm] = useState(false);

@@ -33,6 +33,7 @@ function ClassesForm(prop) {
     if (skills.length > 0 && skills.find((skill) => e.target.value === skill.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const skillName = text.split(' :')[0].trim();
     setSkill([...skills, { id: e.target.value, skillName }]);
@@ -41,6 +42,7 @@ function ClassesForm(prop) {
     if (effects.length > 0 && effects.find((effect) => e.target.value === effect.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const effectName = text.split(' :')[0].trim();
     setEffects([...effects, { id: e.target.value, effectName }]);
@@ -115,6 +117,7 @@ function ClassesForm(prop) {
           <label htmlFor="skill">
             Skill:
             <select id="skill" name="skill" onClick={changeSkill}>
+              <option value="">None</option>
               {skillList[Object.keys(skillList)[0]].map((skill) => {
                 if (skill.type === 'Unique' || skill.type === 'Racial') {
                   return '';
@@ -144,6 +147,7 @@ function ClassesForm(prop) {
           <label htmlFor="effects">
             Effects:
             <select id="effects" name="effects" onClick={changeEffects}>
+              <option value="">None</option>
               {effectsList[Object.keys(effectsList)[0]].map((effect) => (
                 <option key={effect._id} value={effect._id}>
                   {effect.name}

@@ -51,6 +51,7 @@ function SkillUpdateForm(prop) {
     if (aoes.length > 0 && aoes.find((aoe) => e.target.value === aoe.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const aoeName = text.split(' :')[0].trim();
     setAoe([...aoes, { id: e.target.value, aoeName }]);
@@ -59,6 +60,7 @@ function SkillUpdateForm(prop) {
     if (effects.length > 0 && effects.find((effect) => e.target.value === effect.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const effectName = text.split(' :')[0].trim();
     setEffects([...effects, { id: e.target.value, effectName }]);
@@ -80,7 +82,7 @@ function SkillUpdateForm(prop) {
     newDoc.stat = stat;
     newDoc.roll = roll;
     newDoc.range = range;
-    newDoc.aoe = newAoes;
+    newDoc.aoes = newAoes;
     newDoc.effects = newEffects;
     newDoc.description = description;
 
@@ -112,7 +114,7 @@ function SkillUpdateForm(prop) {
         <div>
           <label htmlFor="type">
             Type:
-            <select id="type" name="type" onChange={changeType} required>
+            <select id="type" name="type" onChange={changeType} value={type} required>
               <option value="Unique">Unique</option>
               <option value="Passive">Passive</option>
               <option value="Active">Active</option>
@@ -133,7 +135,7 @@ function SkillUpdateForm(prop) {
         <div>
           <label htmlFor="priority">
             Priority:
-            <select id="type" name="type" onChange={changePriority} required>
+            <select id="type" name="type" onChange={changePriority} value={priority} required>
               <option value="Passive">Passive</option>
               <option value="Action">Action</option>
               <option value="Bonus Action">Bonus Action</option>
@@ -177,6 +179,7 @@ function SkillUpdateForm(prop) {
           <label htmlFor="aoes">
             Aoes:
             <select id="aoes" name="aoes" onClick={changeAoes}>
+              <option value="">None</option>
               {aoeList[Object.keys(aoeList)[0]].map((aoe) => (
                 <option key={aoe._id} value={aoe._id}>
                   {aoe.name}
@@ -205,6 +208,7 @@ function SkillUpdateForm(prop) {
           <label htmlFor="effects">
             Effects:
             <select id="effects" name="effects" onClick={changeEffects}>
+              <option value="">None</option>
               {effectsList[Object.keys(effectsList)[0]].map((effect) => (
                 <option key={effect._id} value={effect._id}>
                   {effect.name}

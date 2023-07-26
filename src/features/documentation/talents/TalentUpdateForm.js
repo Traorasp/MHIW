@@ -91,7 +91,7 @@ function TalentUpdateForm(prop) {
         <div>
           <label htmlFor="mainTalent">
             Talent:
-            <select id="mainTalent" name="mainTalent" onChange={changeTalent} required>
+            <select id="mainTalent" name="mainTalent" onChange={changeTalent} value={mainTalent} required>
               <option value="Space">Space</option>
               <option value="Eagle Eye">Eagle Eye</option>
               <option value="Energy">Energy</option>
@@ -133,7 +133,7 @@ function TalentUpdateForm(prop) {
         <div>
           <label htmlFor="priority">
             Priority:
-            <select id="priority" name="priority" onChange={changePriority} required>
+            <select id="priority" name="priority" onChange={changePriority} value={priority} required>
               <option value="Passive">Passive</option>
               <option value="Action">Action</option>
               <option value="Bonus Action">Bonus Action</option>

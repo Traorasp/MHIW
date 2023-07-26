@@ -37,6 +37,7 @@ function MaterialUpdateForm(prop) {
     if (effects.length > 0 && effects.find((effect) => e.target.value === effect.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const effectName = text.split(' :')[0].trim();
     setEffects([...effects, { id: e.target.value, effectName }]);
@@ -47,7 +48,7 @@ function MaterialUpdateForm(prop) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newEffects = effects.map((effect) => ({ _id: effect.id }));
+    const newEffects = effects.map((effect) => (effect.id));
 
     newDoc.id = oldMaterial._id;
     newDoc.name = name;
@@ -114,6 +115,7 @@ function MaterialUpdateForm(prop) {
             <label htmlFor="effects">
               Effects:
               <select id="effects" name="effects" onClick={changeEffects}>
+                <option value="">None</option>
                 {effectsList[Object.keys(effectsList)[0]].map((effect) => (
                   <option key={effect._id} value={effect._id}>
                     {effect.name}

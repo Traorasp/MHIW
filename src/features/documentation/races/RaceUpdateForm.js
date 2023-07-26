@@ -21,7 +21,7 @@ function RaceUpdateForm(prop) {
 
   const [name, setName] = useState(race.name);
   const [parent, setParent] = useState(race.parent);
-  const [training, setTraining] = useState(race.training);
+  const [training, setTraining] = useState(race.training ? race.training : '');
   const [weakness, setWeakness] = useState(race.weakness.join(', '));
   const [limit, setLimit] = useState(race.limit);
   const [health, setHealth] = useState(race.baseStats.health);
@@ -58,7 +58,7 @@ function RaceUpdateForm(prop) {
   const changeHiding = (e) => setHiding(e.target.value);
   const changeTracking = (e) => setTracking(e.target.value);
   const changeMainSkills = (e) => {
-    if (mainSkills.length === 3) {
+    if (mainSkills.length === 3 || e.target.value.length < 1) {
       return;
     }
     if (mainSkills.length > 0 && mainSkills.find((skill) => e.target.value === skill.id)) {
@@ -69,7 +69,7 @@ function RaceUpdateForm(prop) {
     setMainSkills([...mainSkills, { id: e.target.value, skillName }]);
   };
   const changeSubSkills = (e) => {
-    if (subSkills.length === 5) {
+    if (subSkills.length === 5 || e.target.value.length < 1) {
       return;
     }
     if (subSkills.length > 0 && subSkills.find((skill) => e.target.value === skill.id)) {
@@ -91,7 +91,7 @@ function RaceUpdateForm(prop) {
     newDoc.id = race._id;
     newDoc.name = name;
     newDoc.parent = parent;
-    newDoc.training = training;
+    newDoc.training = training.length > 0 ? training : null;
     newDoc.weakness = weaknessList;
     newDoc.limit = limit;
     newDoc.baseStats = {};
@@ -165,7 +165,7 @@ function RaceUpdateForm(prop) {
             <div>
               <label htmlFor="training">
                 Training:
-                <select id="training" name="training" onClick={changeTraining}>
+                <select id="training" name="training" onChange={changeTraining} value={training}>
                   <option value="">None</option>
                   {effectsList[Object.keys(effectsList)[0]].map((effect) => {
                     if (effect.training.length < 1) return '';
@@ -186,6 +186,7 @@ function RaceUpdateForm(prop) {
               <label htmlFor="mainSkill">
                 Main Skill:
                 <select id="mainSkill" name="mainSkill" onClick={changeMainSkills}>
+                  <option value="">None</option>
                   {skillList[Object.keys(skillList)[0]].map((skill) => {
                     if (skill.type !== 'Racial') return '';
                     return (
@@ -209,6 +210,7 @@ function RaceUpdateForm(prop) {
               <label htmlFor="subSkill">
                 Sub Skill:
                 <select id="subSkill" name="subSkill" onClick={changeSubSkills}>
+                  <option value="">None</option>
                   {skillList[Object.keys(skillList)[0]].map((skill) => {
                     if (skill.type !== 'Racial') return '';
                     return (

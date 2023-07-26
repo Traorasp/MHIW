@@ -8,13 +8,16 @@ function RaceView(prop) {
   // eslint-disable-next-line no-unused-vars
   const { character, update } = prop;
   const [getSkillInfo] = useGetSkillMutation();
+  const { race } = character;
 
   const [mainSkills, setMainSkills] = useState([]);
   const [subSkills, setSubSkills] = useState([]);
   const [updateCharacter] = useUpdateCharacterMutation();
 
   const setRaceSkills = async () => {
-    const { race } = character;
+    if (!race) {
+      return;
+    }
     const main = race.mainSkills.map((skill) => getSkillInfo(skill).unwrap());
     const sub = race.subSkills.map((skill) => getSkillInfo(skill).unwrap());
     Promise.all(main).then((result) => {
@@ -61,6 +64,7 @@ function RaceView(prop) {
   return (
     <main>
       <h1>Race</h1>
+      {!race ? <h1>No race has been chosen</h1> : ''}
       {mainSkills.map((skill, i) => (
         <RaceSkillCard
           skill={skill}

@@ -11,7 +11,8 @@ function TitlesView(prop) {
   const { character, update } = prop;
 
   const categories = ['Name', 'Level', 'Description'];
-  const data = useSelector(selectCurrentTitles).titles;
+  let data = useSelector(selectCurrentTitles);
+  data = data.titles ? data.titles : data.data;
   const titles = character.titles ? character.titles : [];
   const [titlesShown, settitlessShown] = useState(titles);
   const [showForm, setShowForm] = useState(false);

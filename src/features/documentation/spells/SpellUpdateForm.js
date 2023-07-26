@@ -23,6 +23,12 @@ function SpellUpdateForm(prop) {
     return list.map((effect) => ({ id: effect._id, effectName: effect.name }));
   };
 
+  const getMagics = () => {
+    const list = magicList[Object.keys(magicList)[0]]
+      .filter((magic) => (!!spell.magics.find((id) => id === magic._id)));
+    return list.map((magic) => ({ id: magic._id, magicName: magic.name }));
+  };
+
   const getAoes = () => {
     const list = aoeList[Object.keys(aoeList)[0]]
       .filter((aoe) => (!!spell.aoes.find((id) => id === aoe._id)));
@@ -43,7 +49,7 @@ function SpellUpdateForm(prop) {
   const [description, setDescription] = useState(spell.description);
   const [charge, setCharge] = useState(spell.charge);
   const [followUp, setFollowUp] = useState(spell.followUp);
-  const [magics, setMagics] = useState(spell.magics);
+  const [magics, setMagics] = useState([...getMagics(spell.magics)]);
 
   const changeName = (e) => setName(e.target.value);
   const changeType = (e) => setType(e.target.value);
@@ -60,6 +66,7 @@ function SpellUpdateForm(prop) {
     if (aoes.length > 0 && aoes.find((aoe) => e.target.value === aoe.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const aoeName = text.split(' :')[0].trim();
     setAoe([...aoes, { id: e.target.value, aoeName }]);
@@ -76,6 +83,7 @@ function SpellUpdateForm(prop) {
     if (effects.length > 0 && effects.find((effect) => e.target.value === effect.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const effectName = text.split(' :')[0].trim();
     setEffects([...effects, { id: e.target.value, effectName }]);
@@ -141,7 +149,7 @@ function SpellUpdateForm(prop) {
         <div>
           <label htmlFor="type">
             Type:
-            <select id="type" name="type" onChange={changeType} required>
+            <select id="type" name="type" onChange={changeType} value={type} required>
               <option value="Offensive">Offensive</option>
               <option value="Defensive">Defensive</option>
               <option value="Enhancement">Enhancement</option>
@@ -202,7 +210,7 @@ function SpellUpdateForm(prop) {
         <div>
           <label htmlFor="followUp">
             Follow Up:
-            <select id="followUp" name="followUp" onChange={changeFollowUp}>
+            <select id="followUp" name="followUp" onChange={changeFollowUp} value={followUp}>
               <option value="">None</option>
               {spells[Object.keys(spells)[0]].map((spellCell) => (
                 <option key={spellCell._id} value={spellCell._id}>
@@ -237,6 +245,7 @@ function SpellUpdateForm(prop) {
           <label htmlFor="aoes">
             Aoes:
             <select id="aoes" name="aoes" onClick={changeAoes}>
+              <option value="">None</option>
               {aoeList[Object.keys(aoeList)[0]].map((aoe) => (
                 <option key={aoe._id} value={aoe._id}>
                   {aoe.name}
@@ -265,6 +274,7 @@ function SpellUpdateForm(prop) {
           <label htmlFor="effects">
             Effects:
             <select id="effects" name="effects" onClick={changeEffects}>
+              <option value="">None</option>
               {effectsList[Object.keys(effectsList)[0]].map((effect) => (
                 <option key={effect._id} value={effect._id}>
                   {effect.name}

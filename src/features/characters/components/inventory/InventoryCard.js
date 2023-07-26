@@ -19,11 +19,12 @@ function InventoryCard(prop) {
     return count;
   };
 
-  return (
+  return dataList ? (
     <div className={count === 1 ? 'border-2 border-black' : ''} key={itemId()}>
       {dataList.name}
       {Object.entries(dataList).map(([key, value]) => {
-        if (key >= 0 || value.length < 1 || ignoredKeys.find((ignore) => ignore === key)) {
+        if (key >= 0 || (Array.isArray(value) && value.length < 1)
+        || ignoredKeys.find((ignore) => ignore === key)) {
           return '';
         }
         if (key === 'url' || key === 'item') {
@@ -56,7 +57,7 @@ function InventoryCard(prop) {
           />
         ) : ''}
     </div>
-  );
+  ) : '';
 }
 
 export default InventoryCard;

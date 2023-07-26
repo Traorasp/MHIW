@@ -11,7 +11,8 @@ function Spellsview(prop) {
   const { character, update } = prop;
 
   const categories = ['Name', 'Type', 'Requirements', 'DamageType', 'DamageRatio', 'DurabilityRatio', 'KnockbackRatio', 'Cost', 'Range', 'Aoes', 'Charge', 'Description'];
-  const data = useSelector(selectCurrentSpells).spells;
+  let data = useSelector(selectCurrentSpells);
+  data = data.spells ? data.spells : data.data;
   const spells = character.spells ? character.spells : [];
   const [spellsShown, setSpellsShown] = useState(spells);
   const [showForm, setShowForm] = useState(false);

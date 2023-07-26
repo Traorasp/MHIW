@@ -31,6 +31,7 @@ function TitleForm(prop) {
     if (skills.length > 0 && skills.find((skill) => e.target.value === skill.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const skillName = text.split(' :')[0].trim();
     setSkill([...skills, { id: e.target.value, skillName }]);
@@ -39,6 +40,7 @@ function TitleForm(prop) {
     if (effects.length > 0 && effects.find((effect) => e.target.value === effect.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const effectName = text.split(' :')[0].trim();
     setEffects([...effects, { id: e.target.value, effectName }]);
@@ -99,13 +101,14 @@ function TitleForm(prop) {
         <div>
           <label htmlFor="level">
             Level:
-            <input type="number" id="level" onChange={changeLevel} value={level} required />
+            <input type="number" id="level" onChange={changeLevel} value={level} min="1" max="15" required />
           </label>
         </div>
         <div>
           <label htmlFor="skill">
             Skill:
             <select id="skill" name="skill" onClick={changeSkill}>
+              <option value="">None</option>
               {skillList[Object.keys(skillList)[0]].map((skill) => (
                 <option key={skill._id} value={skill._id}>
                   {skill.name}
@@ -130,6 +133,7 @@ function TitleForm(prop) {
           <label htmlFor="effects">
             Effects:
             <select id="effects" name="effects" onClick={changeEffects}>
+              <option value="">None</option>
               {effectsList[Object.keys(effectsList)[0]].map((effect) => (
                 <option key={effect._id} value={effect._id}>
                   {effect.name}

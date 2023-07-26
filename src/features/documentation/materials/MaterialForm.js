@@ -35,6 +35,7 @@ function MaterialForm(prop) {
     if (effects.length > 0 && effects.find((effect) => e.target.value === effect.id)) {
       return;
     }
+    if (e.target.value.length < 1) return;
     const { text } = e.target.options[e.target.selectedIndex];
     const effectName = text.split(' :')[0].trim();
     setEffects([...effects, { id: e.target.value, effectName }]);
@@ -123,6 +124,7 @@ function MaterialForm(prop) {
             <label htmlFor="effects">
               Effects:
               <select id="effects" name="effects" onClick={changeEffects}>
+                <option value="">None</option>
                 {effectsList[Object.keys(effectsList)[0]].map((effect) => (
                   <option key={effect._id} value={effect._id}>
                     {effect.name}

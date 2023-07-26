@@ -7,11 +7,13 @@ import { selectCurrentItems } from '../../../documentation/documentationSlice';
 import { useUpdateCharacterMutation } from '../../characterApeSlice';
 import DetailsBtn from './DetailsBtn';
 
-function CharacterInvenory(prop) {
+function CharacterInventory(prop) {
   const { character, update } = prop;
 
   const categories = ['Name', 'Rarity', 'Level', 'Cost', 'Type'];
-  const itemList = useSelector(selectCurrentItems);
+  let itemList = useSelector(selectCurrentItems);
+  itemList = itemList.data ? itemList.data : itemList;
+
   const [equipError, setEquipError] = useState(false);
   const [items, setItems] = useState([...character.inventory]);
   const [equiped, setEquiped] = useState([...character.equiped]);
@@ -274,4 +276,4 @@ function CharacterInvenory(prop) {
   );
 }
 
-export default CharacterInvenory;
+export default CharacterInventory;
