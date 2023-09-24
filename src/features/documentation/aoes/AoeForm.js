@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCreateAOEMutation } from './aoeApiSlice';
 import { addDoc, selectCurrentAoes } from '../documentationSlice';
@@ -35,8 +35,12 @@ function AoeForm(prop) {
     }
   };
 
+  useEffect(() => {
+
+  }, [window.scrollY]);
+
   return (
-    <div className="fixed bg-black/60 h-full w-full">
+    <div className={` bg-black/60 h-full w-full ${window.scrollY > 20 ? 'fixed top-0' : 'absolute'}`}>
       <form onSubmit={handleSubmit} className="bg-white text-xl p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[200%]">
         <button className="px-2" type="button" onClick={hide}>X</button>
         <div>

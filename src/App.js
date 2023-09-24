@@ -11,6 +11,7 @@ import Documentation from './features/documentation/Documentation';
 import PreFetch from './features/auth/PreFetch';
 import CharacterListPanel from './features/characters/components/CharacterListPanel';
 import CharSheet from './features/characters/components/CharSheet';
+import FriendsView from './features/friends/FriendsView';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
                   <Route path="/documentation" element={<Documentation />} />
                   <Route path="/characters" element={<CharacterListPanel />} />
                   <Route path="/characters/:charId" element={<CharSheet />} />
+                  <Route path="/friends" element={<FriendsView />} />
                 </Route>
               </Route>
             </Route>

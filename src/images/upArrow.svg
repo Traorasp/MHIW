@@ -1,0 +1,12 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1280" width="720" height="1280">
+	<title>New Project</title>
+	<defs>
+		<image  width="720" height="1280" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAUAAQMAAABUAPd+AAAAAXNSR0IB2cksfwAAAANQTFRF////p8QbyAAAAIhJREFUeJztwTEBAAAAwqD1T20MH6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgJcBxw8AAQ3OLwEAAAAASUVORK5CYII="/>
+	</defs>
+	<style>
+		.s0 { fill: #000000 } 
+	</style>
+	<use id="Background" href="#img1" x="0" y="0"/>
+	<path id="Shape 1" class="s0" d="m356.8 725.6l46.4 65.2-348 248-46.4-65.2z"/>
+	<path id="Shape 1 copy" class="s0" d="m309.8 790.8l46.4-65.2 348 248-46.4 65.2z"/>
+</svg>

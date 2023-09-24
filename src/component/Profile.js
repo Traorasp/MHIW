@@ -25,6 +25,8 @@ function Profile() {
 
   const getProfile = () => {
     if (!profilePic) {
+      dispatch(setProfileURL(profileSVG));
+      setLoading(false);
       return;
     }
     useGetImage(profilePic, token)
@@ -43,6 +45,9 @@ function Profile() {
   };
 
   const handleProfile = async () => {
+    if (!imageId) {
+      return;
+    }
     try {
       const data = { _id, imageId };
       await updateProfile(data);
