@@ -10,10 +10,12 @@ function AoeUpdateForm(prop) {
   const [name, setName] = useState(aoe.name);
   const [fixed, setFixed] = useState(aoe.fixed);
   const [range, setRange] = useState(aoe.range);
+  const [targets, setTargets] = useState(aoe.targets);
 
   const changeName = (e) => setName(e.target.value);
   const changeFixed = () => setFixed(!fixed);
   const changeRange = (e) => setRange(e.target.value);
+  const changeTargets = (e) => setTargets(e.target.value);
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -21,6 +23,7 @@ function AoeUpdateForm(prop) {
     newDoc.name = name;
     newDoc.fixed = fixed;
     newDoc.range = range;
+    newDoc.targets = targets;
     update();
   };
 
@@ -44,6 +47,12 @@ function AoeUpdateForm(prop) {
           <label htmlFor="range">
             Range:
             <input type="number" id="range" min="1" value={range} onChange={changeRange} required />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="targets">
+            Targets:
+            <input type="text" id="targets" value={targets} onChange={changeTargets} />
           </label>
         </div>
         {errors !== undefined && errors.length > 0 ? errors.map((err) => (

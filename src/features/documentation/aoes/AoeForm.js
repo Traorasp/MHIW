@@ -13,19 +13,24 @@ function AoeForm(prop) {
   const [name, setName] = useState('');
   const [fixed, setFixed] = useState(false);
   const [range, setRange] = useState(1);
+  const [targets, setTargets] = useState('');
   const [createAOE] = useCreateAOEMutation();
 
   const changeName = (e) => setName(e.target.value);
   const changeFixed = () => setFixed(!fixed);
   const changeRange = (e) => setRange(e.target.value);
+  const changeTargets = (e) => setTargets(e.target.value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { aoe } = await createAOE({ name, fixed, range }).unwrap();
+      const { aoe } = await createAOE({
+        name, fixed, range, targets,
+      }).unwrap();
       setName('');
       setFixed(false);
       setRange(1);
+      setTargets('');
       setErrors([]);
       const prevAoes = aoes.aoes ? aoes.aoes : aoes.data;
       dispatch(addDoc({ key: 'aoes', data: [...prevAoes, aoe] }));
@@ -59,6 +64,12 @@ function AoeForm(prop) {
           <label htmlFor="range">
             Range:
             <input type="number" id="range" min="1" value={range} onChange={changeRange} required />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="targets">
+            Targets:
+            <input type="text" id="targets" value={targets} onChange={changeTargets} />
           </label>
         </div>
         {errors !== undefined && errors.length > 0 ? errors.map((err) => (

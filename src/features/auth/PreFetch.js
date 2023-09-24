@@ -73,7 +73,7 @@ function PreFetch() {
       let key = Object.keys(model)[0];
       switch (key) {
         case 'aoes':
-          desiredOrder = ['name', 'fixed', 'range'];
+          desiredOrder = ['name', 'fixed', 'range', 'targets'];
           break;
         case 'classes':
           desiredOrder = ['name', 'requirements', 'type', 'effects', 'skills', 'description'];
