@@ -30,8 +30,9 @@ export const characterApiSlice = apiSlice.injectEndpoints({
     }),
     deleteCharacter: builder.mutation({
       query: (id) => ({
-        url: `/character/${id}`,
+        url: `/character/${id[0]}`,
         method: 'DELETE',
+        body: { id: id[1] },
       }),
     }),
   }),

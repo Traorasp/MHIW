@@ -7,7 +7,7 @@ import { setCharacterList } from '../charactersSlice';
 import { selectCurrentUser } from '../../auth/authSlice';
 
 function CharacterForm(prop) {
-  const { hide, list } = prop;
+  const { hide, list, update } = prop;
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [level, setLevel] = useState(1);
@@ -44,6 +44,7 @@ function CharacterForm(prop) {
       setGender();
       setErrors([]);
       dispatch(setCharacterList({ characters: [...list, { char, url: '' }] }));
+      update();
       hide();
     } catch (err) {
       console.log(err);
