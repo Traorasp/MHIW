@@ -15,6 +15,9 @@ function CharacterListPanel() {
 
   const [showForm, setShowForm] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState('');
+
+  const [charsDisplayed, setCharsDisplayed] = useState(characters);
+  const [search, setSearch] = useState('');
   const [characterList, setCharacters] = useState(characters);
   const [useDeleteCharacter] = useDeleteCharacterMutation();
   const [getCharacterList] = useGetCharacterListMutation();
@@ -26,11 +29,13 @@ function CharacterListPanel() {
     if (deleteTarget !== '') {
       setDeleteTarget('');
     } else {
-      setDeleteTarget(characterList[e.target.value].char);
+      setDeleteTarget(charsDisplayed[e.target.value].char);
     }
   };
   const dispatch = useDispatch();
   const updateCharacterList = (newList) => setCharacters(newList);
+  const updateCharDisplay = (newList) => setCharsDisplayed(newList);
+  const updateSearch = (e) => setSearch(e.target.value);
 
   const getImageUrl = async (imgId) => {
     if (imgId === null || imgId === undefined) return '';
@@ -63,14 +68,10 @@ function CharacterListPanel() {
   };
 
   useEffect(() => {
-
-  }, [characterList]);
-
-  useEffect(() => {
     getCharacters();
   }, []);
 
-  const createCardList = () => characterList.map((character, i) => (
+  const createCardList = () => charsDisplayed.map((character, i) => (
     <div key={character.char._id}>
       <a href={`/characters/${character.char._id}`} className="border-black border-2 flex w-[100%] items-center">
         <div>
@@ -92,12 +93,39 @@ function CharacterListPanel() {
     </div>
   ));
 
+  const updateSearchResults = () => {
+    const expression = new RegExp(`${search.toLowerCase()}`);
+    if (search === '') {
+      updateCharDisplay(characterList);
+      return;
+    }
+    const results = characterList.filter((characterObj) => {
+      const charInfo = characterObj.char;
+      const fullname = `${charInfo.firstName} ${charInfo.lastName}`.toLowerCase();
+      if (fullname.search(expression) !== -1) {
+        return true;
+      }
+      return false;
+    });
+
+    updateCharDisplay(results);
+  };
+
+  useEffect(() => {
+    updateSearchResults();
+  }, [search]);
+
+  useEffect(() => {
+    updateSearchResults();
+  }, [characterList]);
+
   return (
     <div>
       <button onClick={displayForm} className="bg-green-400 p-5 border-black border-2 text-2xl active:bg-green-500" type="button">+</button>
       {showForm ? <CharacterForm update={getCharacters} hide={displayForm} list={characterList || []} /> : ''}
       {deleteTarget ? <DeleteConfirmation name={`${deleteTarget.firstName} ${deleteTarget.lastName}`} hide={displayDeleteForm} confirmDelete={deleteCharacter} /> : ''}
-      {characterList ? createCardList() : ''}
+      <input placeholder="Search..." className="bg-slate-200" type="text" onChange={updateSearch} />
+      {charsDisplayed ? createCardList() : ''}
     </div>
   );
 }
